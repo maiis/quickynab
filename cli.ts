@@ -90,8 +90,8 @@ async function promptForBudgetAndAccount(config: any): Promise<{ budgetId: strin
 }
 
 program
-  .name('ynab-cli')
-  .description('CLI tool to import bank CSVs to YNAB via API')
+  .name('ynab')
+  .description('Quick and easy bank transaction imports to YNAB')
   .version('1.0.0');
 
 // Init command
@@ -135,9 +135,9 @@ program
       };
 
       saveConfig(config);
-      console.log('\n✓ Configuration saved to ~/.ynab-cli/config');
+      console.log('\n✓ Configuration saved to ~/.quickynab/config');
       console.log('\nFor CLI usage, you can optionally set YNAB_BUDGET_ID and YNAB_ACCOUNT_ID');
-      console.log('Edit ~/.ynab-cli/config or use .env in your project directory');
+      console.log('Edit ~/.quickynab/config or use .env in your project directory');
       console.log('For web usage, just run: npm run web (budget/account selection in UI)');
 
       rl.close();
@@ -157,7 +157,7 @@ program
     try {
       // Check if config exists
       if (!hasConfig()) {
-        console.error('Error: YNAB CLI not configured. Run "ynab-cli init" first.');
+        console.error('Error: QuickYNAB not configured. Run "ynab init" first.');
         process.exit(1);
       }
 
@@ -225,7 +225,7 @@ program
   .action(async () => {
     try {
       if (!hasConfig()) {
-        console.error('Error: YNAB CLI not configured. Run "ynab-cli init" first.');
+        console.error('Error: QuickYNAB not configured. Run "ynab init" first.');
         process.exit(1);
       }
 
@@ -249,14 +249,14 @@ program
   .action(async () => {
     try {
       if (!hasConfig()) {
-        console.error('Error: YNAB CLI not configured. Run "ynab-cli init" first.');
+        console.error('Error: QuickYNAB not configured. Run "ynab init" first.');
         process.exit(1);
       }
 
       const config = getConfig();
       if (!config.budgetId) {
         console.error('Error: YNAB_BUDGET_ID not set.');
-        console.error('Add it to ~/.ynab-cli/config or set in .env file');
+        console.error('Add it to ~/.quickynab/config or set in .env file');
         process.exit(1);
       }
 

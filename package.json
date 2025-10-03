@@ -1,11 +1,11 @@
 {
-  "name": "ynab-cli",
+  "name": "quickynab",
   "version": "1.0.0",
-  "description": "CLI tool to convert bank CSVs and upload to YNAB via API",
+  "description": "Quick and easy bank transaction imports to YNAB - supports 116+ banks worldwide",
   "main": "dist/cli.js",
   "type": "module",
   "bin": {
-    "ynab-cli": "./dist/cli.js"
+    "ynab": "./dist/cli.js"
   },
   "scripts": {
     "dev": "concurrently \"npm run dev:vite\" \"npm run dev:server\"",
@@ -29,7 +29,11 @@
     "ynab",
     "csv",
     "import",
-    "cli"
+    "cli",
+    "bank",
+    "transactions",
+    "bank2ynab",
+    "budgeting"
   ],
   "author": "",
   "license": "MIT",

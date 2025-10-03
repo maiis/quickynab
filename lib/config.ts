@@ -6,7 +6,7 @@ import os from 'os';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const CONFIG_DIR = path.join(os.homedir(), '.ynab-cli');
+const CONFIG_DIR = path.join(os.homedir(), '.quickynab');
 const CONFIG_FILE = path.join(CONFIG_DIR, 'config');
 const LOCAL_ENV = path.join(__dirname, '..', '.env');
 
@@ -45,7 +45,7 @@ export function getConfig(): Config {
 
   if (!token) {
     throw new Error(
-      'YNAB_ACCESS_TOKEN not found. Please run "ynab-cli init" to set up your configuration.'
+      'YNAB_ACCESS_TOKEN not found. Please run "ynab init" to set up your configuration.'
     );
   }
 

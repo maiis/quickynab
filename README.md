@@ -1,6 +1,6 @@
-# YNAB CLI & Web App
+# QuickYNAB
 
-A tool to automatically import bank transactions to YNAB (You Need A Budget) via the API. Includes both a command-line interface and a self-hosted web app with drag-and-drop.
+Quick and easy bank transaction imports to YNAB. Supports 116+ banks worldwide with both CLI and web interface.
 
 > **Note:** This project uses TypeScript + Vite. Make sure to run `npm run build` before using the CLI or web app in production.
 
@@ -20,12 +20,12 @@ A tool to automatically import bank transactions to YNAB (You Need A Budget) via
 
 Install globally via npm:
 ```bash
-npm install -g ynab-cli
+npm install -g quickynab
 ```
 
 Then configure your YNAB access token:
 ```bash
-ynab-cli init
+ynab init
 ```
 
 ### Option 2: Local Development
@@ -52,16 +52,16 @@ ynab-cli init
 
 ### CLI Configuration
 
-When you run `ynab-cli init`, the configuration is saved to `~/.ynab-cli/config`.
+When you run `ynab init`, the configuration is saved to `~/.quickynab/config`.
 
 During `init`, you'll be prompted to:
 1. Enter your YNAB Personal Access Token (get it from https://app.ynab.com/settings/developer)
 
-The tool will verify your token and save it to `~/.ynab-cli/config`.
+The tool will verify your token and save it to `~/.quickynab/config`.
 
 ### Manual Configuration
 
-You can also manually create or edit `~/.ynab-cli/config`:
+You can also manually create or edit `~/.quickynab/config`:
 
 ```
 YNAB_ACCESS_TOKEN=your_token_here
@@ -101,16 +101,16 @@ Then open http://localhost:3000 in your browser and drag-and-drop your CSV files
 Import transactions from a YNAB-formatted CSV:
 
 ```bash
-ynab-cli import statement.csv
+ynab import statement.csv
 ```
 
 Preview transactions without uploading:
 
 ```bash
-ynab-cli import statement.csv --dry-run
+ynab import statement.csv --dry-run
 ```
 
-> **Note:** If you installed locally (not globally), use `npm start` instead of `ynab-cli`.
+> **Note:** If you installed locally (not globally), use `npm start` instead of `ynab`.
 
 ### Supported Formats
 
@@ -147,15 +147,15 @@ Date,Payee,Category,Memo,Outflow,Inflow
 
 List all budgets:
 ```bash
-ynab-cli budgets
+ynab budgets
 ```
 
 List all accounts in configured budget:
 ```bash
-ynab-cli accounts
+ynab accounts
 ```
 
-> **Note:** If you installed locally (not globally), use `npm start` instead of `ynab-cli`.
+> **Note:** If you installed locally (not globally), use `npm start` instead of `ynab`.
 
 ## Usage Examples
 
@@ -169,7 +169,7 @@ ynab-cli accounts
 
 **CLI:**
 ```bash
-ynab-cli import ~/Downloads/2025_9_account_statements*.csv
+ynab import ~/Downloads/2025_9_account_statements*.csv
 ```
 
 ### Revolut, N26, or other supported banks
@@ -290,18 +290,18 @@ npm start init
 npm start import statement.csv
 ```
 
-> **Note:** To use the CLI globally after publishing to npm, users can install with `npm install -g ynab-cli`.
+> **Note:** To use the CLI globally after publishing to npm, users can install with `npm install -g quickynab`.
 
 ## Troubleshooting
 
 ### "YNAB_ACCESS_TOKEN not found"
-Run `ynab-cli init` to configure your access token (or `npm start init` if installed locally). Configuration is saved to `~/.ynab-cli/config`.
+Run `ynab init` to configure your access token (or `npm start init` if installed locally). Configuration is saved to `~/.quickynab/config`.
 
 ### "Multiple budgets found"
-Set `YNAB_BUDGET_ID` in `~/.ynab-cli/config` (or `.env` for local development).
+Set `YNAB_BUDGET_ID` in `~/.quickynab/config` (or `.env` for local development).
 
 ### "Multiple accounts found"
-Set `YNAB_ACCOUNT_ID` in `~/.ynab-cli/config` (or `.env` for local development).
+Set `YNAB_ACCOUNT_ID` in `~/.quickynab/config` (or `.env` for local development).
 
 ### Duplicate transactions
 The tool automatically detects duplicates using import IDs. If a transaction is imported twice, YNAB will skip it.
