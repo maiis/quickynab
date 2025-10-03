@@ -73,8 +73,8 @@ describe('bank2ynab-generic', () => {
       const result = parseBank2YnabCSV(testFile, config);
 
       expect(result).toHaveLength(2);
-      expect(result[0].amount).toBe(-25.5);
-      expect(result[1].amount).toBe(1500.0);
+      expect(result[0]?.amount).toBe(-25.5);
+      expect(result[1]?.amount).toBe(1500.0);
     });
 
     it('should skip columns marked as "skip"', () => {
@@ -95,8 +95,8 @@ describe('bank2ynab-generic', () => {
       const result = parseBank2YnabCSV(testFile, config);
 
       expect(result).toHaveLength(1);
-      expect(result[0].payee_name).toBe('Store');
-      expect(result[0].amount).toBe(50.0);
+      expect(result[0]?.payee_name).toBe('Store');
+      expect(result[0]?.amount).toBe(50.0);
     });
 
     it('should handle header and footer rows', () => {
@@ -119,7 +119,7 @@ Total: 50.00`;
       const result = parseBank2YnabCSV(testFile, config);
 
       expect(result).toHaveLength(1);
-      expect(result[0].payee_name).toBe('Store');
+      expect(result[0]?.payee_name).toBe('Store');
     });
 
     it('should sanitize long strings', () => {
@@ -141,7 +141,7 @@ Total: 50.00`;
       const result = parseBank2YnabCSV(testFile, config);
 
       expect(result).toHaveLength(1);
-      expect(result[0].payee_name?.length).toBeLessThanOrEqual(200);
+      expect(result[0]?.payee_name?.length).toBeLessThanOrEqual(200);
     });
 
     it('should handle Neon bank format', () => {

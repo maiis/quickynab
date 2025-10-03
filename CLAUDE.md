@@ -147,6 +147,7 @@ No React/Vue framework - vanilla TypeScript with DOM manipulation:
 - File validation (max 10MB, CSV only, malicious content detection)
 - Temp files with crypto-random names, cleaned up in finally blocks
 - Non-root Docker user (ynabuser:nodejs)
+- **Zod validation** for runtime type safety on API inputs
 
 ## Testing Strategy
 

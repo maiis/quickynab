@@ -11,12 +11,17 @@ import crypto from 'crypto';
 import { parseCSV } from './lib/converter.js';
 import { uploadTransactions, listBudgets, listAccounts } from './lib/uploader.js';
 import { getConfig } from './lib/config.js';
+import { envSchema, uploadQuerySchema } from './lib/schemas.js';
+import { getErrorMessage } from './lib/errors.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Validate environment variables
+const env = envSchema.parse(process.env);
+
 const fastify = Fastify({
   logger:
-    process.env.NODE_ENV === 'development'
+    env.NODE_ENV === 'development'
       ? true
       : {
           level: 'error',
@@ -113,7 +118,8 @@ function validateCSVFile(buffer: Buffer, filename: string): boolean {
 
   // Check line length (first 100 lines)
   for (let i = 0; i < Math.min(lines.length, 100); i++) {
-    if (lines[i].length > MAX_LINE_LENGTH) {
+    const line = lines[i];
+    if (line && line.length > MAX_LINE_LENGTH) {
       throw new Error(`Line ${i + 1} is too long`);
     }
   }
@@ -121,7 +127,7 @@ function validateCSVFile(buffer: Buffer, filename: string): boolean {
   // Check for CSV structure
   if (lines.length > 0) {
     const firstLine = lines[0];
-    if (!firstLine.includes(',') && !firstLine.includes(';')) {
+    if (firstLine && !firstLine.includes(',') && !firstLine.includes(';')) {
       throw new Error('File does not appear to be a valid CSV');
     }
   }
@@ -188,9 +194,13 @@ fastify.get<{
       // If no budget ID, return budgets list
       const budgets = await listBudgets(config.accessToken);
       if (budgets.length === 1) {
+        const firstBudget = budgets[0];
+        if (!firstBudget) {
+          return { accounts: [], needBudgetSelection: true };
+        }
         // Auto-select if only one budget
-        const accounts = await listAccounts(config.accessToken, budgets[0].id);
-        return { accounts, budgetId: budgets[0].id };
+        const accounts = await listAccounts(config.accessToken, firstBudget.id);
+        return { accounts, budgetId: firstBudget.id };
       }
       // Return empty if multiple budgets
       return { accounts: [], needBudgetSelection: true };
@@ -230,6 +240,14 @@ fastify.post<{
     let tmpFile: string | null = null;
 
     try {
+      // Validate query parameters
+      const queryResult = uploadQuerySchema.safeParse(request.query);
+      if (!queryResult.success) {
+        reply.code(400);
+        return { error: `Invalid query parameters: ${queryResult.error.message}` };
+      }
+      const query = queryResult.data;
+
       const config = getConfig();
 
       // Get the uploaded file
@@ -260,9 +278,7 @@ fastify.post<{
         const transactions = parseCSV(tmpFile, originalFilename);
 
         // Check if dry run
-        const dryRun = request.query.dryRun === 'true';
-
-        if (dryRun) {
+        if (query.dryRun) {
           // Return preview
           return {
             success: true,
@@ -277,9 +293,9 @@ fastify.post<{
           };
         }
 
-        // Get budget and account IDs from query params
-        const budgetId = request.query.budgetId;
-        const accountId = request.query.accountId;
+        // Get budget and account IDs from validated query params
+        const budgetId = query.budgetId;
+        const accountId = query.accountId;
 
         if (!accountId && !config.accountId) {
           reply.code(400);
@@ -316,9 +332,8 @@ fastify.post<{
 // Start server
 const start = async () => {
   try {
-    const port = parseInt(process.env.PORT || '3000');
-    await fastify.listen({ port, host: '0.0.0.0' });
-    console.log(`\n🚀 YNAB Web App running at http://localhost:${port}`);
+    await fastify.listen({ port: env.PORT, host: '0.0.0.0' });
+    console.log(`\n🚀 YNAB Web App running at http://localhost:${env.PORT}`);
     console.log(`\nMake sure you have configured your .env file with YNAB_ACCESS_TOKEN\n`);
   } catch (err) {
     fastify.log.error(err);

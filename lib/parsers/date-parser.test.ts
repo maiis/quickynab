@@ -43,19 +43,19 @@ function autoDetectDate(dateStr: string): string {
   }
 
   const ddmmyyyy = dateStr.match(/^(\d{2})[\.\/](\d{2})[\.\/](\d{4})$/);
-  if (ddmmyyyy) {
+  if (ddmmyyyy && ddmmyyyy[1] && ddmmyyyy[2] && ddmmyyyy[3]) {
     return `${ddmmyyyy[3]}-${ddmmyyyy[2]}-${ddmmyyyy[1]}`;
   }
 
   const mmddyyyy = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-  if (mmddyyyy) {
+  if (mmddyyyy && mmddyyyy[1] && mmddyyyy[2] && mmddyyyy[3]) {
     const month = mmddyyyy[1].padStart(2, '0');
     const day = mmddyyyy[2].padStart(2, '0');
     return `${mmddyyyy[3]}-${month}-${day}`;
   }
 
   const yyyymmdd = dateStr.match(/^(\d{4})(\d{2})(\d{2})$/);
-  if (yyyymmdd) {
+  if (yyyymmdd && yyyymmdd[1] && yyyymmdd[2] && yyyymmdd[3]) {
     return `${yyyymmdd[1]}-${yyyymmdd[2]}-${yyyymmdd[3]}`;
   }
 

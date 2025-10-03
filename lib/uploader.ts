@@ -107,8 +107,12 @@ async function getBudgetId(ynabAPI: ynab.API, config: Config): Promise<string> {
 
   // Use first budget if only one exists
   if (budgets.length === 1) {
-    console.log(`Using budget: ${budgets[0].name}`);
-    return budgets[0].id;
+    const firstBudget = budgets[0];
+    if (!firstBudget) {
+      throw new Error('No budgets found in your YNAB account');
+    }
+    console.log(`Using budget: ${firstBudget.name}`);
+    return firstBudget.id;
   }
 
   throw new Error(
@@ -135,8 +139,12 @@ async function getAccountId(ynabAPI: ynab.API, budgetId: string, config: Config)
 
   // Use first account if only one exists
   if (accounts.length === 1) {
-    console.log(`Using account: ${accounts[0].name}`);
-    return accounts[0].id;
+    const firstAccount = accounts[0];
+    if (!firstAccount) {
+      throw new Error('No open accounts found in your budget');
+    }
+    console.log(`Using account: ${firstAccount.name}`);
+    return firstAccount.id;
   }
 
   throw new Error(

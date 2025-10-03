@@ -51,8 +51,12 @@ async function promptForBudgetAndAccount(
           throw new Error('Invalid budget selection');
         }
 
-        budgetId = budgets[selectedIndex].id;
-        console.log(`Selected: ${budgets[selectedIndex].name}`);
+        const selectedBudget = budgets[selectedIndex];
+        if (!selectedBudget) {
+          throw new Error('Invalid budget selection');
+        }
+        budgetId = selectedBudget.id;
+        console.log(`Selected: ${selectedBudget.name}`);
       }
     }
 
@@ -80,8 +84,12 @@ async function promptForBudgetAndAccount(
           throw new Error('Invalid account selection');
         }
 
-        accountId = accounts[selectedIndex].id;
-        console.log(`Selected: ${accounts[selectedIndex].name}`);
+        const selectedAccount = accounts[selectedIndex];
+        if (!selectedAccount) {
+          throw new Error('Invalid account selection');
+        }
+        accountId = selectedAccount.id;
+        console.log(`Selected: ${selectedAccount.name}`);
       }
     }
 
