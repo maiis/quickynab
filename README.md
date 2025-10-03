@@ -19,11 +19,13 @@ Quick and easy bank transaction imports to YNAB. Supports 116+ banks worldwide w
 ### Option 1: Global Install (Recommended for CLI)
 
 Install globally via npm:
+
 ```bash
 npm install -g quickynab
 ```
 
 Then configure your YNAB access token:
+
 ```bash
 ynab init
 ```
@@ -32,16 +34,19 @@ ynab init
 
 1. Clone or download this repository
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Build the project:
+
    ```bash
    npm run build
    ```
 
 4. Configure your YNAB access token:
+
    ```bash
    npm start init
    ```
@@ -55,6 +60,7 @@ ynab init
 When you run `ynab init`, the configuration is saved to `~/.quickynab/config`.
 
 During `init`, you'll be prompted to:
+
 1. Enter your YNAB Personal Access Token (get it from https://app.ynab.com/settings/developer)
 
 The tool will verify your token and save it to `~/.quickynab/config`.
@@ -84,12 +90,14 @@ npm run web
 Then open http://localhost:3000 in your browser and drag-and-drop your CSV files!
 
 **Features:**
+
 - Visual drag-and-drop interface
 - Transaction preview before upload
 - Real-time configuration status
 - Beautiful, modern UI
 
 **Screenshots:**
+
 - Drag and drop your CSV file
 - Preview transactions before uploading
 - Get instant feedback on upload status
@@ -129,6 +137,7 @@ See the full list at: https://github.com/bank2ynab/bank2ynab/blob/master/bank2yn
 ### Standard YNAB CSV Format
 
 If using YNAB format, your CSV should have these columns:
+
 - **Date** (required): Transaction date (YYYY-MM-DD format recommended)
 - **Payee**: Name of payee
 - **Category**: Category name
@@ -137,6 +146,7 @@ If using YNAB format, your CSV should have these columns:
 - **Inflow**: Amount received (positive number)
 
 Example CSV:
+
 ```
 Date,Payee,Category,Memo,Outflow,Inflow
 2025-09-30,Grocery Store,Food,Weekly shopping,150.50,
@@ -146,11 +156,13 @@ Date,Payee,Category,Memo,Outflow,Inflow
 ### List Budgets and Accounts
 
 List all budgets:
+
 ```bash
 ynab budgets
 ```
 
 List all accounts in configured budget:
+
 ```bash
 ynab accounts
 ```
@@ -162,12 +174,14 @@ ynab accounts
 ### CH Neon Bank (Switzerland)
 
 **Web App:**
+
 1. Export statement from Neon
 2. Open http://localhost:3000
 3. Select budget and account
 4. Drag and drop CSV - done! ✨
 
 **CLI:**
+
 ```bash
 ynab import ~/Downloads/2025_9_account_statements*.csv
 ```
@@ -197,6 +211,7 @@ Your bank is probably already supported! This tool uses the [bank2ynab](https://
 The easiest way to deploy is using Docker:
 
 **Using Docker directly:**
+
 ```bash
 # Build the image
 docker build -t ynab-cli .
@@ -211,6 +226,7 @@ docker run -d \
 ```
 
 **Using docker-compose (even easier):**
+
 ```bash
 # 1. Create .env file with your YNAB token
 echo "YNAB_ACCESS_TOKEN=your_token_here" > .env
@@ -226,6 +242,7 @@ docker-compose down
 ```
 
 **Docker image features:**
+
 - ✅ Multi-stage build (~150MB final image)
 - ✅ Non-root user for security
 - ✅ Health checks included
@@ -235,6 +252,7 @@ docker-compose down
 ### Running as a Service
 
 **Using PM2:**
+
 ```bash
 npm install -g pm2
 npm run build
@@ -245,6 +263,7 @@ pm2 startup
 
 **Using systemd:**
 Create `/etc/systemd/system/ynab-web.service`:
+
 ```ini
 [Unit]
 Description=YNAB Web App
@@ -269,22 +288,26 @@ WantedBy=multi-user.target
 - `ALLOWED_ORIGINS`: Comma-separated list of allowed CORS origins (optional)
 
 **CLI-only variables** (ignored by web app):
+
 - `YNAB_BUDGET_ID`: Default budget ID for CLI automation (optional)
 - `YNAB_ACCOUNT_ID`: Default account ID for CLI automation (optional)
 
 ## Development
 
 Build the project:
+
 ```bash
 npm run build
 ```
 
 Run in development mode (with hot reload):
+
 ```bash
 npm run dev
 ```
 
 Run the CLI locally:
+
 ```bash
 npm start init
 npm start import statement.csv
@@ -295,30 +318,37 @@ npm start import statement.csv
 ## Troubleshooting
 
 ### "YNAB_ACCESS_TOKEN not found"
+
 Run `ynab init` to configure your access token (or `npm start init` if installed locally). Configuration is saved to `~/.quickynab/config`.
 
 ### "Multiple budgets found"
+
 Set `YNAB_BUDGET_ID` in `~/.quickynab/config` (or `.env` for local development).
 
 ### "Multiple accounts found"
+
 Set `YNAB_ACCOUNT_ID` in `~/.quickynab/config` (or `.env` for local development).
 
 ### Duplicate transactions
+
 The tool automatically detects duplicates using import IDs. If a transaction is imported twice, YNAB will skip it.
 
 ## Testing
 
 Run the test suite:
+
 ```bash
 npm test
 ```
 
 Run tests in watch mode:
+
 ```bash
 npm run test:watch
 ```
 
 Run tests with coverage:
+
 ```bash
 npm run test:coverage
 ```

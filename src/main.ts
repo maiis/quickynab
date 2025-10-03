@@ -130,7 +130,7 @@ uploadBtn.addEventListener('click', async () => {
   if (!selectedAccountId) {
     showResult('error', {
       title: '❌ No Account Selected',
-      message: 'Please select an account from the dropdown above'
+      message: 'Please select an account from the dropdown above',
     });
     return;
   }
@@ -141,7 +141,7 @@ uploadBtn.addEventListener('click', async () => {
   // Show progress message
   showResult('info', {
     title: '⏳ Uploading Transactions',
-    message: 'Please wait while we upload your transactions to YNAB...'
+    message: 'Please wait while we upload your transactions to YNAB...',
   });
 
   try {
@@ -167,18 +167,18 @@ uploadBtn.addEventListener('click', async () => {
         tip: '✨ Your transactions are now in YNAB!',
         showResetButton: true,
         budgetId: selectedBudgetId,
-        accountId: selectedAccountId
+        accountId: selectedAccountId,
       });
     } else {
       showResult('error', {
         title: '❌ Upload Failed',
-        message: (data as any).error || 'Unknown error occurred'
+        message: (data as any).error || 'Unknown error occurred',
       });
     }
   } catch (error: any) {
     showResult('error', {
       title: '❌ Upload Failed',
-      message: error.message
+      message: error.message,
     });
   } finally {
     uploadBtn.disabled = false;
@@ -193,11 +193,13 @@ async function checkConfig() {
     const data = await response.json();
 
     if (data.configured) {
-      configStatus.className = 'rounded-lg p-4 mb-6 bg-green-100 text-green-800 border border-green-200';
+      configStatus.className =
+        'rounded-lg p-4 mb-6 bg-green-100 text-green-800 border border-green-200';
       configStatus.innerHTML = '✅ YNAB configured and ready';
     } else {
       configStatus.className = 'rounded-lg p-4 mb-6 bg-red-100 text-red-800 border border-red-200';
-      configStatus.innerHTML = '❌ YNAB not configured. Please set up your .env file with YNAB_ACCESS_TOKEN';
+      configStatus.innerHTML =
+        '❌ YNAB not configured. Please set up your .env file with YNAB_ACCESS_TOKEN';
     }
   } catch (error) {
     configStatus.className = 'rounded-lg p-4 mb-6 bg-red-100 text-red-800 border border-red-200';
@@ -255,7 +257,7 @@ async function loadAccounts(budgetId: string) {
       if (data.currency_format) {
         currencyFormat = {
           symbol: data.currency_format.currency_symbol,
-          decimal_digits: data.currency_format.decimal_digits
+          decimal_digits: data.currency_format.decimal_digits,
         };
       }
 
@@ -285,7 +287,7 @@ async function handleFile(file: File) {
   if (!file.name.endsWith('.csv')) {
     showResult('error', {
       title: '❌ Invalid File',
-      message: 'Please upload a CSV file'
+      message: 'Please upload a CSV file',
     });
     return;
   }
@@ -310,13 +312,13 @@ async function handleFile(file: File) {
     } else {
       showResult('error', {
         title: '❌ Error Parsing CSV',
-        message: (data as any).error || 'Unknown error occurred'
+        message: (data as any).error || 'Unknown error occurred',
       });
     }
   } catch (error: any) {
     showResult('error', {
       title: '❌ Error',
-      message: error.message
+      message: error.message,
     });
   }
 }
@@ -330,12 +332,14 @@ function showPreview(data: PreviewData) {
     </div>
   `;
 
-  previewTransactions.forEach(tx => {
-    const amountClass = tx.amount >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
+  previewTransactions.forEach((tx) => {
+    const amountClass =
+      tx.amount >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
     const formattedAmount = Math.abs(tx.amount).toFixed(currencyFormat.decimal_digits);
-    const amountStr = tx.amount >= 0
-      ? `+${currencyFormat.symbol}${formattedAmount}`
-      : `-${currencyFormat.symbol}${formattedAmount}`;
+    const amountStr =
+      tx.amount >= 0
+        ? `+${currencyFormat.symbol}${formattedAmount}`
+        : `-${currencyFormat.symbol}${formattedAmount}`;
 
     html += `
       <div class="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700 last:border-0">
@@ -360,19 +364,24 @@ function showPreview(data: PreviewData) {
   result.classList.add('hidden');
 }
 
-function showResult(type: 'success' | 'error' | 'info', data: {
-  title?: string;
-  message?: string;
-  duplicates?: number;
-  tip?: string;
-  showResetButton?: boolean;
-  budgetId?: string | null;
-  accountId?: string | null;
-}) {
+function showResult(
+  type: 'success' | 'error' | 'info',
+  data: {
+    title?: string;
+    message?: string;
+    duplicates?: number;
+    tip?: string;
+    showResetButton?: boolean;
+    budgetId?: string | null;
+    accountId?: string | null;
+  }
+) {
   const colorClasses = {
-    success: 'bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-100 border-green-200 dark:border-green-700',
-    error: 'bg-red-100 dark:bg-red-900 text-red-900 dark:text-red-100 border-red-200 dark:border-red-700',
-    info: 'bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 border-blue-200 dark:border-blue-700'
+    success:
+      'bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-100 border-green-200 dark:border-green-700',
+    error:
+      'bg-red-100 dark:bg-red-900 text-red-900 dark:text-red-100 border-red-200 dark:border-red-700',
+    info: 'bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 border-blue-200 dark:border-blue-700',
   };
 
   result.className = `mt-8 rounded-lg p-6 border-2 ${colorClasses[type]}`;
@@ -425,7 +434,8 @@ function showResult(type: 'success' | 'error' | 'info', data: {
       ynabLink.href = `https://app.ynab.com/${data.budgetId}/accounts/${data.accountId}`;
       ynabLink.target = '_blank';
       ynabLink.rel = 'noopener noreferrer';
-      ynabLink.className = 'px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all no-underline';
+      ynabLink.className =
+        'px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all no-underline';
       ynabLink.textContent = '🔗 View in YNAB';
       ynabLink.setAttribute('aria-label', 'Open YNAB to view imported transactions');
       buttonContainer.appendChild(ynabLink);
@@ -433,7 +443,8 @@ function showResult(type: 'success' | 'error' | 'info', data: {
 
     // Import another file button
     const resetButton = document.createElement('button');
-    resetButton.className = 'px-6 py-3 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition-all';
+    resetButton.className =
+      'px-6 py-3 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition-all';
     resetButton.textContent = '📁 Import Another File';
     resetButton.setAttribute('aria-label', 'Reset and import another file');
     resetButton.onclick = () => {

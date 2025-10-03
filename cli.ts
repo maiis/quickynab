@@ -10,7 +10,9 @@ import fs from 'fs';
 const program = new Command();
 
 // Helper function to prompt for budget and account selection
-async function promptForBudgetAndAccount(config: any): Promise<{ budgetId: string; accountId: string }> {
+async function promptForBudgetAndAccount(
+  config: any
+): Promise<{ budgetId: string; accountId: string }> {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,

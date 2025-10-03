@@ -82,15 +82,10 @@ export function validateCSV(filePath: string): boolean {
   const firstLine = fileContent.split('\n')[0].toLowerCase();
 
   const requiredColumns = ['date'];
-  const hasRequiredColumns = requiredColumns.every(col =>
-    firstLine.includes(col)
-  );
+  const hasRequiredColumns = requiredColumns.every((col) => firstLine.includes(col));
 
   if (!hasRequiredColumns) {
-    throw new Error(
-      'Invalid CSV format. Missing Date column. ' +
-      'Headers found: ' + firstLine
-    );
+    throw new Error('Invalid CSV format. Missing Date column. ' + 'Headers found: ' + firstLine);
   }
 
   return true;
