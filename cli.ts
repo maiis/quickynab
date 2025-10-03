@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
+import type { Config } from './lib/config.js';
 import { getConfig, saveConfig, hasConfig } from './lib/config.js';
 import { parseCSV, validateCSV } from './lib/converter.js';
 import { uploadTransactions, listBudgets, listAccounts } from './lib/uploader.js';
+import { handleCliError, getErrorMessage } from './lib/errors.js';
 import readline from 'readline';
 import fs from 'fs';
 
@@ -11,7 +13,7 @@ const program = new Command();
 
 // Helper function to prompt for budget and account selection
 async function promptForBudgetAndAccount(
-  config: any
+  config: Config
 ): Promise<{ budgetId: string; accountId: string }> {
   const rl = readline.createInterface({
     input: process.stdin,
@@ -34,8 +36,8 @@ async function promptForBudgetAndAccount(
       }
 
       if (budgets.length === 1) {
-        budgetId = budgets[0].id;
-        console.log(`Using budget: ${budgets[0].name}`);
+        budgetId = budgets[0]!.id;
+        console.log(`Using budget: ${budgets[0]!.name}`);
       } else {
         console.log('\nAvailable budgets:');
         budgets.forEach((budget, index) => {
@@ -63,8 +65,8 @@ async function promptForBudgetAndAccount(
       }
 
       if (accounts.length === 1) {
-        accountId = accounts[0].id;
-        console.log(`Using account: ${accounts[0].name}`);
+        accountId = accounts[0]!.id;
+        console.log(`Using account: ${accounts[0]!.name}`);
       } else {
         console.log('\nAvailable accounts:');
         accounts.forEach((account, index) => {
@@ -143,9 +145,8 @@ program
       console.log('For web usage, just run: npm run web (budget/account selection in UI)');
 
       rl.close();
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      process.exit(1);
+    } catch (error) {
+      handleCliError(error);
     }
   });
 
@@ -214,9 +215,8 @@ program
       if (result.duplicates > 0) {
         console.log(`  (${result.duplicates} duplicates skipped)`);
       }
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      process.exit(1);
+    } catch (error) {
+      handleCliError(error);
     }
   });
 
@@ -238,9 +238,8 @@ program
       budgets.forEach((budget) => {
         console.log(`  - ${budget.name} (${budget.id})`);
       });
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      process.exit(1);
+    } catch (error) {
+      handleCliError(error);
     }
   });
 
@@ -268,9 +267,8 @@ program
       accounts.forEach((account) => {
         console.log(`  - ${account.name} (${account.id})`);
       });
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      process.exit(1);
+    } catch (error) {
+      handleCliError(error);
     }
   });
 

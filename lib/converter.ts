@@ -3,7 +3,8 @@ import path from 'path';
 import { parse } from 'csv-parse/sync';
 import { parseBank2YnabCSV } from './parsers/bank2ynab-generic.js';
 import { getBank2YnabConfigs, findMatchingConfig } from './parsers/bank2ynab-fetcher.js';
-import type { Transaction } from './uploader.js';
+import type { Transaction, CsvRecord } from './types.js';
+import { CsvParseError } from './errors.js';
 
 export function parseCSV(filePath: string, originalFilename?: string): Transaction[] {
   // Use original filename if provided (from web upload), otherwise use basename
@@ -48,9 +49,13 @@ function parseYnabCSV(filePath: string): Transaction[] {
     columns: true,
     skip_empty_lines: true,
     trim: true,
-  });
+  }) as CsvRecord[];
 
-  return records.map((row: any, index: number) => {
+  if (!Array.isArray(records) || records.length === 0) {
+    throw new CsvParseError('CSV file contains no data rows');
+  }
+
+  return records.map((row, index) => {
     const outflow = parseAmount(row.Outflow);
     const inflow = parseAmount(row.Inflow);
 
@@ -58,7 +63,7 @@ function parseYnabCSV(filePath: string): Transaction[] {
     const amount = inflow - outflow;
 
     if (!row.Date) {
-      throw new Error(`Row ${index + 1}: Date is required`);
+      throw new CsvParseError(`Date is required`, index + 2); // +2 because line 1 is header
     }
 
     return {
@@ -74,13 +79,13 @@ function parseYnabCSV(filePath: string): Transaction[] {
 /**
  * Parses an amount string and returns a number
  */
-function parseAmount(amountStr: any): number {
+function parseAmount(amountStr: string | undefined): number {
   if (!amountStr || amountStr === '' || amountStr === '0') {
     return 0;
   }
 
   // Remove currency symbols, commas, and whitespace
-  const cleaned = amountStr.toString().replace(/[^0-9.-]/g, '');
+  const cleaned = amountStr.replace(/[^0-9.-]/g, '');
   const amount = parseFloat(cleaned);
 
   if (isNaN(amount)) {
@@ -93,16 +98,23 @@ function parseAmount(amountStr: any): number {
 /**
  * Validates that the CSV has a supported format
  */
-export function validateCSV(filePath: string): boolean {
+export function validateCSV(filePath: string): void {
   const fileContent = fs.readFileSync(filePath, 'utf-8');
-  const firstLine = fileContent.split('\n')[0].toLowerCase();
+  const lines = fileContent.split('\n');
+
+  if (lines.length === 0) {
+    throw new CsvParseError('CSV file is empty', 1);
+  }
+
+  const firstLine = lines[0]!.toLowerCase();
 
   const requiredColumns = ['date'];
   const hasRequiredColumns = requiredColumns.every((col) => firstLine.includes(col));
 
   if (!hasRequiredColumns) {
-    throw new Error('Invalid CSV format. Missing Date column. ' + 'Headers found: ' + firstLine);
+    throw new CsvParseError(
+      `Invalid CSV format. Missing Date column. Headers found: ${firstLine}`,
+      1
+    );
   }
-
-  return true;
 }

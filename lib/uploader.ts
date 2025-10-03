@@ -1,14 +1,8 @@
 import * as ynab from 'ynab';
 import crypto from 'crypto';
 import type { Config } from './config.js';
-
-export interface Transaction {
-  date: string;
-  payee_name: string | null;
-  category_name?: string | null;
-  memo: string | null;
-  amount: number;
-}
+import type { Transaction } from './types.js';
+import { YnabApiError } from './errors.js';
 
 interface UploadResult {
   success: boolean;
@@ -63,9 +57,16 @@ export async function uploadTransactions(
       duplicates: response.data.duplicate_import_ids?.length || 0,
       transactions: response.data.transactions || [],
     };
-  } catch (error: any) {
-    if (error.error && error.error.detail) {
-      throw new Error(`YNAB API Error: ${error.error.detail}`);
+  } catch (error) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'error' in error &&
+      typeof (error as { error?: { detail?: string } }).error === 'object' &&
+      (error as { error?: { detail?: string } }).error !== null
+    ) {
+      const apiError = error as { error: { detail?: string } };
+      throw new YnabApiError(apiError.error.detail || 'Unknown YNAB API error');
     }
     throw error;
   }
