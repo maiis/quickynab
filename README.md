@@ -14,9 +14,58 @@ Quick and easy bank transaction imports to YNAB. Supports 116+ banks worldwide w
 - 👀 **Preview Mode**: See transactions before uploading
 - ⚙️ **Multiple Accounts**: Support for multiple budgets and accounts
 
+## Which One Should I Use?
+
+### 🌐 Web App (Recommended for Most Users)
+
+**Best for:** Occasional imports, visual interface, easy setup
+
+- ✅ No installation required (just Docker or npm)
+- ✅ Works on any device with a browser
+- ✅ Visual drag-and-drop interface
+- ✅ Preview transactions before importing
+- ✅ Select budget and account from dropdown
+- ✅ Perfect for personal use
+
+### 💻 CLI (Recommended for Power Users)
+
+**Best for:** Automation, scripting, batch processing
+
+- ✅ Automate imports with cron jobs or scripts
+- ✅ Batch process multiple files at once
+- ✅ Integrate into existing workflows
+- ✅ Faster for repetitive tasks
+- ✅ Perfect for server environments
+
 ## Installation
 
-### Option 1: Global Install (Recommended for CLI)
+### Option 1: Docker (Easiest - Web App Only)
+
+**Using Docker Hub:**
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -e YNAB_ACCESS_TOKEN=your_token_here \
+  --name quickynab \
+  --restart unless-stopped \
+  ghcr.io/yourusername/quickynab:latest
+```
+
+**Using docker-compose:**
+
+```bash
+# 1. Create docker-compose.yml (see Deployment section)
+# 2. Create .env file with your YNAB token
+echo "YNAB_ACCESS_TOKEN=your_token_here" > .env
+
+# 3. Start the container
+docker-compose up -d
+```
+
+Then open http://localhost:3000 in your browser!
+
+### Option 2: NPM Global Install (CLI + Web App)
 
 Install globally via npm:
 
@@ -24,13 +73,24 @@ Install globally via npm:
 npm install -g quickynab
 ```
 
-Then configure your YNAB access token:
+**For CLI usage:**
 
 ```bash
 ynab init
+ynab import statement.csv
 ```
 
-### Option 2: Local Development
+**For Web App:**
+
+```bash
+# Set YNAB_ACCESS_TOKEN environment variable
+export YNAB_ACCESS_TOKEN=your_token_here
+
+# Start web server
+ynab-web  # or: node $(npm root -g)/quickynab/dist/server.js
+```
+
+### Option 3: Local Development
 
 1. Clone or download this repository
 2. Install dependencies:
@@ -208,24 +268,51 @@ Your bank is probably already supported! This tool uses the [bank2ynab](https://
 
 ### 🐳 Docker (Recommended)
 
-The easiest way to deploy is using Docker:
+QuickYNAB is available as a Docker image on both Docker Hub and GitHub Container Registry.
 
-**Using Docker directly:**
+**Using pre-built image from Docker Hub:**
 
 ```bash
-# Build the image
-docker build -t ynab-cli .
-
-# Run with environment variables
 docker run -d \
   -p 3000:3000 \
   -e YNAB_ACCESS_TOKEN=your_token_here \
-  --name ynab-web \
+  --name quickynab \
   --restart unless-stopped \
-  ynab-cli
+  yourusername/quickynab:latest
 ```
 
-**Using docker-compose (even easier):**
+**Using pre-built image from GitHub Container Registry:**
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -e YNAB_ACCESS_TOKEN=your_token_here \
+  --name quickynab \
+  --restart unless-stopped \
+  ghcr.io/yourusername/quickynab:latest
+```
+
+**Using docker-compose (recommended):**
+
+Create a `docker-compose.yml` file:
+
+```yaml
+version: '3.8'
+
+services:
+  quickynab:
+    image: ghcr.io/yourusername/quickynab:latest
+    # Or use Docker Hub: yourusername/quickynab:latest
+    container_name: quickynab
+    ports:
+      - '3000:3000'
+    environment:
+      - YNAB_ACCESS_TOKEN=${YNAB_ACCESS_TOKEN}
+      - NODE_ENV=production
+    restart: unless-stopped
+```
+
+Then:
 
 ```bash
 # 1. Create .env file with your YNAB token
@@ -239,6 +326,21 @@ docker-compose logs -f
 
 # 4. Stop the container
 docker-compose down
+```
+
+**Building locally:**
+
+```bash
+# Build the image
+docker build -t quickynab .
+
+# Run with environment variables
+docker run -d \
+  -p 3000:3000 \
+  -e YNAB_ACCESS_TOKEN=your_token_here \
+  --name quickynab \
+  --restart unless-stopped \
+  quickynab
 ```
 
 **Docker image features:**

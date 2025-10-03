@@ -1,26 +1,35 @@
 services:
-  ynab-web:
-    build: .
-    container_name: ynab-cli-web
+  quickynab:
+    # Use pre-built image from GitHub Container Registry
+    # You can also use Docker Hub: yourusername/quickynab:latest
+    image: ghcr.io/yourusername/quickynab:latest
+
+    # Or build locally from source:
+    # build: .
+
+    container_name: quickynab
     restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - PORT=3000
-      # Required: YNAB Personal Access Token
       - YNAB_ACCESS_TOKEN=${YNAB_ACCESS_TOKEN}
       # Optional: Allowed origins for CORS
-      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3000}
+      # - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+
     # Optional: Mount .env file if you prefer file-based config
     # volumes:
     #   - ./.env:/app/.env:ro
+
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})",
+        ]
       interval: 30s
       timeout: 3s
       start_period: 5s
       retries: 3
-    labels:
-      - "com.ynab-cli.description=YNAB CSV Importer Web App"
-      - "com.ynab-cli.version=1.0.0"
