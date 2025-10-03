@@ -16,7 +16,7 @@ interface BankConfig {
   delimiter?: string;
   dateFormat?: string;
   columns?: string[];
-  [key: string]: any;
+  [key: string]: string | number | boolean | string[] | undefined;
 }
 
 interface RawTransaction {
@@ -28,7 +28,7 @@ interface RawTransaction {
   Inflow?: string;
   Outflow?: string;
   Amount?: string;
-  [key: string]: any;
+  [key: string]: string | undefined;
 }
 
 function sanitizeString(str: string | null | undefined, maxLength = 200): string | null {

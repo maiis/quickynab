@@ -179,8 +179,8 @@ fastify.get('/api/budgets', async () => {
       currency_format: b.currency_format,
     }));
     return { budgets: budgetsWithCurrency };
-  } catch (error: any) {
-    return { error: error.message };
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : 'Unknown error' };
   }
 });
 
@@ -220,9 +220,9 @@ fastify.get<{
       budgetId,
       currency_format: budget?.currency_format,
     };
-  } catch (error: any) {
+  } catch (error) {
     reply.code(500);
-    return { error: error.message };
+    return { error: error instanceof Error ? error.message : 'Unknown error' };
   }
 });
 
@@ -265,9 +265,11 @@ fastify.post<{
       // Validate file
       try {
         validateCSVFile(buffer, data.filename);
-      } catch (validationError: any) {
+      } catch (validationError) {
         reply.code(400);
-        return { error: validationError.message };
+        return {
+          error: validationError instanceof Error ? validationError.message : 'Validation failed',
+        };
       }
 
       // Save file temporarily with secure random name but preserve original extension
@@ -325,9 +327,9 @@ fastify.post<{
           fs.unlinkSync(tmpFile);
         }
       }
-    } catch (error: any) {
+    } catch (error) {
       reply.code(500);
-      return { error: error.message };
+      return { error: error instanceof Error ? error.message : 'Unknown error' };
     }
   }
 );

@@ -45,17 +45,19 @@ let selectedAccountId: string | null = null;
 let currencyFormat = { symbol: '$', decimal_digits: 2 };
 
 // Elements
-const dropZone = document.getElementById('drop-zone')!;
+const dropZone = document.getElementById('drop-zone') as HTMLElement;
 const fileInput = document.getElementById('file-input') as HTMLInputElement;
-const preview = document.getElementById('preview')!;
-const previewContent = document.getElementById('preview-content')!;
+const preview = document.getElementById('preview') as HTMLElement;
+const previewContent = document.getElementById('preview-content') as HTMLElement;
 const uploadBtn = document.getElementById('upload-btn') as HTMLButtonElement;
-const cancelBtn = document.getElementById('cancel-btn')!;
-const result = document.getElementById('result')!;
-const configStatus = document.getElementById('config-status')!;
-const budgetSelectorContainer = document.getElementById('budget-selector-container')!;
+const cancelBtn = document.getElementById('cancel-btn') as HTMLElement;
+const result = document.getElementById('result') as HTMLElement;
+const configStatus = document.getElementById('config-status') as HTMLElement;
+const budgetSelectorContainer = document.getElementById('budget-selector-container') as HTMLElement;
 const budgetSelect = document.getElementById('budget-select') as HTMLSelectElement;
-const accountSelectorContainer = document.getElementById('account-selector-container')!;
+const accountSelectorContainer = document.getElementById(
+  'account-selector-container'
+) as HTMLElement;
 const accountSelect = document.getElementById('account-select') as HTMLSelectElement;
 
 // Initialize
@@ -172,13 +174,16 @@ uploadBtn.addEventListener('click', async () => {
     } else {
       showResult('error', {
         title: '❌ Upload Failed',
-        message: (data as any).error || 'Unknown error occurred',
+        message:
+          typeof data === 'object' && data && 'error' in data && typeof data.error === 'string'
+            ? data.error
+            : 'Unknown error occurred',
       });
     }
-  } catch (error: any) {
+  } catch (error) {
     showResult('error', {
       title: '❌ Upload Failed',
-      message: error.message,
+      message: error instanceof Error ? error.message : 'Unknown error occurred',
     });
   } finally {
     uploadBtn.disabled = false;
@@ -337,13 +342,16 @@ async function handleFile(file: File) {
     } else {
       showResult('error', {
         title: '❌ Error Parsing CSV',
-        message: (data as any).error || 'Unknown error occurred',
+        message:
+          typeof data === 'object' && data && 'error' in data && typeof data.error === 'string'
+            ? data.error
+            : 'Unknown error occurred',
       });
     }
-  } catch (error: any) {
+  } catch (error) {
     showResult('error', {
       title: '❌ Error',
-      message: error.message,
+      message: error instanceof Error ? error.message : 'Unknown error occurred',
     });
   }
 }

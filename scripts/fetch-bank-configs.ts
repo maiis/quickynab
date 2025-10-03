@@ -29,7 +29,7 @@ function parseIniConfig(configText: string): Record<string, Bank2YnabConfig> {
   const configs: Record<string, Bank2YnabConfig> = {};
 
   let currentSection: string | null = null;
-  let currentConfig: any = {};
+  let currentConfig: Record<string, string> = {};
 
   const SECTION_REGEX = /^\s*\[([^\]]+)\]/;
   const KEY_VALUE_REGEX = /\s*(.*?)\s*[=:]\s*(.*)/;
@@ -74,7 +74,7 @@ function parseIniConfig(configText: string): Record<string, Bank2YnabConfig> {
 /**
  * Converts a bank2ynab config section to our format
  */
-function parseConfigSection(name: string, config: any): Bank2YnabConfig {
+function parseConfigSection(name: string, config: Record<string, string>): Bank2YnabConfig {
   const pattern = config['Source Filename Pattern'] || config['Source Filename'] || '';
   const useRegex = config['Use Regex For Filename'] === 'True';
   const delimiter = config['Source CSV Delimiter'] || ',';

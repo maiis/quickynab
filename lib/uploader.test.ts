@@ -24,7 +24,11 @@ vi.mock('ynab', () => {
 });
 
 describe('uploader', () => {
-  let mockYnabAPI: any;
+  let mockYnabAPI: {
+    budgets: { getBudgets: ReturnType<typeof vi.fn> };
+    accounts: { getAccounts: ReturnType<typeof vi.fn> };
+    transactions: { createTransactions: ReturnType<typeof vi.fn> };
+  };
   const mockConfig: Config = {
     accessToken: 'test-token',
     budgetId: 'budget-123',
