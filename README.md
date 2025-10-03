@@ -45,8 +45,16 @@ ynab import statement.csv --dry-run
 
 Get your YNAB token from https://app.ynab.com/settings/developer
 
-**Docker:** Set `YNAB_ACCESS_TOKEN` environment variable
+**Docker/Web App:** Set environment variables:
+
+- `YNAB_ACCESS_TOKEN` (required)
+- `YNAB_BUDGET_ID` (optional - preselects budget)
+- `YNAB_ACCOUNT_ID` (optional - preselects account)
+
 **CLI:** Run `ynab init` (saves to `~/.quickynab/config`)
+
+- Automatically uses configured budget/account
+- Override with `--budget-id` and `--account-id` flags
 
 ## Supported Banks
 

@@ -60,7 +60,7 @@ const accountSelect = document.getElementById('account-select') as HTMLSelectEle
 
 // Initialize
 checkConfig();
-loadBudgets();
+loadBudgets().then(checkPreselectedBudget);
 
 // Drag and drop handlers
 dropZone.addEventListener('click', () => {
@@ -202,6 +202,33 @@ async function checkConfig() {
   } catch (error) {
     configStatus.className = 'text-sm mb-3 opacity-90';
     configStatus.innerHTML = '<p>⚠️ Unable to connect to server</p>';
+  }
+}
+
+async function checkPreselectedBudget() {
+  try {
+    const response = await fetch('/api/config');
+    const data = await response.json();
+
+    if (data.budgetId && budgets.find((b) => b.id === data.budgetId)) {
+      // Preselect the budget from config
+      budgetSelect.value = data.budgetId;
+      selectedBudgetId = data.budgetId;
+      await loadAccounts(data.budgetId);
+
+      // After accounts are loaded, preselect account if configured
+      if (data.accountId) {
+        const accountExists = Array.from(accountSelect.options).some(
+          (opt) => opt.value === data.accountId
+        );
+        if (accountExists) {
+          accountSelect.value = data.accountId;
+          selectedAccountId = data.accountId;
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error checking preselected budget:', error);
   }
 }
 

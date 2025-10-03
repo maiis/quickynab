@@ -128,7 +128,10 @@ Two separate config systems:
 - **Web**: Reads `.env` file or environment variables
 - Both use `lib/config.ts` which exports `getConfig()`
 
-**Web app ignores `YNAB_BUDGET_ID` and `YNAB_ACCOUNT_ID`** - users select these via dropdown on each upload.
+**Budget/Account preselection:**
+
+- **CLI**: Automatically uses `YNAB_BUDGET_ID` and `YNAB_ACCOUNT_ID` from `~/.quickynab/config` (created by `ynab init`). Can be overridden with `--budget-id` and `--account-id` flags.
+- **Web App**: If `YNAB_BUDGET_ID` and/or `YNAB_ACCOUNT_ID` are set in `.env`, the web app will automatically preselect them in the dropdowns on page load. Users can still change the selections if desired.
 
 ### Frontend State Management
 

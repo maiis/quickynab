@@ -156,12 +156,16 @@ fastify.get('/api/config', async () => {
       configured: true,
       hasBudget: !!config.budgetId,
       hasAccount: !!config.accountId,
+      budgetId: config.budgetId || null,
+      accountId: config.accountId || null,
     };
   } catch (error) {
     return {
       configured: false,
       hasBudget: false,
       hasAccount: false,
+      budgetId: null,
+      accountId: null,
     };
   }
 });
