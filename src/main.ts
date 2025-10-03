@@ -197,8 +197,7 @@ async function checkConfig() {
       configStatus.innerHTML = '<p>✅ YNAB configured and ready</p>';
     } else {
       configStatus.className = 'text-sm mb-3 opacity-90';
-      configStatus.innerHTML =
-        '<p>⚠️ YNAB not configured. Please set YNAB_ACCESS_TOKEN</p>';
+      configStatus.innerHTML = '<p>⚠️ YNAB not configured. Please set YNAB_ACCESS_TOKEN</p>';
     }
   } catch (error) {
     configStatus.className = 'text-sm mb-3 opacity-90';

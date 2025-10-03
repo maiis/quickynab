@@ -25,7 +25,8 @@
     "prepublishOnly": "npm run format && npm run build",
     "start": "node --no-deprecation dist/cli.js",
     "web": "node --no-deprecation dist/server.js",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "keywords": [
     "ynab",
@@ -66,6 +67,8 @@
     "@vitest/ui": "^3.2.4",
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.2.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.3",
     "node-fetch": "^3.3.2",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
@@ -74,5 +77,8 @@
     "typescript": "^5.9.3",
     "vite": "^7.1.7",
     "vitest": "^3.2.4"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,json,md}": "prettier --write"
   }
 }
