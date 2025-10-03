@@ -42,11 +42,10 @@ RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 ynabuser
 
 # Copy dependencies from deps stage
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps --chown=ynabuser:nodejs /app/node_modules ./node_modules
 
 # Copy built application from builder stage
 COPY --from=builder --chown=ynabuser:nodejs /app/dist ./dist
-COPY --from=builder --chown=ynabuser:nodejs /app/package*.json ./
 
 # Switch to non-root user
 USER ynabuser
@@ -58,5 +57,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
-# Start the web server
-CMD ["npm", "run", "web"]
+# Start the web server directly (no npm overhead)
+CMD ["node", "--no-deprecation", "dist/server.js"]
