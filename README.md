@@ -1,8 +1,13 @@
 # QuickYNAB
 
 [![Tests](https://github.com/maiis/quickynab/actions/workflows/test.yml/badge.svg)](https://github.com/maiis/quickynab/actions/workflows/test.yml)
+[![Dependencies](https://img.shields.io/librariesio/github/maiis/quickynab)](https://libraries.io/github/maiis/quickynab)
 [![npm version](https://badge.fury.io/js/quickynab.svg)](https://www.npmjs.com/package/quickynab)
+[![npm downloads](https://img.shields.io/npm/dt/quickynab)](https://www.npmjs.com/package/quickynab)
 [![Docker](https://img.shields.io/docker/v/maiis/quickynab?label=docker)](https://hub.docker.com/r/maiis/quickynab)
+[![Docker Pulls](https://img.shields.io/docker/pulls/maiis/quickynab)](https://hub.docker.com/r/maiis/quickynab)
+[![Last Commit](https://img.shields.io/github/last-commit/maiis/quickynab)](https://github.com/maiis/quickynab)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Self-hosted app to import bank transactions to YNAB. Supports 116+ banks worldwide with drag-and-drop web interface and CLI.
 
