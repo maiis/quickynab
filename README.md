@@ -30,6 +30,9 @@ Then open http://localhost:3000
 npm install -g quickynab
 ynab init
 ynab import statement.csv
+
+# Preview transactions without uploading
+ynab import statement.csv --dry-run
 ```
 
 ## Configuration
