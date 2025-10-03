@@ -1,8 +1,6 @@
 services:
   quickynab:
-    # Use pre-built image from GitHub Container Registry
-    # You can also use Docker Hub: yourusername/quickynab:latest
-    image: ghcr.io/yourusername/quickynab:latest
+    image: ghcr.io/maiis/quickynab:latest
 
     # Or build locally from source:
     # build: .

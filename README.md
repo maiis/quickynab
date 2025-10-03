@@ -49,7 +49,7 @@ docker run -d \
   -e YNAB_ACCESS_TOKEN=your_token_here \
   --name quickynab \
   --restart unless-stopped \
-  ghcr.io/yourusername/quickynab:latest
+  ghcr.io/maiis/quickynab:latest
 ```
 
 **Using docker-compose:**
@@ -278,7 +278,7 @@ docker run -d \
   -e YNAB_ACCESS_TOKEN=your_token_here \
   --name quickynab \
   --restart unless-stopped \
-  yourusername/quickynab:latest
+  maiis/quickynab:latest
 ```
 
 **Using pre-built image from GitHub Container Registry:**
@@ -289,7 +289,7 @@ docker run -d \
   -e YNAB_ACCESS_TOKEN=your_token_here \
   --name quickynab \
   --restart unless-stopped \
-  ghcr.io/yourusername/quickynab:latest
+  ghcr.io/maiis/quickynab:latest
 ```
 
 **Using docker-compose (recommended):**
@@ -301,8 +301,8 @@ version: '3.8'
 
 services:
   quickynab:
-    image: ghcr.io/yourusername/quickynab:latest
-    # Or use Docker Hub: yourusername/quickynab:latest
+    image: ghcr.io/maiis/quickynab:latest
+    # Or use Docker Hub: maiis/quickynab:latest
     container_name: quickynab
     ports:
       - '3000:3000'
@@ -373,8 +373,8 @@ After=network.target
 
 [Service]
 Type=simple
-User=yourusername
-WorkingDirectory=/path/to/ynab-cli
+User=maiis
+WorkingDirectory=/path/to/quickynab
 ExecStart=/usr/bin/node dist/server.js
 Restart=on-failure
 
