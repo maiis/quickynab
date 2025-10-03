@@ -196,7 +196,7 @@ Store,10.00`;
       fs.writeFileSync(filePath, '');
 
       expect(() => validateCSV(filePath)).toThrow(CsvParseError);
-      expect(() => validateCSV(filePath)).toThrow('Missing Date column');
+      expect(() => validateCSV(filePath)).toThrow('CSV file has no header line');
     });
 
     it('should be case-insensitive for column names', () => {
