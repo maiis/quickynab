@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import fs from 'fs';
-import os from 'os';
-import path from 'path';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { parseCSV, validateCSV } from './converter.js';
 import { CsvParseError } from './errors.js';
 
@@ -71,8 +71,8 @@ describe('converter', () => {
 
     it('should handle amounts with currency symbols and commas', () => {
       const csvContent = `Date,Payee,Category,Memo,Outflow,Inflow
-2025-01-15,Store,,,\"$1,234.56\",0
-2025-01-16,Bank,,,0,\"€2,500.00\"`;
+2025-01-15,Store,,,"$1,234.56",0
+2025-01-16,Bank,,,0,"€2,500.00"`;
 
       const filePath = path.join(tempDir, 'ynab-currency-test.csv');
       fs.writeFileSync(filePath, csvContent);

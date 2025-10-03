@@ -6,14 +6,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "Memo",
-      "skip",
-      "Date",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["skip", "Memo", "skip", "Date", "Inflow", "skip"],
     "dateFormat": "%d.%m.%Y"
   },
   "AT Raiffeisen Bank 2018": {
@@ -23,15 +16,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "Memo",
-      "Date",
-      "Inflow",
-      "skip",
-      "skip",
-      "skip"
-    ],
+    "columns": ["skip", "Memo", "Date", "Inflow", "skip", "skip", "skip"],
     "dateFormat": "%d.%m.%Y"
   },
   "AT Raiffeisen Bank RCM": {
@@ -41,14 +26,7 @@
     "delimiter": "|",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "Memo",
-      "Date",
-      "Payee",
-      "Inflow",
-      "Memo"
-    ],
+    "columns": ["skip", "Memo", "Date", "Payee", "Inflow", "Memo"],
     "dateFormat": "%Y%m%d"
   },
   "AT Raiffeisen Bank 2019 checking": {
@@ -58,15 +36,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "Payee",
-      "Date",
-      "Inflow",
-      "skip",
-      "skip",
-      "skip"
-    ],
+    "columns": ["skip", "Payee", "Date", "Inflow", "skip", "skip", "skip"],
     "dateFormat": "%d.%m.%Y"
   },
   "AT Raiffeisen Bank 2021 checking": {
@@ -76,14 +46,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "Payee",
-      "Date",
-      "Inflow",
-      "skip",
-      "skip"
-    ],
+    "columns": ["skip", "Payee", "Date", "Inflow", "skip", "skip"],
     "dateFormat": "%d.%m.%Y"
   },
   "AT Raiffeisen VISA": {
@@ -93,15 +56,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "Payee",
-      "Memo",
-      "skip",
-      "skip",
-      "skip",
-      "Inflow"
-    ],
+    "columns": ["skip", "Payee", "Memo", "skip", "skip", "skip", "Inflow"],
     "dateFormat": "%d.%m.%Y"
   },
   "AU ANZ": {
@@ -111,11 +66,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Inflow",
-      "Payee"
-    ],
+    "columns": ["Date", "Inflow", "Payee"],
     "dateFormat": "%d/%m/%y"
   },
   "AU ING": {
@@ -125,13 +76,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Memo",
-      "Inflow",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["Date", "Memo", "Inflow", "Inflow", "skip"],
     "dateFormat": "%d/%m/%Y"
   },
   "AU National Australia Bank": {
@@ -141,15 +86,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Inflow",
-      "skip",
-      "skip",
-      "skip",
-      "Payee",
-      "Running Balance"
-    ],
+    "columns": ["Date", "Inflow", "skip", "skip", "skip", "Payee", "Running Balance"],
     "dateFormat": "%d %b %y"
   },
   "BE BNP Paribas Fortis old": {
@@ -159,16 +96,7 @@
     "delimiter": ";",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "Date",
-      "skip",
-      "Inflow",
-      "skip",
-      "skip",
-      "Memo",
-      "skip"
-    ],
+    "columns": ["skip", "Date", "skip", "Inflow", "skip", "skip", "Memo", "skip"],
     "dateFormat": "%d/%m/%Y"
   },
   "BE BNP Paribas Fortis Export": {
@@ -258,15 +186,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "Date",
-      "skip",
-      "Payee",
-      "Memo",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["skip", "Date", "skip", "Payee", "Memo", "Inflow", "skip"],
     "dateFormat": "%d.%m.%Y"
   },
   "BR Banco Bradesco Checking": {
@@ -276,15 +196,7 @@
     "delimiter": ";",
     "headerRows": 10,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "Inflow",
-      "Outflow",
-      "skip",
-      "Memo"
-    ],
+    "columns": ["Date", "Payee", "skip", "Inflow", "Outflow", "skip", "Memo"],
     "dateFormat": "%d/%m/%Y"
   },
   "BR Banco do Brasil, checking": {
@@ -294,14 +206,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "Payee",
-      "skip",
-      "skip",
-      "Inflow"
-    ],
+    "columns": ["Date", "skip", "Payee", "skip", "skip", "Inflow"],
     "dateFormat": "%d/%m/%Y"
   },
   "BR Inter, checking": {
@@ -311,12 +216,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "Inflow",
-      "skip"
-    ]
+    "columns": ["Date", "Payee", "Inflow", "skip"]
   },
   "CA TD Canada Trust, checking+Visa": {
     "name": "CA TD Canada Trust, checking+Visa",
@@ -325,13 +225,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "Outflow",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "Outflow", "Inflow", "skip"],
     "dateFormat": "%m/%d/%Y"
   },
   "CH UBS Checking account": {
@@ -445,16 +339,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "skip",
-      "Outflow",
-      "skip",
-      "skip",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "skip", "skip", "Outflow", "skip", "skip", "skip"],
     "dateFormat": "%d.%m.%Y"
   },
   "CH ZKB Erweiterte Suche": {
@@ -464,14 +349,7 @@
     "delimiter": ";",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "skip",
-      "Outflow",
-      "Inflow"
-    ],
+    "columns": ["Date", "Payee", "skip", "skip", "Outflow", "Inflow"],
     "dateFormat": "%d.%m.%Y"
   },
   "CH ZKB Finanzassistent-Chronik": {
@@ -481,15 +359,7 @@
     "delimiter": ";",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Category",
-      "skip",
-      "Inflow",
-      "Memo",
-      "Payee",
-      "skip"
-    ],
+    "columns": ["Date", "Category", "skip", "Inflow", "Memo", "Payee", "skip"],
     "dateFormat": "%Y-%m-%d"
   },
   "CO Bancolombia": {
@@ -499,14 +369,7 @@
     "delimiter": "\\t",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "skip",
-      "Memo",
-      "skip",
-      "Inflow"
-    ],
+    "columns": ["Date", "skip", "skip", "Memo", "skip", "Inflow"],
     "dateFormat": "%Y/%m/%d"
   },
   "Crypto.com": {
@@ -516,18 +379,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "skip",
-      "skip",
-      "skip",
-      "skip",
-      "Inflow",
-      "skip",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "skip", "skip", "skip", "skip", "skip", "Inflow", "skip", "skip"],
     "dateFormat": "%Y-%m-%d %H:%M:%S"
   },
   "CZ AirBank checking and savings": {
@@ -659,17 +511,7 @@
     "delimiter": ";",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "skip",
-      "Payee",
-      "Inflow",
-      "skip",
-      "skip",
-      "skip",
-      "skip"
-    ],
+    "columns": ["Date", "skip", "skip", "Payee", "Inflow", "skip", "skip", "skip", "skip"],
     "dateFormat": "%d.%m.%Y"
   },
   "DE Consorsbank checking": {
@@ -679,16 +521,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "Payee",
-      "skip",
-      "skip",
-      "skip",
-      "Memo",
-      "Inflow"
-    ],
+    "columns": ["Date", "skip", "Payee", "skip", "skip", "skip", "Memo", "Inflow"],
     "dateFormat": "%d.%m.%Y"
   },
   "DE Deutsche Bank": {
@@ -727,16 +560,7 @@
     "delimiter": ";",
     "headerRows": 4,
     "footerRows": 1,
-    "columns": [
-      "Date",
-      "skip",
-      "Payee",
-      "skip",
-      "skip",
-      "skip",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["Date", "skip", "Payee", "skip", "skip", "skip", "Inflow", "skip"],
     "dateFormat": "%m/%d/%Y"
   },
   "DE Deutsche Kreditbank checking": {
@@ -791,14 +615,7 @@
     "delimiter": ";",
     "headerRows": 7,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "skip",
-      "Date",
-      "Memo",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["skip", "skip", "Date", "Memo", "Inflow", "skip"],
     "dateFormat": "%d.%m.%Y"
   },
   "DE Fiducia (Volksbank, Sparda-Bank, BBBank, PSD Bank, Raiffeisen, ...)": {
@@ -832,17 +649,7 @@
     "delimiter": ";",
     "headerRows": 13,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "Payee",
-      "skip",
-      "Memo",
-      "skip",
-      "skip",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["Date", "skip", "Payee", "skip", "Memo", "skip", "skip", "Inflow", "skip"],
     "dateFormat": "%d.%m.%Y"
   },
   "DE Kreissparkasse": {
@@ -852,16 +659,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "skip",
-      "skip",
-      "Inflow",
-      "skip",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "skip", "skip", "skip", "Inflow", "skip", "skip"],
     "dateFormat": "%d.%m"
   },
   "DE N26": {
@@ -871,18 +669,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "skip",
-      "skip",
-      "skip",
-      "Inflow",
-      "skip",
-      "skip",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "skip", "skip", "skip", "skip", "Inflow", "skip", "skip", "skip"],
     "dateFormat": "%Y-%m-%d"
   },
   "DE Ostseesparkasse Rostock checking": {
@@ -1070,12 +857,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "Inflow",
-      "Running Balance"
-    ],
+    "columns": ["Date", "Payee", "Inflow", "Running Balance"],
     "dateFormat": "%d-%m-%Y"
   },
   "DK Danske Bank": {
@@ -1085,16 +867,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "skip",
-      "Inflow",
-      "Running Balance",
-      "skip",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "skip", "skip", "Inflow", "Running Balance", "skip", "skip"],
     "dateFormat": "%d.%m.%Y"
   },
   "DK Jyske Bank VISA": {
@@ -1104,18 +877,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "Payee",
-      "skip",
-      "Inflow",
-      "skip",
-      "Memo",
-      "skip",
-      "skip",
-      "skip"
-    ]
+    "columns": ["Date", "skip", "Payee", "skip", "Inflow", "skip", "Memo", "skip", "skip", "skip"]
   },
   "DK Nordea": {
     "name": "DK Nordea",
@@ -1124,13 +886,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "skip", "Inflow", "skip"],
     "dateFormat": "%Y-%m-%d"
   },
   "DK Portalbank": {
@@ -1140,13 +896,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "Date",
-      "Payee",
-      "Inflow",
-      "Running Balance"
-    ],
+    "columns": ["skip", "Date", "Payee", "Inflow", "Running Balance"],
     "dateFormat": "%d-%m-%Y"
   },
   "Hibiscus banking software": {
@@ -1295,13 +1045,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "Outflow",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "Outflow", "Inflow", "skip"],
     "dateFormat": "%d/%m/%Y"
   },
   "IE First South Credit Union": {
@@ -1311,14 +1055,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Memo",
-      "Outflow",
-      "Inflow",
-      "skip",
-      "skip"
-    ],
+    "columns": ["Date", "Memo", "Outflow", "Inflow", "skip", "skip"],
     "dateFormat": "%d %b %y"
   },
   "IE N26": {
@@ -1328,17 +1065,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "skip",
-      "Memo",
-      "Inflow",
-      "skip",
-      "skip",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "skip", "skip", "Memo", "Inflow", "skip", "skip", "skip"],
     "dateFormat": "%Y-%m-%d"
   },
   "IE Ulster Bank, savings": {
@@ -1348,15 +1075,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "Payee",
-      "Inflow",
-      "skip",
-      "skip",
-      "skip"
-    ],
+    "columns": ["Date", "skip", "Payee", "Inflow", "skip", "skip", "skip"],
     "dateFormat": "%d/%m/%Y"
   },
   "IT RomagnaBanca Inbank": {
@@ -1366,15 +1085,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "Outflow",
-      "Inflow",
-      "skip",
-      "Memo",
-      "skip"
-    ],
+    "columns": ["Date", "skip", "Outflow", "Inflow", "skip", "Memo", "skip"],
     "dateFormat": "%d/%m/%Y"
   },
   "LV Swedbank": {
@@ -1407,14 +1118,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "Memo",
-      "Inflow",
-      "Category"
-    ]
+    "columns": ["Date", "Payee", "skip", "Memo", "Inflow", "Category"]
   },
   "MV Bank of Maldives, checking": {
     "name": "MV Bank of Maldives, checking",
@@ -1473,14 +1177,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Inflow",
-      "skip",
-      "skip",
-      "Payee",
-      "Memo"
-    ],
+    "columns": ["Date", "Inflow", "skip", "skip", "Payee", "Memo"],
     "dateFormat": "%Y-%m-%d"
   },
   "NL bunqDesktop software": {
@@ -1490,14 +1187,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Inflow",
-      "skip",
-      "Payee",
-      "skip",
-      "Memo"
-    ],
+    "columns": ["Date", "Inflow", "skip", "Payee", "skip", "Memo"],
     "dateFormat": "%Y-%m-%d"
   },
   "NL bunqDesktop software 2": {
@@ -1532,17 +1222,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "skip",
-      "skip",
-      "CDFlag",
-      "Inflow",
-      "skip",
-      "Memo"
-    ],
+    "columns": ["Date", "Payee", "skip", "skip", "skip", "CDFlag", "Inflow", "skip", "Memo"],
     "dateFormat": "%Y%m%d"
   },
   "NL ING Checking 2020": {
@@ -1552,17 +1232,7 @@
     "delimiter": ";",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "skip",
-      "skip",
-      "CDFlag",
-      "Inflow",
-      "skip",
-      "Memo"
-    ],
+    "columns": ["Date", "Payee", "skip", "skip", "skip", "CDFlag", "Inflow", "skip", "Memo"],
     "dateFormat": "%Y%m%d"
   },
   "NL KNAB": {
@@ -1683,13 +1353,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "Outflow",
-      "Inflow"
-    ],
+    "columns": ["Date", "Payee", "skip", "Outflow", "Inflow"],
     "dateFormat": "%d.%m.%Y"
   },
   "NO Sparebank 1 VISA": {
@@ -1699,15 +1363,7 @@
     "delimiter": ";",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "Inflow",
-      "Outflow",
-      "skip",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "skip", "Inflow", "Outflow", "skip", "skip"],
     "dateFormat": "%d.%m.%Y"
   },
   "Personal Capital": {
@@ -1717,14 +1373,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "Memo",
-      "skip",
-      "skip",
-      "Inflow"
-    ],
+    "columns": ["Date", "Payee", "Memo", "skip", "skip", "Inflow"],
     "dateFormat": "%Y-%m-%d"
   },
   "PL Alior Bank": {
@@ -1757,16 +1406,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "Memo",
-      "skip",
-      "Payee",
-      "skip",
-      "Inflow",
-      "skip"
-    ]
+    "columns": ["Date", "skip", "Memo", "skip", "Payee", "skip", "Inflow", "skip"]
   },
   "PL PKO BP": {
     "name": "PL PKO BP",
@@ -1775,18 +1415,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "skip",
-      "Inflow",
-      "skip",
-      "skip",
-      "Payee",
-      "skip",
-      "Memo",
-      "skip"
-    ],
+    "columns": ["Date", "skip", "skip", "Inflow", "skip", "skip", "Payee", "skip", "Memo", "skip"],
     "dateFormat": "%Y-%m-%d"
   },
   "Revolut": {
@@ -1796,18 +1425,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "skip",
-      "Date",
-      "skip",
-      "Payee",
-      "Inflow",
-      "skip",
-      "skip",
-      "skip",
-      "skip"
-    ],
+    "columns": ["skip", "skip", "Date", "skip", "Payee", "Inflow", "skip", "skip", "skip", "skip"],
     "dateFormat": "%Y-%m-%d %H:%M:%S"
   },
   "SE Handelsbanken": {
@@ -1817,13 +1435,7 @@
     "delimiter": ",",
     "headerRows": 9,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "Date",
-      "Payee",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["skip", "Date", "Payee", "Inflow", "skip"],
     "dateFormat": "%Y-%m-%d"
   },
   "SE Länsförsäkringar checking": {
@@ -1833,13 +1445,7 @@
     "delimiter": ";",
     "headerRows": 4,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "Date",
-      "Memo",
-      "Payee",
-      "Inflow"
-    ],
+    "columns": ["skip", "Date", "Memo", "Payee", "Inflow"],
     "dateFormat": "%Y-%m-%d"
   },
   "SE Nordea - internetbanken.privat.nordea.se": {
@@ -1849,13 +1455,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 2,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "skip", "Inflow", "skip"],
     "dateFormat": "%Y-%m-%d"
   },
   "SE Nordea - netbank.nordea.se": {
@@ -1865,16 +1465,7 @@
     "delimiter": ";",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Inflow",
-      "skip",
-      "skip",
-      "skip",
-      "Payee",
-      "skip",
-      "skip"
-    ],
+    "columns": ["Date", "Inflow", "skip", "skip", "skip", "Payee", "skip", "skip"],
     "dateFormat": "%Y-%m-%d"
   },
   "SE SEB Skandinaviska Enskilda Banken": {
@@ -1884,14 +1475,7 @@
     "delimiter": ",",
     "headerRows": 5,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "skip",
-      "Memo",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["Date", "skip", "skip", "Memo", "Inflow", "skip"],
     "dateFormat": "%Y-%m-%d"
   },
   "SE Sparbanken Tanum": {
@@ -1901,13 +1485,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Payee",
-      "Date",
-      "skip",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["Payee", "Date", "skip", "Inflow", "skip"],
     "dateFormat": "%Y-%m-%d"
   },
   "SE Swedbank": {
@@ -1943,13 +1521,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Payee",
-      "Date",
-      "skip",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["Payee", "Date", "skip", "Inflow", "skip"],
     "dateFormat": "%Y-%m-%d"
   },
   "SE Swedbank 2020": {
@@ -1982,14 +1554,7 @@
     "delimiter": ",",
     "headerRows": 6,
     "footerRows": 2,
-    "columns": [
-      "Date",
-      "skip",
-      "Memo",
-      "Outflow",
-      "Inflow",
-      "Payee"
-    ],
+    "columns": ["Date", "skip", "Memo", "Outflow", "Inflow", "Payee"],
     "dateFormat": "%d/%m/%Y"
   },
   "SG OCBC Bank Credit Card": {
@@ -1999,12 +1564,7 @@
     "delimiter": ",",
     "headerRows": 7,
     "footerRows": 2,
-    "columns": [
-      "Date",
-      "Memo",
-      "Outflow",
-      "Inflow"
-    ],
+    "columns": ["Date", "Memo", "Outflow", "Inflow"],
     "dateFormat": "%d/%m/%Y"
   },
   "SG POSB savings": {
@@ -2014,15 +1574,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "Outflow",
-      "Inflow",
-      "Payee",
-      "Memo",
-      "skip"
-    ],
+    "columns": ["Date", "skip", "Outflow", "Inflow", "Payee", "Memo", "skip"],
     "dateFormat": "%d %b %Y"
   },
   "SG UOB Savings Account": {
@@ -2032,13 +1584,7 @@
     "delimiter": ",",
     "headerRows": 8,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "Outflow",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "Outflow", "Inflow", "skip"],
     "dateFormat": "%d %b %Y"
   },
   "SG UOB Credit Card": {
@@ -2048,15 +1594,7 @@
     "delimiter": ",",
     "headerRows": 10,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "Payee",
-      "skip",
-      "skip",
-      "skip",
-      "Outflow"
-    ],
+    "columns": ["Date", "skip", "Payee", "skip", "skip", "skip", "Outflow"],
     "dateFormat": "%d %b %Y"
   },
   "SK Tatra Banka": {
@@ -2118,14 +1656,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "Memo",
-      "Inflow",
-      "Outflow",
-      "skip"
-    ]
+    "columns": ["Date", "Payee", "Memo", "Inflow", "Outflow", "skip"]
   },
   "UK Monzo checking": {
     "name": "UK Monzo checking",
@@ -2157,16 +1688,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "skip",
-      "skip",
-      "skip",
-      "Category",
-      "Inflow",
-      "Outflow"
-    ],
+    "columns": ["Date", "Payee", "skip", "skip", "skip", "Category", "Inflow", "Outflow"],
     "dateFormat": "%d %b %y"
   },
   "UK Barclaycard Business Credit Card": {
@@ -2208,12 +1730,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "Inflow",
-      "skip"
-    ]
+    "columns": ["Date", "Payee", "Inflow", "skip"]
   },
   "UK John Lewis Partnership Card (Pre-2022 Format)": {
     "name": "UK John Lewis Partnership Card (Pre-2022 Format)",
@@ -2222,12 +1739,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "Outflow",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "Outflow", "skip"],
     "dateFormat": "%d-%b-%Y"
   },
   "UK John Lewis Partnership Card (NewDay Format)": {
@@ -2237,11 +1749,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "Outflow"
-    ],
+    "columns": ["Date", "Payee", "Outflow"],
     "dateFormat": "%d/%m/%Y"
   },
   "US Bank of America": {
@@ -2251,12 +1759,7 @@
     "delimiter": ",",
     "headerRows": 7,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "Payee",
-      "Outflow",
-      "skip"
-    ],
+    "columns": ["Date", "Payee", "Outflow", "skip"],
     "dateFormat": "%m/%d/%Y"
   },
   "US Bank of America Credit Card": {
@@ -2266,13 +1769,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "Memo",
-      "skip",
-      "Inflow"
-    ],
+    "columns": ["Date", "skip", "Memo", "skip", "Inflow"],
     "dateFormat": "%m/%d/%Y"
   },
   "US BB&T": {
@@ -2282,14 +1779,7 @@
     "delimiter": ",",
     "headerRows": 1,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "skip",
-      "Payee",
-      "Inflow",
-      "skip"
-    ]
+    "columns": ["Date", "skip", "skip", "Payee", "Inflow", "skip"]
   },
   "US Chase Credit Card 2017": {
     "name": "US Chase Credit Card 2017",
@@ -2298,13 +1788,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "Date",
-      "skip",
-      "Memo",
-      "Inflow"
-    ],
+    "columns": ["skip", "Date", "skip", "Memo", "Inflow"],
     "dateFormat": "%m/%d/%Y"
   },
   "US Chase Credit Card 2019": {
@@ -2314,15 +1798,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "Date",
-      "skip",
-      "Memo",
-      "skip",
-      "skip",
-      "Inflow"
-    ],
+    "columns": ["skip", "Date", "skip", "Memo", "skip", "skip", "Inflow"],
     "dateFormat": "%m/%d/%Y"
   },
   "US Schwab Checking": {
@@ -2332,15 +1808,7 @@
     "delimiter": ",",
     "headerRows": 3,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "skip",
-      "Payee",
-      "Outflow",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["Date", "skip", "skip", "Payee", "Outflow", "Inflow", "skip"],
     "dateFormat": "%m/%d/%Y"
   },
   "US Schwab Savings": {
@@ -2350,15 +1818,7 @@
     "delimiter": ",",
     "headerRows": 3,
     "footerRows": 0,
-    "columns": [
-      "Date",
-      "skip",
-      "skip",
-      "Payee",
-      "Outflow",
-      "Inflow",
-      "skip"
-    ],
+    "columns": ["Date", "skip", "skip", "Payee", "Outflow", "Inflow", "skip"],
     "dateFormat": "%m/%d/%Y"
   },
   "US TB Bank": {
@@ -2389,15 +1849,7 @@
     "delimiter": ",",
     "headerRows": 0,
     "footerRows": 0,
-    "columns": [
-      "skip",
-      "skip",
-      "Date",
-      "Memo",
-      "Payee",
-      "skip",
-      "Inflow"
-    ],
+    "columns": ["skip", "skip", "Date", "Memo", "Payee", "skip", "Inflow"],
     "dateFormat": "%m/%d/%Y"
   },
   "Wise": {

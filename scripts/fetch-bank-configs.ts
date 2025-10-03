@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import fetch from 'node-fetch';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -56,7 +56,7 @@ function parseIniConfig(configText: string): Record<string, Bank2YnabConfig> {
 
     // Parse key-value pairs
     const keyMatch = line.match(KEY_VALUE_REGEX);
-    if (keyMatch && keyMatch[1] && keyMatch[2]) {
+    if (keyMatch?.[1] && keyMatch[2]) {
       const key = keyMatch[1].trim();
       const value = keyMatch[2].trim();
       currentConfig[key] = value;

@@ -1,18 +1,17 @@
-import Fastify from 'fastify';
-import fastifyStatic from '@fastify/static';
-import fastifyMultipart from '@fastify/multipart';
+import crypto from 'node:crypto';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import helmet from '@fastify/helmet';
+import fastifyMultipart from '@fastify/multipart';
 import rateLimit from '@fastify/rate-limit';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import fs from 'fs';
-import os from 'os';
-import crypto from 'crypto';
-import { parseCSV } from './lib/converter.js';
-import { uploadTransactions, listBudgets, listAccounts } from './lib/uploader.js';
+import fastifyStatic from '@fastify/static';
+import Fastify from 'fastify';
 import { getConfig } from './lib/config.js';
+import { parseCSV } from './lib/converter.js';
 import { envSchema, uploadQuerySchema } from './lib/schemas.js';
-import { getErrorMessage } from './lib/errors.js';
+import { listAccounts, listBudgets, uploadTransactions } from './lib/uploader.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -159,7 +158,7 @@ fastify.get('/api/config', async () => {
       budgetId: config.budgetId || null,
       accountId: config.accountId || null,
     };
-  } catch (error) {
+  } catch (_error) {
     return {
       configured: false,
       hasBudget: false,

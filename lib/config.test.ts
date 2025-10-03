@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import fs from 'fs';
-import os from 'os';
-import path from 'path';
-import { getConfig, saveConfig, hasConfig } from './config.js';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { getConfig, hasConfig, saveConfig } from './config.js';
 
 describe('config', () => {
   const testConfigDir = path.join(os.homedir(), '.quickynab');

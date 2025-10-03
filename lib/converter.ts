@@ -1,10 +1,10 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import { parse } from 'csv-parse/sync';
-import { parseBank2YnabCSV } from './parsers/bank2ynab-generic.js';
-import { getBank2YnabConfigs, findMatchingConfig } from './parsers/bank2ynab-fetcher.js';
-import type { Transaction, CsvRecord } from './types.js';
 import { CsvParseError } from './errors.js';
+import { findMatchingConfig, getBank2YnabConfigs } from './parsers/bank2ynab-fetcher.js';
+import { parseBank2YnabCSV } from './parsers/bank2ynab-generic.js';
+import type { CsvRecord, Transaction } from './types.js';
 
 export function parseCSV(filePath: string, originalFilename?: string): Transaction[] {
   // Use original filename if provided (from web upload), otherwise use basename
@@ -88,7 +88,7 @@ function parseAmount(amountStr: string | undefined): number {
   const cleaned = amountStr.replace(/[^0-9.-]/g, '');
   const amount = parseFloat(cleaned);
 
-  if (isNaN(amount)) {
+  if (Number.isNaN(amount)) {
     return 0;
   }
 
@@ -106,7 +106,7 @@ export function validateCSV(filePath: string): void {
     throw new CsvParseError('CSV file is empty', 1);
   }
 
-  const firstLine = lines[0]!.toLowerCase();
+  const firstLine = lines[0]?.toLowerCase();
 
   const requiredColumns = ['date'];
   const hasRequiredColumns = requiredColumns.every((col) => firstLine.includes(col));

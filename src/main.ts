@@ -37,9 +37,9 @@ interface UploadResult {
 
 // State
 let currentFile: File | null = null;
-let previewData: PreviewData | null = null;
+let _previewData: PreviewData | null = null;
 let budgets: Budget[] = [];
-let accounts: Account[] = [];
+let _accounts: Account[] = [];
 let selectedBudgetId: string | null = null;
 let selectedAccountId: string | null = null;
 let currencyFormat = { symbol: '$', decimal_digits: 2 };
@@ -199,7 +199,7 @@ async function checkConfig() {
       configStatus.className = 'text-sm mb-3 opacity-90';
       configStatus.innerHTML = '<p>⚠️ YNAB not configured. Please set YNAB_ACCESS_TOKEN</p>';
     }
-  } catch (error) {
+  } catch (_error) {
     configStatus.className = 'text-sm mb-3 opacity-90';
     configStatus.innerHTML = '<p>⚠️ Unable to connect to server</p>';
   }
@@ -276,7 +276,7 @@ async function loadAccounts(budgetId: string) {
     const data = await response.json();
 
     if (response.ok && data.accounts && data.accounts.length > 0) {
-      accounts = data.accounts;
+      _accounts = data.accounts;
 
       // Store currency format
       if (data.currency_format) {
@@ -332,7 +332,7 @@ async function handleFile(file: File) {
     const data: PreviewData = await response.json();
 
     if (response.ok && data.success) {
-      previewData = data;
+      _previewData = data;
       showPreview(data);
     } else {
       showResult('error', {
@@ -497,7 +497,7 @@ function showResult(
 
 function resetUI() {
   currentFile = null;
-  previewData = null;
+  _previewData = null;
   preview.classList.add('hidden');
   dropZone.style.display = 'block';
   fileInput.value = '';

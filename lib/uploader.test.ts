@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { uploadTransactions, listBudgets, listAccounts } from './uploader.js';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Config } from './config.js';
-import type { Transaction } from './types.js';
 import { YnabApiError } from './errors.js';
+import type { Transaction } from './types.js';
+import { listAccounts, listBudgets, uploadTransactions } from './uploader.js';
 
 // Mock the ynab module
 vi.mock('ynab', () => {

@@ -1,8 +1,8 @@
+import crypto from 'node:crypto';
 import * as ynab from 'ynab';
-import crypto from 'crypto';
 import type { Config } from './config.js';
-import type { Transaction } from './types.js';
 import { YnabApiError } from './errors.js';
+import type { Transaction } from './types.js';
 
 interface UploadResult {
   success: boolean;

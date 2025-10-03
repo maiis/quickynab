@@ -1,8 +1,8 @@
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import dotenv from 'dotenv';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import os from 'os';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -65,7 +65,7 @@ export function saveConfig(config: Record<string, string>): void {
     .map(([key, value]) => `${key}=${value}`)
     .join('\n');
 
-  fs.writeFileSync(CONFIG_FILE, envContent + '\n', { mode: 0o600 });
+  fs.writeFileSync(CONFIG_FILE, `${envContent}\n`, { mode: 0o600 });
 }
 
 export function hasConfig(): boolean {

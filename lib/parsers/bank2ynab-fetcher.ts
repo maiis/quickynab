@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
 interface Bank2YnabConfig {
   name: string;
@@ -30,7 +30,7 @@ export function findMatchingConfig(
   filename: string,
   configs: Record<string, Bank2YnabConfig>
 ): Bank2YnabConfig | null {
-  for (const [name, config] of Object.entries(configs)) {
+  for (const [_name, config] of Object.entries(configs)) {
     try {
       if (config.useRegex) {
         const regex = new RegExp(config.pattern);
@@ -42,10 +42,7 @@ export function findMatchingConfig(
           return config;
         }
       }
-    } catch (error) {
-      // Invalid regex, skip
-      continue;
-    }
+    } catch (_error) {}
   }
 
   return null;

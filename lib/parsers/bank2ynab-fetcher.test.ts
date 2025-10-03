@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { findMatchingConfig } from './bank2ynab-fetcher.js';
 
 describe('bank2ynab-fetcher', () => {

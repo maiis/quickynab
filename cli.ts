@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
+import fs from 'node:fs';
+import readline from 'node:readline';
 import { Command } from 'commander';
 import type { Config } from './lib/config.js';
-import { getConfig, saveConfig, hasConfig } from './lib/config.js';
+import { getConfig, hasConfig, saveConfig } from './lib/config.js';
 import { parseCSV, validateCSV } from './lib/converter.js';
-import { uploadTransactions, listBudgets, listAccounts } from './lib/uploader.js';
-import { handleCliError, getErrorMessage } from './lib/errors.js';
-import readline from 'readline';
-import fs from 'fs';
+import { handleCliError } from './lib/errors.js';
+import { listAccounts, listBudgets, uploadTransactions } from './lib/uploader.js';
 
 const program = new Command();
 
@@ -36,8 +36,8 @@ async function promptForBudgetAndAccount(
       }
 
       if (budgets.length === 1) {
-        budgetId = budgets[0]!.id;
-        console.log(`Using budget: ${budgets[0]!.name}`);
+        budgetId = budgets[0]?.id;
+        console.log(`Using budget: ${budgets[0]?.name}`);
       } else {
         console.log('\nAvailable budgets:');
         budgets.forEach((budget, index) => {
@@ -45,7 +45,7 @@ async function promptForBudgetAndAccount(
         });
 
         const selection = await question('\nSelect budget number: ');
-        const selectedIndex = parseInt(selection) - 1;
+        const selectedIndex = parseInt(selection, 10) - 1;
 
         if (selectedIndex < 0 || selectedIndex >= budgets.length) {
           throw new Error('Invalid budget selection');
@@ -69,8 +69,8 @@ async function promptForBudgetAndAccount(
       }
 
       if (accounts.length === 1) {
-        accountId = accounts[0]!.id;
-        console.log(`Using account: ${accounts[0]!.name}`);
+        accountId = accounts[0]?.id;
+        console.log(`Using account: ${accounts[0]?.name}`);
       } else {
         console.log('\nAvailable accounts:');
         accounts.forEach((account, index) => {
@@ -78,7 +78,7 @@ async function promptForBudgetAndAccount(
         });
 
         const selection = await question('\nSelect account number: ');
-        const selectedIndex = parseInt(selection) - 1;
+        const selectedIndex = parseInt(selection, 10) - 1;
 
         if (selectedIndex < 0 || selectedIndex >= accounts.length) {
           throw new Error('Invalid account selection');
