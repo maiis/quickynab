@@ -4,16 +4,18 @@
 [![npm version](https://badge.fury.io/js/quickynab.svg)](https://www.npmjs.com/package/quickynab)
 [![Docker](https://img.shields.io/docker/v/maiis/quickynab?label=docker)](https://hub.docker.com/r/maiis/quickynab)
 
-Import bank transactions to YNAB. Supports 116+ banks worldwide with drag-and-drop web interface and CLI.
+Self-hosted app to import bank transactions to YNAB. Supports 116+ banks worldwide with drag-and-drop web interface and CLI.
 
 ![QuickYNAB Web Interface](screenshot.png)
 
 ## Features
 
+- 🏠 **Self-Hosted** - Run on your own machine, your data never leaves your control
+- 🔒 **Privacy-Friendly** - No data collection, no tracking, no external servers
 - 🌐 **Web App** - Drag-and-drop interface with transaction preview
 - 💻 **CLI** - Command-line tool for automation
 - 🏦 **116+ Banks** - Auto-detects format from 25+ countries ([bank2ynab](https://github.com/bank2ynab/bank2ynab))
-- 🔒 **Smart Imports** - Prevents duplicates automatically
+- ✨ **Smart Imports** - Prevents duplicates automatically
 
 ## Quick Start
 
