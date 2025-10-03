@@ -1,11 +1,11 @@
 {
-  "name": "ynab-cli",
-  "version": "1.0.0",
-  "description": "CLI tool to convert bank CSVs and upload to YNAB via API",
+  "name": "quickynab",
+  "version": "1.0.2",
+  "description": "Quick and easy bank transaction imports to YNAB - supports 116+ banks worldwide",
   "main": "dist/cli.js",
   "type": "module",
   "bin": {
-    "ynab-cli": "./dist/cli.js"
+    "ynab": "./dist/cli.js"
   },
   "scripts": {
     "dev": "concurrently \"npm run dev:vite\" \"npm run dev:server\"",
@@ -20,16 +20,23 @@
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
-    "prepublishOnly": "npm run build",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md}\"",
+    "prepublishOnly": "npm run format && npm run build",
     "start": "node --no-deprecation dist/cli.js",
     "web": "node --no-deprecation dist/server.js",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "keywords": [
     "ynab",
     "csv",
     "import",
-    "cli"
+    "cli",
+    "bank",
+    "transactions",
+    "bank2ynab",
+    "budgeting"
   ],
   "author": "",
   "license": "MIT",
@@ -60,12 +67,18 @@
     "@vitest/ui": "^3.2.4",
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.2.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.3",
     "node-fetch": "^3.3.2",
     "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
     "tailwindcss": "^4.1.13",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "vite": "^7.1.7",
     "vitest": "^3.2.4"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,json,md}": "prettier --write"
   }
 }

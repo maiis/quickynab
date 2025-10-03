@@ -1,16 +1,20 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
+import type { Config } from './lib/config.js';
 import { getConfig, saveConfig, hasConfig } from './lib/config.js';
 import { parseCSV, validateCSV } from './lib/converter.js';
 import { uploadTransactions, listBudgets, listAccounts } from './lib/uploader.js';
+import { handleCliError, getErrorMessage } from './lib/errors.js';
 import readline from 'readline';
 import fs from 'fs';
 
 const program = new Command();
 
 // Helper function to prompt for budget and account selection
-async function promptForBudgetAndAccount(config: any): Promise<{ budgetId: string; accountId: string }> {
+async function promptForBudgetAndAccount(
+  config: Config
+): Promise<{ budgetId: string; accountId: string }> {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -32,8 +36,8 @@ async function promptForBudgetAndAccount(config: any): Promise<{ budgetId: strin
       }
 
       if (budgets.length === 1) {
-        budgetId = budgets[0].id;
-        console.log(`Using budget: ${budgets[0].name}`);
+        budgetId = budgets[0]!.id;
+        console.log(`Using budget: ${budgets[0]!.name}`);
       } else {
         console.log('\nAvailable budgets:');
         budgets.forEach((budget, index) => {
@@ -47,8 +51,12 @@ async function promptForBudgetAndAccount(config: any): Promise<{ budgetId: strin
           throw new Error('Invalid budget selection');
         }
 
-        budgetId = budgets[selectedIndex].id;
-        console.log(`Selected: ${budgets[selectedIndex].name}`);
+        const selectedBudget = budgets[selectedIndex];
+        if (!selectedBudget) {
+          throw new Error('Invalid budget selection');
+        }
+        budgetId = selectedBudget.id;
+        console.log(`Selected: ${selectedBudget.name}`);
       }
     }
 
@@ -61,8 +69,8 @@ async function promptForBudgetAndAccount(config: any): Promise<{ budgetId: strin
       }
 
       if (accounts.length === 1) {
-        accountId = accounts[0].id;
-        console.log(`Using account: ${accounts[0].name}`);
+        accountId = accounts[0]!.id;
+        console.log(`Using account: ${accounts[0]!.name}`);
       } else {
         console.log('\nAvailable accounts:');
         accounts.forEach((account, index) => {
@@ -76,8 +84,12 @@ async function promptForBudgetAndAccount(config: any): Promise<{ budgetId: strin
           throw new Error('Invalid account selection');
         }
 
-        accountId = accounts[selectedIndex].id;
-        console.log(`Selected: ${accounts[selectedIndex].name}`);
+        const selectedAccount = accounts[selectedIndex];
+        if (!selectedAccount) {
+          throw new Error('Invalid account selection');
+        }
+        accountId = selectedAccount.id;
+        console.log(`Selected: ${selectedAccount.name}`);
       }
     }
 
@@ -90,8 +102,8 @@ async function promptForBudgetAndAccount(config: any): Promise<{ budgetId: strin
 }
 
 program
-  .name('ynab-cli')
-  .description('CLI tool to import bank CSVs to YNAB via API')
+  .name('ynab')
+  .description('Quick and easy bank transaction imports to YNAB')
   .version('1.0.0');
 
 // Init command
@@ -135,15 +147,14 @@ program
       };
 
       saveConfig(config);
-      console.log('\n✓ Configuration saved to ~/.ynab-cli/config');
+      console.log('\n✓ Configuration saved to ~/.quickynab/config');
       console.log('\nFor CLI usage, you can optionally set YNAB_BUDGET_ID and YNAB_ACCOUNT_ID');
-      console.log('Edit ~/.ynab-cli/config or use .env in your project directory');
+      console.log('Edit ~/.quickynab/config or use .env in your project directory');
       console.log('For web usage, just run: npm run web (budget/account selection in UI)');
 
       rl.close();
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      process.exit(1);
+    } catch (error) {
+      handleCliError(error);
     }
   });
 
@@ -157,7 +168,7 @@ program
     try {
       // Check if config exists
       if (!hasConfig()) {
-        console.error('Error: YNAB CLI not configured. Run "ynab-cli init" first.');
+        console.error('Error: QuickYNAB not configured. Run "ynab init" first.');
         process.exit(1);
       }
 
@@ -212,9 +223,8 @@ program
       if (result.duplicates > 0) {
         console.log(`  (${result.duplicates} duplicates skipped)`);
       }
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      process.exit(1);
+    } catch (error) {
+      handleCliError(error);
     }
   });
 
@@ -225,7 +235,7 @@ program
   .action(async () => {
     try {
       if (!hasConfig()) {
-        console.error('Error: YNAB CLI not configured. Run "ynab-cli init" first.');
+        console.error('Error: QuickYNAB not configured. Run "ynab init" first.');
         process.exit(1);
       }
 
@@ -236,9 +246,8 @@ program
       budgets.forEach((budget) => {
         console.log(`  - ${budget.name} (${budget.id})`);
       });
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      process.exit(1);
+    } catch (error) {
+      handleCliError(error);
     }
   });
 
@@ -249,14 +258,14 @@ program
   .action(async () => {
     try {
       if (!hasConfig()) {
-        console.error('Error: YNAB CLI not configured. Run "ynab-cli init" first.');
+        console.error('Error: QuickYNAB not configured. Run "ynab init" first.');
         process.exit(1);
       }
 
       const config = getConfig();
       if (!config.budgetId) {
         console.error('Error: YNAB_BUDGET_ID not set.');
-        console.error('Add it to ~/.ynab-cli/config or set in .env file');
+        console.error('Add it to ~/.quickynab/config or set in .env file');
         process.exit(1);
       }
 
@@ -266,9 +275,8 @@ program
       accounts.forEach((account) => {
         console.log(`  - ${account.name} (${account.id})`);
       });
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      process.exit(1);
+    } catch (error) {
+      handleCliError(error);
     }
   });
 

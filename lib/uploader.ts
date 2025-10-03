@@ -1,14 +1,8 @@
 import * as ynab from 'ynab';
 import crypto from 'crypto';
 import type { Config } from './config.js';
-
-export interface Transaction {
-  date: string;
-  payee_name: string | null;
-  category_name?: string | null;
-  memo: string | null;
-  amount: number;
-}
+import type { Transaction } from './types.js';
+import { YnabApiError } from './errors.js';
 
 interface UploadResult {
   success: boolean;
@@ -29,13 +23,13 @@ export async function uploadTransactions(
   const ynabAPI = new ynab.API(config.accessToken);
 
   // Get budget ID (use override if provided, otherwise from config)
-  const budgetId = budgetIdOverride || await getBudgetId(ynabAPI, config);
+  const budgetId = budgetIdOverride || (await getBudgetId(ynabAPI, config));
 
   // Get account ID (use override if provided, otherwise from config)
-  const accountId = accountIdOverride || await getAccountId(ynabAPI, budgetId, config);
+  const accountId = accountIdOverride || (await getAccountId(ynabAPI, budgetId, config));
 
   // Convert transactions to YNAB format
-  const ynabTransactions = transactions.map(tx => {
+  const ynabTransactions = transactions.map((tx) => {
     // Generate unique import_id to prevent duplicates
     const importId = generateImportId(tx, accountId);
 
@@ -63,9 +57,16 @@ export async function uploadTransactions(
       duplicates: response.data.duplicate_import_ids?.length || 0,
       transactions: response.data.transactions || [],
     };
-  } catch (error: any) {
-    if (error.error && error.error.detail) {
-      throw new Error(`YNAB API Error: ${error.error.detail}`);
+  } catch (error) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'error' in error &&
+      typeof (error as { error?: { detail?: string } }).error === 'object' &&
+      (error as { error?: { detail?: string } }).error !== null
+    ) {
+      const apiError = error as { error: { detail?: string } };
+      throw new YnabApiError(apiError.error.detail || 'Unknown YNAB API error');
     }
     throw error;
   }
@@ -106,14 +107,18 @@ async function getBudgetId(ynabAPI: ynab.API, config: Config): Promise<string> {
 
   // Use first budget if only one exists
   if (budgets.length === 1) {
-    console.log(`Using budget: ${budgets[0].name}`);
-    return budgets[0].id;
+    const firstBudget = budgets[0];
+    if (!firstBudget) {
+      throw new Error('No budgets found in your YNAB account');
+    }
+    console.log(`Using budget: ${firstBudget.name}`);
+    return firstBudget.id;
   }
 
   throw new Error(
     'Multiple budgets found. Please set YNAB_BUDGET_ID in your .env file.\n' +
-    'Available budgets:\n' +
-    budgets.map(b => `  - ${b.name} (${b.id})`).join('\n')
+      'Available budgets:\n' +
+      budgets.map((b) => `  - ${b.name} (${b.id})`).join('\n')
   );
 }
 
@@ -126,7 +131,7 @@ async function getAccountId(ynabAPI: ynab.API, budgetId: string, config: Config)
   }
 
   const accountsResponse = await ynabAPI.accounts.getAccounts(budgetId);
-  const accounts = accountsResponse.data.accounts.filter(a => !a.closed);
+  const accounts = accountsResponse.data.accounts.filter((a) => !a.closed);
 
   if (accounts.length === 0) {
     throw new Error('No open accounts found in your budget');
@@ -134,14 +139,18 @@ async function getAccountId(ynabAPI: ynab.API, budgetId: string, config: Config)
 
   // Use first account if only one exists
   if (accounts.length === 1) {
-    console.log(`Using account: ${accounts[0].name}`);
-    return accounts[0].id;
+    const firstAccount = accounts[0];
+    if (!firstAccount) {
+      throw new Error('No open accounts found in your budget');
+    }
+    console.log(`Using account: ${firstAccount.name}`);
+    return firstAccount.id;
   }
 
   throw new Error(
     'Multiple accounts found. Please set YNAB_ACCOUNT_ID in your .env file.\n' +
-    'Available accounts:\n' +
-    accounts.map(a => `  - ${a.name} (${a.id})`).join('\n')
+      'Available accounts:\n' +
+      accounts.map((a) => `  - ${a.name} (${a.id})`).join('\n')
   );
 }
 
@@ -160,5 +169,5 @@ export async function listBudgets(accessToken: string): Promise<ynab.BudgetSumma
 export async function listAccounts(accessToken: string, budgetId: string): Promise<ynab.Account[]> {
   const ynabAPI = new ynab.API(accessToken);
   const response = await ynabAPI.accounts.getAccounts(budgetId);
-  return response.data.accounts.filter(a => !a.closed);
+  return response.data.accounts.filter((a) => !a.closed);
 }

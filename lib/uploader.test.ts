@@ -9,7 +9,7 @@ describe('uploader utilities', () => {
         return Math.round(amount * 1000);
       };
 
-      expect(convertToMilliunits(10.50)).toBe(10500);
+      expect(convertToMilliunits(10.5)).toBe(10500);
       expect(convertToMilliunits(-25.75)).toBe(-25750);
       expect(convertToMilliunits(0)).toBe(0);
       expect(convertToMilliunits(100)).toBe(100000);
@@ -36,7 +36,7 @@ describe('uploader utilities', () => {
 
       const tx = {
         date: '2025-01-15',
-        amount: 50.00,
+        amount: 50.0,
         payee_name: 'Store',
       };
 
@@ -56,13 +56,13 @@ describe('uploader utilities', () => {
 
       const tx1 = {
         date: '2025-01-15',
-        amount: 50.00,
+        amount: 50.0,
         payee_name: 'Store',
       };
 
       const tx2 = {
         date: '2025-01-15',
-        amount: 50.00,
+        amount: 50.0,
         payee_name: 'Different Store',
       };
 
@@ -81,7 +81,7 @@ describe('uploader utilities', () => {
 
       const tx = {
         date: '2025-01-15',
-        amount: 50.00,
+        amount: 50.0,
         payee_name: null,
       };
 
@@ -119,7 +119,7 @@ describe('uploader utilities', () => {
 
       const tx = {
         date: '2025-01-15',
-        amount: 50.00,
+        amount: 50.0,
         payee_name: 'Store',
         memo: 'Test purchase',
       };

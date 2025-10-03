@@ -43,14 +43,14 @@ describe('bank2ynab-generic', () => {
         payee_name: 'Coffee Shop',
         category_name: null,
         memo: null,
-        amount: -50.00,
+        amount: -50.0,
       });
       expect(result[1]).toEqual({
         date: '2025-01-16',
         payee_name: 'Salary',
         category_name: null,
         memo: null,
-        amount: 100.00,
+        amount: 100.0,
       });
     });
 
@@ -73,8 +73,8 @@ describe('bank2ynab-generic', () => {
       const result = parseBank2YnabCSV(testFile, config);
 
       expect(result).toHaveLength(2);
-      expect(result[0].amount).toBe(-25.50);
-      expect(result[1].amount).toBe(1500.00);
+      expect(result[0]?.amount).toBe(-25.5);
+      expect(result[1]?.amount).toBe(1500.0);
     });
 
     it('should skip columns marked as "skip"', () => {
@@ -95,8 +95,8 @@ describe('bank2ynab-generic', () => {
       const result = parseBank2YnabCSV(testFile, config);
 
       expect(result).toHaveLength(1);
-      expect(result[0].payee_name).toBe('Store');
-      expect(result[0].amount).toBe(50.00);
+      expect(result[0]?.payee_name).toBe('Store');
+      expect(result[0]?.amount).toBe(50.0);
     });
 
     it('should handle header and footer rows', () => {
@@ -110,8 +110,8 @@ Total: 50.00`;
       const config = {
         pattern: 'test',
         delimiter: ',',
-        headerRows: 1,  // Skip "Account Statement"
-        footerRows: 1,  // Skip "Total: 50.00"
+        headerRows: 1, // Skip "Account Statement"
+        footerRows: 1, // Skip "Total: 50.00"
         columns: ['Date', 'Amount', 'Payee'],
         dateFormat: '%Y-%m-%d',
       };
@@ -119,7 +119,7 @@ Total: 50.00`;
       const result = parseBank2YnabCSV(testFile, config);
 
       expect(result).toHaveLength(1);
-      expect(result[0].payee_name).toBe('Store');
+      expect(result[0]?.payee_name).toBe('Store');
     });
 
     it('should sanitize long strings', () => {
@@ -141,7 +141,7 @@ Total: 50.00`;
       const result = parseBank2YnabCSV(testFile, config);
 
       expect(result).toHaveLength(1);
-      expect(result[0].payee_name?.length).toBeLessThanOrEqual(200);
+      expect(result[0]?.payee_name?.length).toBeLessThanOrEqual(200);
     });
 
     it('should handle Neon bank format', () => {
@@ -156,7 +156,19 @@ Total: 50.00`;
         pattern: 'neon',
         delimiter: ';',
         headerRows: 1,
-        columns: ['Date', 'Amount', 'skip', 'skip', 'skip', 'Payee', 'Memo', 'skip', 'skip', 'skip', 'skip'],
+        columns: [
+          'Date',
+          'Amount',
+          'skip',
+          'skip',
+          'skip',
+          'Payee',
+          'Memo',
+          'skip',
+          'skip',
+          'skip',
+          'skip',
+        ],
         dateFormat: '%Y-%m-%d',
       };
 
@@ -168,14 +180,14 @@ Total: 50.00`;
         payee_name: 'TWINT *Sent to L.V.',
         category_name: null,
         memo: null,
-        amount: -80.00,
+        amount: -80.0,
       });
       expect(result[1]).toEqual({
         date: '2025-09-26',
         payee_name: 'Hopital du Valais',
         category_name: null,
         memo: 'Paiement Salaire',
-        amount: 4536.80,
+        amount: 4536.8,
       });
     });
   });
