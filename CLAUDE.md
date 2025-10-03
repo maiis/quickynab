@@ -149,7 +149,8 @@ No React/Vue framework - vanilla TypeScript with DOM manipulation:
 - Rate limiting (100 req/15min global, 10 req/1min for uploads)
 - File validation (max 10MB, CSV only, malicious content detection)
 - Temp files with crypto-random names, cleaned up in finally blocks
-- Non-root Docker user (ynabuser:nodejs)
+- **Distroless Docker image** - No shell, no package manager, minimal attack surface (gcr.io/distroless/nodejs22-debian12)
+- Non-root Docker user (distroless nonroot: uid:gid 65532:65532)
 - **Zod validation** for runtime type safety on API inputs
 
 ## Testing Strategy
@@ -171,6 +172,7 @@ Automated via GitHub Actions:
 - **Docker:** `.github/workflows/docker-publish.yml` (on git tag)
   - Builds multi-platform (linux/amd64, linux/arm64)
   - Pushes to both Docker Hub and GHCR
+  - Uses distroless base image (53.5 MB compressed, 175 MB uncompressed)
 
 Manual: `npm publish` (runs `prepublishOnly` → format + build)
 
@@ -181,3 +183,4 @@ Manual: `npm publish` (runs `prepublishOnly` → format + build)
 3. **Date parsing fails?** The `date-parser.ts` tries multiple formats - add new format if needed
 4. **Duplicate transactions?** import_id must be consistent - check hash generation in `uploader.ts`
 5. **Frontend changes not showing?** Run `npm run build:frontend` (dev server runs on :5173, production on :3000)
+6. **Can't shell into Docker container?** Distroless has no shell - use `docker logs` for debugging or switch to alpine-based image temporarily

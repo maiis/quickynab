@@ -95,6 +95,14 @@ Auto-detects CSV format for 116+ banks including:
 
 **Use CLI if:** You want automation, batch processing, cron jobs, scripting
 
+## Docker Details
+
+**Image:** Uses Google's distroless Node.js 22 base image
+- **Size:** 53.5 MB compressed download, 175 MB uncompressed
+- **Security:** No shell, no package manager, minimal attack surface
+- **User:** Runs as nonroot (uid:gid 65532:65532)
+- **Health Check:** Use external monitoring or orchestrator health probes (no shell available for built-in healthcheck)
+
 ## Development
 
 ```bash
