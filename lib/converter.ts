@@ -5,8 +5,24 @@ import { parseBank2YnabCSV } from './parsers/bank2ynab-generic.js';
 import { getBank2YnabConfigs, findMatchingConfig } from './parsers/bank2ynab-fetcher.js';
 import type { Transaction } from './uploader.js';
 
-export function parseCSV(filePath: string): Transaction[] {
-  const filename = path.basename(filePath);
+export function parseCSV(filePath: string, originalFilename?: string): Transaction[] {
+  // Use original filename if provided (from web upload), otherwise use basename
+  let filename = path.basename(filePath);
+
+  // If filename starts with 'ynab-' (temp file), try to extract original name
+  if (filename.startsWith('ynab-') && filename.includes('-')) {
+    // Format: ynab-{random}-{originalFilename}
+    const parts = filename.split('-');
+    if (parts.length >= 3) {
+      // Join everything after the second dash (the random hash)
+      filename = parts.slice(2).join('-');
+    }
+  }
+
+  // Override with explicit originalFilename if provided
+  if (originalFilename) {
+    filename = originalFilename;
+  }
 
   // Use bank2ynab configs (110+ bank formats, bundled at build time)
   const bank2ynabConfigs = getBank2YnabConfigs();

@@ -249,14 +249,15 @@ fastify.post<{
         return { error: validationError.message };
       }
 
-      // Save file temporarily with secure random name
+      // Save file temporarily with secure random name but preserve original extension
       const randomName = crypto.randomBytes(16).toString('hex');
-      tmpFile = path.join(os.tmpdir(), `ynab-${randomName}.csv`);
+      const originalFilename = data.filename;
+      tmpFile = path.join(os.tmpdir(), `ynab-${randomName}-${originalFilename}`);
       fs.writeFileSync(tmpFile, buffer);
 
       try {
-        // Parse CSV
-        const transactions = parseCSV(tmpFile);
+        // Parse CSV (pass original filename for bank detection)
+        const transactions = parseCSV(tmpFile, originalFilename);
 
         // Check if dry run
         const dryRun = request.query.dryRun === 'true';

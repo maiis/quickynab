@@ -193,17 +193,16 @@ async function checkConfig() {
     const data = await response.json();
 
     if (data.configured) {
-      configStatus.className =
-        'rounded-lg p-4 mb-6 bg-green-100 text-green-800 border border-green-200';
-      configStatus.innerHTML = '✅ YNAB configured and ready';
+      configStatus.className = 'text-sm mb-3 opacity-90';
+      configStatus.innerHTML = '<p>✅ YNAB configured and ready</p>';
     } else {
-      configStatus.className = 'rounded-lg p-4 mb-6 bg-red-100 text-red-800 border border-red-200';
+      configStatus.className = 'text-sm mb-3 opacity-90';
       configStatus.innerHTML =
-        '❌ YNAB not configured. Please set up your .env file with YNAB_ACCESS_TOKEN';
+        '<p>⚠️ YNAB not configured. Please set YNAB_ACCESS_TOKEN</p>';
     }
   } catch (error) {
-    configStatus.className = 'rounded-lg p-4 mb-6 bg-red-100 text-red-800 border border-red-200';
-    configStatus.innerHTML = '❌ Unable to connect to server';
+    configStatus.className = 'text-sm mb-3 opacity-90';
+    configStatus.innerHTML = '<p>⚠️ Unable to connect to server</p>';
   }
 }
 
