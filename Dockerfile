@@ -28,8 +28,8 @@ COPY package*.json ./
 # Install production dependencies only
 RUN npm ci --omit=dev --ignore-scripts
 
-# Stage 3: Production
-FROM node:23-alpine AS runner
+# Stage 3: Production (distroless)
+FROM gcr.io/distroless/nodejs22-debian12:nonroot AS runner
 
 WORKDIR /app
 
@@ -37,25 +37,17 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Create non-root user
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 ynabuser
-
 # Copy dependencies from deps stage
-COPY --from=deps --chown=ynabuser:nodejs /app/node_modules ./node_modules
+COPY --from=deps --chown=nonroot:nonroot /app/node_modules ./node_modules
 
 # Copy built application from builder stage
-COPY --from=builder --chown=ynabuser:nodejs /app/dist ./dist
-
-# Switch to non-root user
-USER ynabuser
+COPY --from=builder --chown=nonroot:nonroot /app/dist ./dist
 
 # Expose port
 EXPOSE 3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+# Note: Distroless doesn't support shell-based healthchecks
+# Use external health check or Kubernetes liveness probes
 
-# Start the web server directly (no npm overhead)
-CMD ["node", "--no-deprecation", "dist/server.js"]
+# Start the web server directly (distroless uses nonroot user by default)
+CMD ["--no-deprecation", "dist/server.js"]
