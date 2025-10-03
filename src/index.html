@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YNAB CSV Importer</title>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <div class="min-h-screen bg-gradient-to-br from-purple-600 to-indigo-600 p-8">
+    <div class="container mx-auto max-w-3xl">
+      <header class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-white mb-2">YNAB CSV Importer</h1>
+        <p class="text-lg text-white opacity-90">Import your bank transactions to YNAB with ease</p>
+      </header>
+
+      <main id="main" class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-2xl">
+        <!-- Config Status -->
+        <div id="config-status" class="rounded-lg p-4 mb-6">
+          <p class="text-sm">Checking configuration...</p>
+        </div>
+
+        <!-- Budget Selector -->
+        <div id="budget-selector-container" class="hidden mb-4">
+          <label for="budget-select" class="block font-semibold mb-2 text-gray-900 dark:text-gray-100">Select Budget</label>
+          <select id="budget-select" class="w-full p-3 border-2 rounded-lg">
+            <option value="">-- Select a budget --</option>
+          </select>
+        </div>
+
+        <!-- Account Selector -->
+        <div id="account-selector-container" class="hidden mb-6">
+          <label for="account-select" class="block font-semibold mb-2 text-gray-900 dark:text-gray-100">Select Account</label>
+          <select id="account-select" class="w-full p-3 border-2 rounded-lg">
+            <option value="">Select a budget first...</option>
+          </select>
+        </div>
+
+        <!-- Drop Zone -->
+        <div id="drop-zone" class="border-3 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all"
+             tabindex="0"
+             role="button"
+             aria-label="Click or drag file to upload">
+          <div class="drop-zone-content pointer-events-none">
+            <svg class="mx-auto mb-4 w-16 h-16 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+            </svg>
+            <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">Drop your CSV file here</h2>
+            <p class="mb-1 text-gray-900 dark:text-gray-100">or click to browse</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">Supports: YNAB format, Neon, and bank2ynab configs</p>
+          </div>
+        </div>
+        <input type="file" id="file-input" accept=".csv" class="hidden" />
+
+        <!-- Preview -->
+        <div id="preview" class="hidden mt-8">
+          <h3 class="text-xl font-bold mb-4">Preview</h3>
+          <div id="preview-content" class="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 mb-4 max-h-96 overflow-y-auto"></div>
+          <div class="flex gap-4 justify-center flex-wrap">
+            <button id="upload-btn" class="btn btn-primary px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all">
+              Upload to YNAB
+            </button>
+            <button id="cancel-btn" class="btn btn-secondary px-8 py-3 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition-all">
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        <!-- Result -->
+        <div id="result" class="hidden mt-8"></div>
+      </main>
+
+      <footer class="text-center mt-8 text-white opacity-80">
+        <p>
+          Built with ❤️ |
+          <a href="https://github.com/yourusername/ynab-cli" class="underline">View on GitHub</a>
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <script type="module" src="/main.ts"></script>
+</body>
+</html>

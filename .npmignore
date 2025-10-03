@@ -1,0 +1,46 @@
+# Development files
+src/
+*.ts
+!*.d.ts
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+tailwind.config.ts
+postcss.config.js
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
+DOCKER.md
+
+# Documentation (keep only README)
+AGENTS.md
+IMPROVEMENT_PLAN.md
+IMPROVEMENTS_IMPLEMENTED.md
+docs/
+
+# Git
+.git/
+.gitignore
+
+# Environment
+.env
+.env.example
+
+# Build artifacts (we'll include dist/ but exclude source maps)
+*.map
+
+# Sample files
+sample.csv
+
+# Node modules
+node_modules/
+
+# Web app files (server and frontend)
+dist/server.js
+dist/public/
+server.ts
+
+# Source TypeScript files (we only need dist/)
+lib/
