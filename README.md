@@ -1,5 +1,9 @@
 # QuickYNAB
 
+[![Tests](https://github.com/maiis/quickynab/actions/workflows/test.yml/badge.svg)](https://github.com/maiis/quickynab/actions/workflows/test.yml)
+[![npm version](https://badge.fury.io/js/quickynab.svg)](https://www.npmjs.com/package/quickynab)
+[![Docker](https://img.shields.io/docker/v/maiis/quickynab?label=docker)](https://hub.docker.com/r/maiis/quickynab)
+
 Import bank transactions to YNAB. Supports 116+ banks worldwide with drag-and-drop web interface and CLI.
 
 ![QuickYNAB Web Interface](screenshot.png)
