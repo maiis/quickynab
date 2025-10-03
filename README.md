@@ -32,7 +32,7 @@ Self-hosted app to import bank transactions to YNAB. Supports 116+ banks worldwi
 docker run -d \
   -p 3000:3000 \
   -e YNAB_ACCESS_TOKEN=your_token \
-  ghcr.io/maiis/quickynab:latest
+  maiis/quickynab:latest
 ```
 
 **Docker Compose:**
@@ -40,7 +40,7 @@ docker run -d \
 ```yaml
 services:
   quickynab:
-    image: ghcr.io/maiis/quickynab:latest
+    image: maiis/quickynab:latest
     ports:
       - "3000:3000"
     environment:
