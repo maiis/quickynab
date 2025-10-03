@@ -26,11 +26,28 @@ Self-hosted app to import bank transactions to YNAB. Supports 116+ banks worldwi
 
 ### Docker (Easiest)
 
+**Quick Start:**
+
 ```bash
 docker run -d \
   -p 3000:3000 \
   -e YNAB_ACCESS_TOKEN=your_token \
   ghcr.io/maiis/quickynab:latest
+```
+
+**Docker Compose:**
+
+```yaml
+services:
+  quickynab:
+    image: ghcr.io/maiis/quickynab:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - YNAB_ACCESS_TOKEN=your_token
+      - YNAB_BUDGET_ID=optional_budget_id
+      - YNAB_ACCOUNT_ID=optional_account_id
+    restart: unless-stopped
 ```
 
 Then open http://localhost:3000
