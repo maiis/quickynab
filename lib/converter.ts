@@ -108,6 +108,10 @@ export function validateCSV(filePath: string): void {
 
   const firstLine = lines[0]?.toLowerCase();
 
+  if (!firstLine) {
+    throw new CsvParseError('CSV file has no header line', 1);
+  }
+
   const requiredColumns = ['date'];
   const hasRequiredColumns = requiredColumns.every((col) => firstLine.includes(col));
 

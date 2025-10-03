@@ -36,7 +36,7 @@ async function promptForBudgetAndAccount(
       }
 
       if (budgets.length === 1) {
-        budgetId = budgets[0]?.id;
+        budgetId = budgets[0]?.id ?? null;
         console.log(`Using budget: ${budgets[0]?.name}`);
       } else {
         console.log('\nAvailable budgets:');
@@ -61,7 +61,7 @@ async function promptForBudgetAndAccount(
     }
 
     // Get accounts if account ID not set
-    if (!accountId) {
+    if (!accountId && budgetId) {
       const accounts = await listAccounts(config.accessToken, budgetId);
 
       if (accounts.length === 0) {
@@ -69,7 +69,7 @@ async function promptForBudgetAndAccount(
       }
 
       if (accounts.length === 1) {
-        accountId = accounts[0]?.id;
+        accountId = accounts[0]?.id ?? null;
         console.log(`Using account: ${accounts[0]?.name}`);
       } else {
         console.log('\nAvailable accounts:');
@@ -94,6 +94,11 @@ async function promptForBudgetAndAccount(
     }
 
     rl.close();
+
+    if (!budgetId || !accountId) {
+      throw new Error('Budget ID and Account ID are required');
+    }
+
     return { budgetId, accountId };
   } catch (error) {
     rl.close();
