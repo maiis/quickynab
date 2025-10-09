@@ -287,8 +287,9 @@ describe('uploader', () => {
 
       await uploadTransactions([transaction], mockConfig);
 
-      const call1 = mockYnabAPI.transactions.createTransactions.mock.calls[0];
-      expect(call1).toBeDefined();
+      const calls1 = mockYnabAPI.transactions.createTransactions.mock.calls;
+      expect(calls1.length).toBeGreaterThan(0);
+      const call1 = calls1[0] as (typeof calls1)[0] & object;
       const importId1 = call1[1].transactions[0].import_id;
 
       vi.clearAllMocks();
@@ -302,8 +303,9 @@ describe('uploader', () => {
 
       await uploadTransactions([transaction], mockConfig);
 
-      const call2 = mockYnabAPI.transactions.createTransactions.mock.calls[0];
-      expect(call2).toBeDefined();
+      const calls2 = mockYnabAPI.transactions.createTransactions.mock.calls;
+      expect(calls2.length).toBeGreaterThan(0);
+      const call2 = calls2[0] as (typeof calls2)[0] & object;
       const importId2 = call2[1].transactions[0].import_id;
 
       expect(importId1).toBe(importId2);
