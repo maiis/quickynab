@@ -5,7 +5,7 @@
   "main": "dist/cli.js",
   "type": "module",
   "bin": {
-    "ynab": "./dist/cli.js"
+    "ynab": "dist/cli.js"
   },
   "scripts": {
     "dev": "concurrently \"bun run dev:vite\" \"bun run dev:server\"",
@@ -45,7 +45,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/maiis/quickynab.git"
+    "url": "git+https://github.com/maiis/quickynab.git"
   },
   "bugs": {
     "url": "https://github.com/maiis/quickynab/issues"
