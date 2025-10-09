@@ -24,11 +24,7 @@ vi.mock('ynab', () => {
 });
 
 describe('uploader', () => {
-  let mockYnabAPI: {
-    budgets: { getBudgets: ReturnType<typeof vi.fn> };
-    accounts: { getAccounts: ReturnType<typeof vi.fn> };
-    transactions: { createTransactions: ReturnType<typeof vi.fn> };
-  };
+  let mockYnabAPI: any;
   const mockConfig: Config = {
     accessToken: 'test-token',
     budgetId: 'budget-123',
@@ -285,7 +281,7 @@ describe('uploader', () => {
 
       await uploadTransactions([transaction], mockConfig);
 
-      const call1 = mockYnabAPI.transactions.createTransactions.mock.calls[0];
+      const call1 = mockYnabAPI.transactions.createTransactions.mock.calls[0]!;
       const importId1 = call1[1].transactions[0].import_id;
 
       vi.clearAllMocks();
@@ -299,7 +295,7 @@ describe('uploader', () => {
 
       await uploadTransactions([transaction], mockConfig);
 
-      const call2 = mockYnabAPI.transactions.createTransactions.mock.calls[0];
+      const call2 = mockYnabAPI.transactions.createTransactions.mock.calls[0]!;
       const importId2 = call2[1].transactions[0].import_id;
 
       expect(importId1).toBe(importId2);

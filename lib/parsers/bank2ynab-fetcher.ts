@@ -9,6 +9,7 @@ interface Bank2YnabConfig {
   footerRows?: number;
   columns?: string[];
   dateFormat?: string;
+  [key: string]: string | number | boolean | string[] | undefined;
 }
 
 // Load pre-bundled configs (fetched at build time)
