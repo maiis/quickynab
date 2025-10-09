@@ -1,35 +1,35 @@
 # Multi-stage build for optimized production image
 
 # Stage 1: Build
-FROM node:23-alpine AS builder
+FROM oven/bun:1-alpine AS builder
 
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY package.json bun.lockb ./
 
 # Install all dependencies (including devDependencies for building)
-RUN npm ci
+RUN bun install --frozen-lockfile
 
 # Copy source code
 COPY . .
 
 # Build TypeScript backend and Vite frontend
-RUN npm run build
+RUN bun run build
 
 # Stage 2: Dependencies
-FROM node:23-alpine AS deps
+FROM oven/bun:1-alpine AS deps
 
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY package.json bun.lockb ./
 
 # Install production dependencies only
-RUN npm ci --omit=dev --ignore-scripts
+RUN bun install --frozen-lockfile --production
 
-# Stage 3: Production (distroless)
-FROM gcr.io/distroless/nodejs22-debian12:nonroot AS runner
+# Stage 3: Production (Bun slim)
+FROM oven/bun:1-alpine AS runner
 
 WORKDIR /app
 
@@ -38,16 +38,20 @@ ENV NODE_ENV=production
 ENV PORT=3000
 
 # Copy dependencies from deps stage
-COPY --from=deps --chown=nonroot:nonroot /app/node_modules ./node_modules
+COPY --from=deps /app/node_modules ./node_modules
 
 # Copy built application from builder stage
-COPY --from=builder --chown=nonroot:nonroot /app/dist ./dist
+COPY --from=builder /app/dist ./dist
+
+# Copy package.json for runtime
+COPY package.json ./
 
 # Expose port
 EXPOSE 3000
 
-# Note: Distroless doesn't support shell-based healthchecks
-# Use external health check or Kubernetes liveness probes
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD bun run -e "await fetch('http://localhost:3000/health')" || exit 1
 
-# Start the web server directly (distroless uses nonroot user by default)
-CMD ["--no-deprecation", "dist/server.js"]
+# Start the web server
+CMD ["bun", "dist/server.js"]

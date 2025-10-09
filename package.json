@@ -8,26 +8,26 @@
     "ynab": "./dist/cli.js"
   },
   "scripts": {
-    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:server\"",
+    "dev": "concurrently \"bun run dev:vite\" \"bun run dev:server\"",
     "dev:vite": "vite",
-    "dev:server": "tsx watch server.ts",
-    "build": "npm run fetch:configs && npm run build:frontend && npm run build:backend && npm run copy:configs",
+    "dev:server": "bun --watch server.ts",
+    "build": "bun run fetch:configs && bun run build:frontend && bun run build:backend && bun run copy:configs",
     "build:frontend": "vite build",
-    "build:backend": "tsc --project tsconfig.node.json",
-    "fetch:configs": "tsx scripts/fetch-bank-configs.ts",
+    "build:backend": "bun x tsc --project tsconfig.node.json",
+    "fetch:configs": "bun scripts/fetch-bank-configs.ts",
     "copy:configs": "cp lib/parsers/bank2ynab-configs.json dist/lib/parsers/",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "bun test --coverage",
     "format": "biome format --write .",
     "format:check": "biome format .",
     "lint": "biome lint .",
     "lint:fix": "biome lint --write .",
     "check": "biome check --write .",
-    "prepublishOnly": "npm run check && npm run build",
-    "start": "node --no-deprecation dist/cli.js",
-    "web": "node --no-deprecation dist/server.js",
+    "prepublishOnly": "bun run check && bun run build",
+    "start": "bun dist/cli.js",
+    "web": "bun dist/server.js",
     "preview": "vite preview",
     "prepare": "husky"
   },
@@ -44,7 +44,8 @@
   "author": "",
   "license": "MIT",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.0.0",
+    "bun": ">=1.0.0"
   },
   "preferGlobal": true,
   "files": [

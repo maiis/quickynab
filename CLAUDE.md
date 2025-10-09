@@ -15,39 +15,41 @@ The project auto-detects 116+ bank CSV formats using configs fetched from [bank2
 
 ```bash
 # Development
-npm run dev              # Run both frontend (Vite) and backend (tsx watch) concurrently
-npm run dev:vite         # Frontend only (http://localhost:5173)
-npm run dev:server       # Backend only (http://localhost:3000)
+bun run dev              # Run both frontend (Vite) and backend (bun --watch) concurrently
+bun run dev:vite         # Frontend only (http://localhost:5173)
+bun run dev:server       # Backend only (http://localhost:3000)
 
 # Building
-npm run build            # Full build: fetch configs → build frontend → build backend → copy configs
-npm run build:frontend   # Vite build only (outputs to dist/public/)
-npm run build:backend    # TypeScript compile only (outputs to dist/)
+bun run build            # Full build: fetch configs → build frontend → build backend → copy configs
+bun run build:frontend   # Vite build only (outputs to dist/public/)
+bun run build:backend    # TypeScript compile with bun x tsc (outputs to dist/)
 
 # Testing
-npm test                 # Run all tests with Vitest
-npm run test:watch       # Watch mode
-npm run test:ui          # Vitest UI
-npm run test:coverage    # Coverage report
+bun test                 # Run all tests with Bun's test runner
+bun test --watch         # Watch mode
+bun run test:ui          # Vitest UI (legacy, kept for compatibility)
+bun test --coverage      # Coverage report
 
 # Other
-npm run format           # Format with Prettier
-npm run format:check     # Check formatting (used in CI)
-npm start               # Run CLI (node dist/cli.js)
-npm run web             # Run web server (node dist/server.js)
+bun run format           # Format with Biome
+bun run format:check     # Check formatting (used in CI)
+bun run start            # Run CLI (bun dist/cli.js)
+bun run web              # Run web server (bun dist/server.js)
 ```
 
 ## Architecture
 
 ### Build Process Flow
 
-1. **`npm run build`** triggers 4 sequential steps:
-   - `fetch:configs` - Downloads bank2ynab.conf from GitHub, parses INI format, saves as `lib/parsers/bank2ynab-configs.json`
+1. **`bun run build`** triggers 4 sequential steps:
+   - `fetch:configs` - Downloads bank2ynab.conf from GitHub using Bun, parses INI format, saves as `lib/parsers/bank2ynab-configs.json`
    - `build:frontend` - Vite bundles React/TS frontend to `dist/public/`
-   - `build:backend` - TypeScript compiles backend to `dist/`
+   - `build:backend` - TypeScript compiles backend to `dist/` using `bun x tsc`
    - `copy:configs` - Copies JSON config to `dist/lib/parsers/`
 
 **Critical:** Bank configs are fetched at **build time**, not runtime. This keeps the bundle small and startup fast.
+
+**Runtime:** The project runs on Bun, which provides faster startup times and native TypeScript support compared to Node.js.
 
 ### CSV Parsing Pipeline
 
@@ -149,38 +151,45 @@ No React/Vue framework - vanilla TypeScript with DOM manipulation:
 - Rate limiting (100 req/15min global, 10 req/1min for uploads)
 - File validation (max 10MB, CSV only, malicious content detection)
 - Temp files with crypto-random names, cleaned up in finally blocks
-- **Distroless Docker image** - No shell, no package manager, minimal attack surface (gcr.io/distroless/nodejs22-debian12)
-- Non-root Docker user (distroless nonroot: uid:gid 65532:65532)
+- **Alpine-based Docker image** - Minimal base image with only required dependencies
+- Built-in health checks for container orchestration
 - **Zod validation** for runtime type safety on API inputs
 
 ## Testing Strategy
 
-Tests use Vitest with 32 tests across 4 files:
+Tests use Bun's built-in test runner (Vitest-compatible API) with 68+ tests across 7 files:
 
 - `bank2ynab-fetcher.test.ts` - Pattern matching (regex vs string, edge cases)
 - `bank2ynab-generic.test.ts` - CSV parsing (delimiters, skip rows, sanitization)
 - `date-parser.test.ts` - Date format detection (DD.MM.YYYY, YYYY-MM-DD, etc.)
 - `uploader.test.ts` - Milliunits conversion, import_id generation
+- `converter.test.ts` - Full CSV parsing flow
+- `config.test.ts` - Configuration loading and validation
+- `server.test.ts` - Web server endpoints and security
 
-**When modifying parsers:** Run `npm run test:watch` and ensure existing tests pass. Add tests for new bank formats.
+**When modifying parsers:** Run `bun test --watch` and ensure existing tests pass. Add tests for new bank formats.
+
+**Performance:** Bun's test runner is significantly faster than Vitest (~340ms vs ~919ms for the full suite).
 
 ## Publishing
 
 Automated via GitHub Actions:
 
 - **npm:** `.github/workflows/publish-npm.yml` (on release)
+  - Uses Bun for testing and building
+  - Still uses npm for publishing (better provenance support)
 - **Docker:** `.github/workflows/docker-publish.yml` (on git tag)
   - Builds multi-platform (linux/amd64, linux/arm64)
   - Pushes to both Docker Hub and GHCR
-  - Uses distroless base image (53.5 MB compressed, 175 MB uncompressed)
+  - Uses official Bun Alpine image for smaller size and faster startup
 
-Manual: `npm publish` (runs `prepublishOnly` → format + build)
+Manual: `npm publish` (runs `prepublishOnly` → `bun run check && bun run build`)
 
 ## Common Gotchas
 
-1. **Bank configs not updating?** Run `npm run fetch:configs` to re-download from GitHub
+1. **Bank configs not updating?** Run `bun run fetch:configs` to re-download from GitHub
 2. **Web app not detecting bank?** Check that original filename is passed to `parseCSV()` - temp file prefix breaks pattern matching
 3. **Date parsing fails?** The `date-parser.ts` tries multiple formats - add new format if needed
 4. **Duplicate transactions?** import_id must be consistent - check hash generation in `uploader.ts`
-5. **Frontend changes not showing?** Run `npm run build:frontend` (dev server runs on :5173, production on :3000)
-6. **Can't shell into Docker container?** Distroless has no shell - use `docker logs` for debugging or switch to alpine-based image temporarily
+5. **Frontend changes not showing?** Run `bun run build:frontend` (dev server runs on :5173, production on :3000)
+6. **Bun compatibility issues?** Bun has excellent Node.js compatibility, but check https://bun.sh/docs/runtime/nodejs-apis for any edge cases

@@ -12,25 +12,24 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x, 22.x, 24.x]
+        bun-version: ['1.x', 'latest']
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
+    - name: Setup Bun ${{ matrix.bun-version }}
+      uses: oven-sh/setup-bun@v2
       with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        bun-version: ${{ matrix.bun-version }}
 
     - name: Install dependencies
-      run: npm ci
+      run: bun install --frozen-lockfile
 
     - name: Check formatting
-      run: npm run format:check
+      run: bun run format:check
 
     - name: Run tests
-      run: npm test
+      run: bun test
 
     - name: Build
-      run: npm run build
+      run: bun run build

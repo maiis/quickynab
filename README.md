@@ -97,20 +97,22 @@ Auto-detects CSV format for 116+ banks including:
 
 ## Docker Details
 
-**Image:** Uses Google's distroless Node.js 22 base image
-- **Size:** 53.5 MB compressed download, 175 MB uncompressed
-- **Security:** No shell, no package manager, minimal attack surface
-- **User:** Runs as nonroot (uid:gid 65532:65532)
-- **Health Check:** Use external monitoring or orchestrator health probes (no shell available for built-in healthcheck)
+**Image:** Uses official Bun 1.x Alpine base image
+- **Runtime:** Bun for faster startup and lower memory usage
+- **Security:** Minimal Alpine base with only required dependencies
+- **Health Check:** Built-in HTTP health check on `/health` endpoint
 
 ## Development
+
+**Requirements:** [Bun](https://bun.sh) 1.0+
 
 ```bash
 git clone https://github.com/maiis/quickynab
 cd quickynab
-npm install
-npm run build
-npm run web  # Start web server
+bun install
+bun run build
+bun run web  # Start web server
+bun run dev  # Development mode with hot reload
 ```
 
 ## License
