@@ -41,17 +41,25 @@
     "bank2ynab",
     "budgeting"
   ],
-  "author": "",
+  "author": "maiis",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maiis/quickynab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maiis/quickynab/issues"
+  },
+  "homepage": "https://github.com/maiis/quickynab#readme",
   "engines": {
     "node": ">=20.0.0",
     "bun": ">=1.0.0"
   },
   "preferGlobal": true,
   "files": [
-    "dist/cli.js",
-    "dist/lib/",
-    "README.md"
+    "dist/",
+    "README.md",
+    "LICENSE"
   ],
   "dependencies": {
     "commander": "^14.0.1",
