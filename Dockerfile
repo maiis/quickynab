@@ -25,8 +25,8 @@ WORKDIR /app
 # Copy package files
 COPY package.json bun.lock ./
 
-# Install production dependencies only
-RUN bun install --frozen-lockfile --production
+# Install production dependencies only (skip scripts since husky is devDependency)
+RUN bun install --frozen-lockfile --production --ignore-scripts
 
 # Stage 3: Production (Bun slim)
 FROM oven/bun:1-alpine AS runner
