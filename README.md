@@ -13,8 +13,15 @@ Self-hosted app to import bank transactions to YNAB. Supports 116+ banks worldwi
 
 ![QuickYNAB Web Interface](screenshot.png)
 
+## Why QuickYNAB?
+
+YNAB only supports CSV imports through their web interface—you can't import transactions from their mobile apps. This means you need to be at a computer or switch to a browser every time you want to import a bank statement.
+
+QuickYNAB solves this by providing a self-hosted solution that you can access from any device. Whether you're on mobile, tablet, or desktop, you can import your transactions through the web interface or automate imports entirely with the CLI.
+
 ## Features
 
+- 📱 **Import from Anywhere** - Unlike YNAB's web-only CSV import, access QuickYNAB from any device
 - 🏠 **Self-Hosted** - Run on your own machine, your data never leaves your control
 - 🔒 **Privacy-Friendly** - No data collection, no tracking, no external servers
 - 🌐 **Web App** - Drag-and-drop interface with transaction preview
