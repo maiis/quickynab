@@ -1,5 +1,8 @@
 import './style.css';
 
+// Global declarations
+declare const __APP_VERSION__: string;
+
 // Types
 interface Budget {
   id: string;
@@ -59,8 +62,12 @@ const accountSelectorContainer = document.getElementById(
   'account-selector-container'
 ) as HTMLElement;
 const accountSelect = document.getElementById('account-select') as HTMLSelectElement;
+const versionElement = document.getElementById('app-version') as HTMLElement;
 
 // Initialize
+if (versionElement) {
+  versionElement.textContent = `v${__APP_VERSION__} | `;
+}
 checkConfig();
 loadBudgets().then(checkPreselectedBudget);
 
