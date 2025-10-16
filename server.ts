@@ -15,6 +15,9 @@ import { listAccounts, listBudgets, uploadTransactions } from './lib/uploader.js
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Register rate limiting plugin
+fastify.register(rateLimit);
+
 // Validate environment variables
 const env = envSchema.parse(process.env);
 
