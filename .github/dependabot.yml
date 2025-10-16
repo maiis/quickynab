@@ -9,7 +9,11 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    assignees:
+      - "maiis"
   - package-ecosystem: "bun"
     directory: "/"
     schedule:
       interval: "daily"
+    assignees:
+      - "maiis"
