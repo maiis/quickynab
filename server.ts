@@ -148,26 +148,37 @@ fastify.get('/api/health', async () => {
   return { status: 'ok' };
 });
 
-fastify.get('/api/config', async () => {
-  try {
-    const config = getConfig();
-    return {
-      configured: true,
-      hasBudget: !!config.budgetId,
-      hasAccount: !!config.accountId,
-      budgetId: config.budgetId || null,
-      accountId: config.accountId || null,
-    };
-  } catch (_error) {
-    return {
-      configured: false,
-      hasBudget: false,
-      hasAccount: false,
-      budgetId: null,
-      accountId: null,
-    };
+fastify.get(
+  '/api/config',
+  {
+    config: {
+      rateLimit: {
+        max: 10, // maximum 10 requests
+        timeWindow: '1 minute', // per minute
+      },
+    },
+  },
+  async () => {
+    try {
+      const config = getConfig();
+      return {
+        configured: true,
+        hasBudget: !!config.budgetId,
+        hasAccount: !!config.accountId,
+        budgetId: config.budgetId || null,
+        accountId: config.accountId || null,
+      };
+    } catch (_error) {
+      return {
+        configured: false,
+        hasBudget: false,
+        hasAccount: false,
+        budgetId: null,
+        accountId: null,
+      };
+    }
   }
-});
+);
 
 fastify.get('/api/budgets', async () => {
   try {
