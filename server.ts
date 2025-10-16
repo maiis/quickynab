@@ -148,7 +148,14 @@ fastify.get('/api/health', async () => {
   return { status: 'ok' };
 });
 
-fastify.get('/api/config', async () => {
+fastify.get('/api/config', {
+  config: {
+    rateLimit: {
+      max: 10, // maximum 10 requests
+      timeWindow: '1 minute', // per minute
+    },
+  },
+}, async () => {
   try {
     const config = getConfig();
     return {
