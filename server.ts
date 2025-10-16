@@ -29,6 +29,11 @@ const fastify = Fastify({
   genReqId: () => crypto.randomUUID(),
 });
 
+// Register global rate limiter (e.g., 100 requests per 15 minutes)
+fastify.register(rateLimit, {
+  max: 100,
+  timeWindow: '15 minutes',
+});
 // Security headers
 await fastify.register(helmet, {
   contentSecurityPolicy: {
