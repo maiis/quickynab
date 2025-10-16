@@ -85,7 +85,7 @@ function convertToMilliunits(amount: number): number {
  */
 function generateImportId(transaction: Transaction, accountId: string): string {
   const str = `${accountId}:${transaction.date}:${transaction.amount}:${transaction.payee_name || ''}`;
-  const hash = crypto.createHash('md5').update(str).digest('hex');
+  const hash = crypto.createHash('sha256').update(str).digest('hex');
   // Return first 32 chars of hash (36 char limit, just use hash)
   return hash.substring(0, 32);
 }
