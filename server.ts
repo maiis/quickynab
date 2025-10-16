@@ -15,9 +15,6 @@ import { listAccounts, listBudgets, uploadTransactions } from './lib/uploader.js
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Register rate limiting plugin
-fastify.register(rateLimit);
-
 // Validate environment variables
 const env = envSchema.parse(process.env);
 
@@ -88,13 +85,13 @@ fastify.addHook('onRequest', async (request, reply) => {
   if (origin) {
     // Parse and sanitize allowed origins, excluding "null" and trimming whitespace
     const allowedOrigins = (process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'])
-      .map(o => o.trim())
-      .filter(o => o !== 'null' && o.length > 0);
+      .map((o) => o.trim())
+      .filter((o) => o !== 'null' && o.length > 0);
 
     // Only allow CORS headers when in development OR if the provided origin exactly matches a safe, whitelisted origin
     if (
       process.env.NODE_ENV === 'development' ||
-      allowedOrigins.some(allowed => allowed === origin)
+      allowedOrigins.some((allowed) => allowed === origin)
     ) {
       reply.header('Access-Control-Allow-Origin', origin);
       reply.header('Access-Control-Allow-Credentials', 'true');
@@ -161,9 +158,11 @@ fastify.get('/api/health', async () => {
 fastify.get(
   '/api/config',
   {
-    rateLimit: {
-      max: 10, // maximum 10 requests
-      timeWindow: '1 minute', // per minute
+    config: {
+      rateLimit: {
+        max: 10,
+        timeWindow: '1 minute',
+      },
     },
   },
   async () => {
