@@ -83,9 +83,16 @@ fastify.addHook('onRequest', async (request, reply) => {
   const origin = request.headers.origin;
 
   if (origin) {
-    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'];
+    // Parse and sanitize allowed origins, excluding "null" and trimming whitespace
+    const allowedOrigins = (process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'])
+      .map(o => o.trim())
+      .filter(o => o !== 'null' && o.length > 0);
 
-    if (process.env.NODE_ENV === 'development' || allowedOrigins.includes(origin)) {
+    // Only allow CORS headers when in development OR if the provided origin exactly matches a safe, whitelisted origin
+    if (
+      process.env.NODE_ENV === 'development' ||
+      allowedOrigins.some(allowed => allowed === origin)
+    ) {
       reply.header('Access-Control-Allow-Origin', origin);
       reply.header('Access-Control-Allow-Credentials', 'true');
       reply.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
