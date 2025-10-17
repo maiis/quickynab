@@ -15,6 +15,9 @@ import { listAccounts, listBudgets, uploadTransactions } from './lib/uploader.js
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Validate environment variables
+const env = envSchema.parse(process.env);
+
 const fastify = Fastify({
   logger:
     env.NODE_ENV === 'development'
