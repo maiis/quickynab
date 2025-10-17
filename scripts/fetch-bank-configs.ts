@@ -107,10 +107,29 @@ async function main() {
     const configText = await response.text();
     const configs = parseIniConfig(configText);
 
-    // Save to file
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(configs, null, 2));
+    // Check if content has changed (compare actual data, not formatting)
+    let shouldWrite = true;
+    if (fs.existsSync(OUTPUT_FILE)) {
+      try {
+        const existingContent = fs.readFileSync(OUTPUT_FILE, 'utf-8');
+        const existingConfigs = JSON.parse(existingContent);
 
-    console.log(`✓ Saved ${Object.keys(configs).length} bank formats to ${OUTPUT_FILE}`);
+        // Compare stringified versions to check for actual content changes
+        if (JSON.stringify(existingConfigs) === JSON.stringify(configs)) {
+          console.log(`✓ Bank configs are up to date (${Object.keys(configs).length} formats)`);
+          shouldWrite = false;
+        }
+      } catch {
+        // If we can't read/parse existing file, write it
+        shouldWrite = true;
+      }
+    }
+
+    // Only write if content changed or file doesn't exist
+    if (shouldWrite) {
+      fs.writeFileSync(OUTPUT_FILE, JSON.stringify(configs, null, 2));
+      console.log(`✓ Saved ${Object.keys(configs).length} bank formats to ${OUTPUT_FILE}`);
+    }
   } catch (error) {
     console.error('Failed to fetch bank2ynab configs:', error);
     process.exit(1);
