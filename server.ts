@@ -31,6 +31,30 @@ const fastify = Fastify({
   genReqId: () => crypto.randomUUID(),
 });
 
+// Rate limit configuration
+const RATE_LIMITS = {
+  health: {
+    max: 60,
+    timeWindow: '1 minute',
+  },
+  config: {
+    max: 10,
+    timeWindow: '1 minute',
+  },
+  budgets: {
+    max: 30,
+    timeWindow: '1 minute',
+  },
+  accounts: {
+    max: 30,
+    timeWindow: '1 minute',
+  },
+  upload: {
+    max: 10,
+    timeWindow: '1 minute',
+  },
+} as const;
+
 // Security headers
 await fastify.register(helmet, {
   contentSecurityPolicy: {
@@ -148,18 +172,23 @@ function validateCSVFile(buffer: Buffer, filename: string): boolean {
 }
 
 // Health check
-fastify.get('/api/health', async () => {
-  return { status: 'ok' };
-});
+fastify.get(
+  '/api/health',
+  {
+    config: {
+      rateLimit: RATE_LIMITS.health,
+    },
+  },
+  async () => {
+    return { status: 'ok' };
+  }
+);
 
 fastify.get(
   '/api/config',
   {
     config: {
-      rateLimit: {
-        max: 10,
-        timeWindow: '1 minute',
-      },
+      rateLimit: RATE_LIMITS.config,
     },
   },
   async () => {
@@ -184,62 +213,78 @@ fastify.get(
   }
 );
 
-fastify.get('/api/budgets', async () => {
-  try {
-    const config = getConfig();
-    const budgets = await listBudgets(config.accessToken);
-    const budgetsWithCurrency = budgets.map((b) => ({
-      id: b.id,
-      name: b.name,
-      currency_format: b.currency_format,
-    }));
-    return { budgets: budgetsWithCurrency };
-  } catch (error) {
-    return { error: error instanceof Error ? error.message : 'Unknown error' };
+fastify.get(
+  '/api/budgets',
+  {
+    config: {
+      rateLimit: RATE_LIMITS.budgets,
+    },
+  },
+  async () => {
+    try {
+      const config = getConfig();
+      const budgets = await listBudgets(config.accessToken);
+      const budgetsWithCurrency = budgets.map((b) => ({
+        id: b.id,
+        name: b.name,
+        currency_format: b.currency_format,
+      }));
+      return { budgets: budgetsWithCurrency };
+    } catch (error) {
+      return { error: error instanceof Error ? error.message : 'Unknown error' };
+    }
   }
-});
+);
 
 fastify.get<{
   Querystring: { budgetId?: string };
-}>('/api/accounts', async (request, reply) => {
-  try {
-    const config = getConfig();
+}>(
+  '/api/accounts',
+  {
+    config: {
+      rateLimit: RATE_LIMITS.accounts,
+    },
+  },
+  async (request, reply) => {
+    try {
+      const config = getConfig();
 
-    // Get budget ID from query param or config
-    const budgetId = request.query.budgetId || config.budgetId;
+      // Get budget ID from query param or config
+      const budgetId = request.query.budgetId || config.budgetId;
 
-    if (!budgetId) {
-      // If no budget ID, return budgets list
-      const budgets = await listBudgets(config.accessToken);
-      if (budgets.length === 1) {
-        const firstBudget = budgets[0];
-        if (!firstBudget) {
-          return { accounts: [], needBudgetSelection: true };
+      if (!budgetId) {
+        // If no budget ID, return budgets list
+        const budgets = await listBudgets(config.accessToken);
+        if (budgets.length === 1) {
+          const firstBudget = budgets[0];
+          if (!firstBudget) {
+            return { accounts: [], needBudgetSelection: true };
+          }
+          // Auto-select if only one budget
+          const accounts = await listAccounts(config.accessToken, firstBudget.id);
+          return { accounts, budgetId: firstBudget.id };
         }
-        // Auto-select if only one budget
-        const accounts = await listAccounts(config.accessToken, firstBudget.id);
-        return { accounts, budgetId: firstBudget.id };
+        // Return empty if multiple budgets
+        return { accounts: [], needBudgetSelection: true };
       }
-      // Return empty if multiple budgets
-      return { accounts: [], needBudgetSelection: true };
+
+      const accounts = await listAccounts(config.accessToken, budgetId);
+
+      // Get budget info to include currency
+      const budgets = await listBudgets(config.accessToken);
+      const budget = budgets.find((b) => b.id === budgetId);
+
+      return {
+        accounts,
+        budgetId,
+        currency_format: budget?.currency_format,
+      };
+    } catch (error) {
+      reply.code(500);
+      return { error: error instanceof Error ? error.message : 'Unknown error' };
     }
-
-    const accounts = await listAccounts(config.accessToken, budgetId);
-
-    // Get budget info to include currency
-    const budgets = await listBudgets(config.accessToken);
-    const budget = budgets.find((b) => b.id === budgetId);
-
-    return {
-      accounts,
-      budgetId,
-      currency_format: budget?.currency_format,
-    };
-  } catch (error) {
-    reply.code(500);
-    return { error: error instanceof Error ? error.message : 'Unknown error' };
   }
-});
+);
 
 // Upload and import CSV with stricter rate limit
 fastify.post<{
@@ -248,10 +293,7 @@ fastify.post<{
   '/api/upload',
   {
     config: {
-      rateLimit: {
-        max: 10,
-        timeWindow: '1 minute',
-      },
+      rateLimit: RATE_LIMITS.upload,
     },
   },
   async (request, reply) => {
