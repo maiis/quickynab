@@ -309,7 +309,110 @@ describe('uploader', () => {
       const importId2 = call2[1].transactions[0].import_id;
 
       expect(importId1).toBe(importId2);
-      expect(importId1.length).toBeLessThanOrEqual(32);
+      expect(importId1.length).toBeLessThanOrEqual(36);
+    });
+
+    it('should generate import_ids in YNAB format', async () => {
+      const transaction: Transaction = {
+        date: '2025-01-15',
+        payee_name: 'Store',
+        amount: -50.0,
+        memo: 'groceries',
+        category_name: null,
+      };
+
+      mockYnabAPI.transactions.createTransactions.mockResolvedValue({
+        data: {
+          transaction_ids: ['tx1'],
+          duplicate_import_ids: [],
+          transactions: [],
+        },
+      });
+
+      await uploadTransactions([transaction], mockConfig);
+
+      const calls = mockYnabAPI.transactions.createTransactions.mock.calls;
+      const importId = calls[0]![1].transactions[0]!.import_id;
+
+      // Should follow YNAB format: YNAB:[milliunit_amount]:[iso_date]:[occurrence]
+      expect(importId).toMatch(/^YNAB:-50000:2025-01-15:\d+$/);
+    });
+
+    it('should generate different import_ids for different transactions', async () => {
+      const transactions: Transaction[] = [
+        {
+          date: '2025-01-15',
+          payee_name: 'Store A',
+          amount: -50.0,
+          memo: 'groceries',
+          category_name: null,
+        },
+        {
+          date: '2025-01-15',
+          payee_name: 'Store B',
+          amount: -50.0,
+          memo: 'groceries',
+          category_name: null,
+        },
+      ];
+
+      mockYnabAPI.transactions.createTransactions.mockResolvedValue({
+        data: {
+          transaction_ids: ['tx1', 'tx2'],
+          duplicate_import_ids: [],
+          transactions: [],
+        },
+      });
+
+      await uploadTransactions(transactions, mockConfig);
+
+      const calls = mockYnabAPI.transactions.createTransactions.mock.calls;
+      const importId1 = calls[0]![1].transactions[0]!.import_id;
+      const importId2 = calls[0]![1].transactions[1]!.import_id;
+
+      // Different payees should generate different import_ids
+      expect(importId1).not.toBe(importId2);
+    });
+
+    it('should generate same import_id for identical transactions across batches', async () => {
+      const transaction: Transaction = {
+        date: '2025-01-15',
+        payee_name: 'Store',
+        amount: -50.0,
+        memo: 'groceries',
+        category_name: null,
+      };
+
+      // First batch
+      mockYnabAPI.transactions.createTransactions.mockResolvedValue({
+        data: {
+          transaction_ids: ['tx1'],
+          duplicate_import_ids: [],
+          transactions: [],
+        },
+      });
+
+      await uploadTransactions([transaction], mockConfig);
+      const calls1 = mockYnabAPI.transactions.createTransactions.mock.calls;
+      const importId1 = calls1[0]![1].transactions[0]!.import_id;
+
+      vi.clearAllMocks();
+
+      // Second batch with same transaction
+      mockYnabAPI.transactions.createTransactions.mockResolvedValue({
+        data: {
+          transaction_ids: [],
+          duplicate_import_ids: ['dup1'],
+          transactions: [],
+        },
+      });
+
+      await uploadTransactions([transaction], mockConfig);
+      const calls2 = mockYnabAPI.transactions.createTransactions.mock.calls;
+      const importId2 = calls2[0]![1].transactions[0]!.import_id;
+
+      // Same transaction should have same import_id regardless of batch
+      expect(importId1).toBe(importId2);
     });
   });
 

@@ -31,7 +31,7 @@ export async function uploadTransactions(
   // Convert transactions to YNAB format
   const ynabTransactions = transactions.map((tx) => {
     // Generate unique import_id to prevent duplicates
-    const importId = generateImportId(tx, accountId);
+    const importId = generateImportId(tx);
 
     return {
       account_id: accountId,
@@ -81,13 +81,28 @@ function convertToMilliunits(amount: number): number {
 
 /**
  * Generates a unique import_id for duplicate detection
+ * Format: YNAB:[milliunit_amount]:[iso_date]:[occurrence]
  * Max length: 36 characters
+ *
+ * The occurrence is derived from a hash of payee+memo to ensure the same
+ * transaction always generates the same import_id, regardless of upload order
+ * or what other transactions are in the batch. This enables proper duplicate
+ * detection across multiple file uploads.
  */
-function generateImportId(transaction: Transaction, accountId: string): string {
-  const str = `${accountId}:${transaction.date}:${transaction.amount}:${transaction.payee_name || ''}`;
-  const hash = crypto.createHash('sha256').update(str).digest('hex');
-  // Return first 32 chars of hash (36 char limit, just use hash)
-  return hash.substring(0, 32);
+function generateImportId(transaction: Transaction): string {
+  const milliunits = convertToMilliunits(transaction.amount);
+
+  // Create deterministic occurrence from hash of payee+memo
+  // This ensures same transaction = same import_id across different uploads
+  const uniqueData = `${transaction.payee_name || ''}:${transaction.memo || ''}`;
+  const hash = crypto.createHash('sha256').update(uniqueData).digest('hex');
+
+  // Take last 4 chars of hash as occurrence (stays within 36 char limit)
+  // Convert to number for cleaner format
+  const occurrence = parseInt(hash.substring(hash.length - 4), 16);
+
+  // YNAB format: YNAB:[milliunit_amount]:[iso_date]:[occurrence]
+  return `YNAB:${milliunits}:${transaction.date}:${occurrence}`;
 }
 
 /**
