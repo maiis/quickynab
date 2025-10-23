@@ -91,7 +91,7 @@
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "vite": "^7.1.9",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.1"
   },
   "lint-staged": {
     "*.{ts,tsx,js,json}": "biome check --write --no-errors-on-unmatched"
