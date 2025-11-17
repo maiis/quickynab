@@ -2,44 +2,38 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
   "timezone": "Europe/Zurich",
-  "schedule": ["every weekend"],
-  "automerge": true,
-  "automergeType": "pr",
-  "platformAutomerge": true,
+  "dependencyDashboard": false,
+  "prCreation": "immediate",
   "packageRules": [
     {
-      "description": "Auto-merge patch and digest updates immediately",
-      "matchUpdateTypes": ["patch", "digest"],
-      "automerge": true
+      "description": "Group Bun runtime dependencies",
+      "matchPackageNames": ["@types/bun"],
+      "groupName": "Bun"
     },
     {
-      "description": "Group all Docker digest updates",
+      "description": "Group GitHub Actions updates",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions",
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "description": "Group Docker base image updates",
       "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["digest"],
-      "groupName": "Docker digests",
-      "schedule": ["before 6am on monday"]
+      "groupName": "Docker",
+      "schedule": ["before 4am on the first day of the month"]
     },
     {
-      "description": "Minor updates - auto-merge after approval",
-      "matchUpdateTypes": ["minor"],
-      "automerge": true,
-      "labels": ["minor-update"]
-    },
-    {
-      "description": "Major updates - auto-merge after approval",
+      "description": "Separate major updates",
       "matchUpdateTypes": ["major"],
-      "automerge": true,
-      "labels": ["major-update"]
+      "groupName": "major dependencies",
+      "schedule": ["before 4am on the first day of the month"]
     }
   ],
-  "vulnerabilityAlerts": {
-    "enabled": true,
-    "labels": ["security"]
-  },
-  "labels": ["dependencies", "renovate"],
-  "assignAutomerge": true,
-  "prConcurrentLimit": 3,
+  "prConcurrentLimit": 2,
   "prHourlyLimit": 2,
-  "prCreation": "immediate",
-  "rebaseWhen": "behind-base-branch"
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "automerge": true
+  }
 }

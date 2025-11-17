@@ -193,9 +193,3 @@ Manual: `npm publish` (runs `prepublishOnly` → `bun run check && bun run build
 4. **Duplicate transactions?** import_id must be consistent - check hash generation in `uploader.ts`
 5. **Frontend changes not showing?** Run `bun run build:frontend` (dev server runs on :5173, production on :3000)
 6. **Bun compatibility issues?** Bun has excellent Node.js compatibility, but check https://bun.sh/docs/runtime/nodejs-apis for any edge cases
-7. **Updating dependencies?** IMPORTANT: Always update BOTH lockfiles:
-   ```bash
-   bun update <package>     # Updates bun.lock
-   npm install              # Updates package-lock.json
-   ```
-   The project maintains both `bun.lock` and `package-lock.json` for maximum compatibility. npm is still used for publishing, and some users may prefer npm over Bun.
