@@ -6,9 +6,9 @@
   "prCreation": "immediate",
   "packageRules": [
     {
-      "description": "Group Bun runtime dependencies",
-      "matchPackageNames": ["@types/bun"],
-      "groupName": "Bun"
+      "description": "Group all npm/Bun dependencies",
+      "matchManagers": ["npm"],
+      "groupName": "Dependencies"
     },
     {
       "description": "Group GitHub Actions updates",
