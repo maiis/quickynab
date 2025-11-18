@@ -6,8 +6,8 @@
   "prCreation": "immediate",
   "packageRules": [
     {
-      "description": "Group all npm/Bun dependencies",
-      "matchManagers": ["npm"],
+      "description": "Group all Bun dependencies",
+      "matchManagers": ["bun"],
       "groupName": "Dependencies"
     },
     {
