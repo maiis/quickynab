@@ -93,12 +93,18 @@ Returns { imported, duplicates } - YNAB skips transactions with duplicate import
 cli.ts                   # CLI entry point (Commander.js)
 server.ts                # Web server (Fastify + multipart uploads)
 src/                     # Frontend (Vite + TypeScript + Tailwind)
-  ├── main.ts           # Frontend logic (drag-drop, preview, upload)
+  ├── main.ts           # Frontend orchestration (event listeners, initialization)
+  ├── api.ts            # API layer (fetch calls to backend)
+  ├── ui.ts             # UI helpers (DOM manipulation, rendering)
+  ├── state.ts          # State management (centralized state with getters/setters)
   └── index.html        # Entry HTML
 lib/
   ├── config.ts         # Loads from ~/.quickynab/config or .env
+  ├── constants.ts      # Centralized constants (file limits, rate limits, security patterns)
   ├── converter.ts      # Main CSV parsing entry point
   ├── uploader.ts       # YNAB API interaction
+  ├── types.ts          # Shared TypeScript types (with helper type guards)
+  ├── errors.ts         # Custom error classes
   └── parsers/
       ├── bank2ynab-fetcher.ts       # Config loading & pattern matching
       ├── bank2ynab-generic.ts       # Generic bank CSV parser
@@ -134,13 +140,29 @@ Two separate config systems:
 - **CLI**: Automatically uses `YNAB_BUDGET_ID` and `YNAB_ACCOUNT_ID` from `~/.quickynab/config` (created by `ynab init`). Can be overridden with `--budget-id` and `--account-id` flags.
 - **Web App**: If `YNAB_BUDGET_ID` and/or `YNAB_ACCOUNT_ID` are set in `.env`, the web app will automatically preselect them in the dropdowns on page load. Users can still change the selections if desired.
 
-### Frontend State Management
+### Frontend Architecture
 
-No React/Vue framework - vanilla TypeScript with DOM manipulation:
+No React/Vue framework - vanilla TypeScript with modular architecture:
 
-- Global state vars (`currentFile`, `previewData`, `selectedBudgetId`, `selectedAccountId`)
+**State Management** (`src/state.ts`):
+- Centralized state object with getters/setters
+- State vars: `currentFile`, `previewData`, `budgets`, `accounts`, `selectedBudgetId`, `selectedAccountId`, `currencyFormat`
+- Single source of truth for frontend state
+
+**API Layer** (`src/api.ts`):
+- All backend communication isolated in dedicated module
+- Functions: `checkConfig()`, `loadBudgets()`, `loadAccounts()`, `uploadFile()`, `dryRunFile()`
+- Clean separation between UI and network logic
+
+**UI Layer** (`src/ui.ts`):
+- DOM manipulation and rendering functions
+- Functions: `showPreview()`, `showResult()`, `resetUI()`, `populateBudgetDropdown()`, etc.
+- Reusable UI components
+
+**Orchestration** (`src/main.ts`):
 - Event listeners on drop-zone, file input, budget select, account select
-- Dynamic HTML generation for preview and results
+- Initialization and coordination between api, ui, and state modules
+- Reduced from 485 lines to ~340 lines through modularization
 
 **Dark mode:** Uses Tailwind's `dark:` classes with `media` strategy (system preference)
 
@@ -156,19 +178,27 @@ No React/Vue framework - vanilla TypeScript with DOM manipulation:
 
 ## Testing Strategy
 
-Tests use Bun's built-in test runner with 68+ tests across 7 files:
+Tests use Bun's built-in test runner (compatible with Vitest API) with 106+ tests across 10 files:
 
+**Backend Tests:**
 - `bank2ynab-fetcher.test.ts` - Pattern matching (regex vs string, edge cases)
 - `bank2ynab-generic.test.ts` - CSV parsing (delimiters, skip rows, sanitization)
 - `date-parser.test.ts` - Date format detection (DD.MM.YYYY, YYYY-MM-DD, etc.)
+- `date-parser.edge-cases.test.ts` - Date/amount parsing edge cases (whitespace, formats, currencies)
 - `uploader.test.ts` - Milliunits conversion, import_id generation
 - `converter.test.ts` - Full CSV parsing flow
 - `config.test.ts` - Configuration loading and validation
+- `cli.test.ts` - CLI integration tests (real file I/O, no mocks)
+
+**Server Tests:**
 - `server.test.ts` - Web server endpoints and security
+- `server.integration.test.ts` - Security validation (file size, XSS detection, rate limits)
 
 **When modifying parsers:** Run `bun test --watch` and ensure existing tests pass. Add tests for new bank formats.
 
-**Performance:** Bun's test runner is fast, completing the full suite in ~280ms.
+**Performance:** Bun's test runner is fast, completing the full suite in ~300-400ms.
+
+**Important:** Tests are excluded from the build via `tsconfig.node.json` (`exclude: ["**/*.test.ts"]`). Never use global module mocks (`mock.module()`) as they can leak state between test files.
 
 ## Publishing
 
