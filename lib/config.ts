@@ -3,6 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import dotenv from 'dotenv';
+import { ConfigError } from './errors.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -44,7 +45,7 @@ export function getConfig(): Config {
   const token = fileConfig.YNAB_ACCESS_TOKEN || process.env.YNAB_ACCESS_TOKEN;
 
   if (!token) {
-    throw new Error(
+    throw new ConfigError(
       'YNAB_ACCESS_TOKEN not found. Please run "ynab init" to set up your configuration.'
     );
   }

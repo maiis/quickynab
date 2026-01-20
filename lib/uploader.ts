@@ -3,6 +3,7 @@ import * as ynab from 'ynab';
 import type { Config } from './config.js';
 import { YnabApiError } from './errors.js';
 import type { Transaction } from './types.js';
+import { hasErrorDetail } from './types.js';
 
 interface UploadResult {
   success: boolean;
@@ -58,15 +59,8 @@ export async function uploadTransactions(
       transactions: response.data.transactions || [],
     };
   } catch (error) {
-    if (
-      typeof error === 'object' &&
-      error !== null &&
-      'error' in error &&
-      typeof (error as { error?: { detail?: string } }).error === 'object' &&
-      (error as { error?: { detail?: string } }).error !== null
-    ) {
-      const apiError = error as { error: { detail?: string } };
-      throw new YnabApiError(apiError.error.detail || 'Unknown YNAB API error');
+    if (hasErrorDetail(error)) {
+      throw new YnabApiError(error.error.detail || 'Unknown YNAB API error');
     }
     throw error;
   }

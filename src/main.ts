@@ -1,42 +1,8 @@
 import './style.css';
+import type { Account, Budget, PreviewData, PreviewTransaction, UploadResult } from '@lib/types.js';
 
 // Global declarations
 declare const __APP_VERSION__: string;
-
-// Types
-interface Budget {
-  id: string;
-  name: string;
-  currency_format?: {
-    currency_symbol: string;
-    decimal_digits: number;
-  };
-}
-
-interface Account {
-  id: string;
-  name: string;
-  type: string;
-}
-
-interface Transaction {
-  date: string;
-  payee: string | null;
-  amount: number;
-  memo: string | null;
-}
-
-interface PreviewData {
-  success: boolean;
-  count: number;
-  preview: Transaction[];
-}
-
-interface UploadResult {
-  success: boolean;
-  imported: number;
-  duplicates: number;
-}
 
 // State
 let currentFile: File | null = null;

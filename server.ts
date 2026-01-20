@@ -9,6 +9,13 @@ import rateLimit from '@fastify/rate-limit';
 import fastifyStatic from '@fastify/static';
 import Fastify from 'fastify';
 import { getConfig } from './lib/config.js';
+import {
+  DANGEROUS_PATTERNS,
+  MAX_FILE_SIZE,
+  MAX_LINE_LENGTH,
+  MAX_LINES,
+  RATE_LIMITS,
+} from './lib/constants.js';
 import { parseCSV } from './lib/converter.js';
 import { envSchema, uploadQuerySchema } from './lib/schemas.js';
 import { listAccounts, listBudgets, uploadTransactions } from './lib/uploader.js';
@@ -31,29 +38,7 @@ const fastify = Fastify({
   genReqId: () => crypto.randomUUID(),
 });
 
-// Rate limit configuration
-const RATE_LIMITS = {
-  health: {
-    max: 60,
-    timeWindow: '1 minute',
-  },
-  config: {
-    max: 10,
-    timeWindow: '1 minute',
-  },
-  budgets: {
-    max: 30,
-    timeWindow: '1 minute',
-  },
-  accounts: {
-    max: 30,
-    timeWindow: '1 minute',
-  },
-  upload: {
-    max: 10,
-    timeWindow: '1 minute',
-  },
-} as const;
+// Rate limit configuration imported from constants.ts
 
 // Security headers
 await fastify.register(helmet, {
@@ -97,7 +82,7 @@ await fastify.register(fastifyStatic, {
 
 await fastify.register(fastifyMultipart, {
   limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB
+    fileSize: MAX_FILE_SIZE,
     files: 1,
   },
 });
@@ -124,12 +109,8 @@ fastify.addHook('onRequest', async (request, reply) => {
 
 // File validation utility
 function validateCSVFile(buffer: Buffer, filename: string): boolean {
-  const MAX_SIZE = 10 * 1024 * 1024; // 10MB
-  const MAX_LINES = 50000;
-  const MAX_LINE_LENGTH = 10000;
-
-  if (buffer.length > MAX_SIZE) {
-    throw new Error('File too large (max 10MB)');
+  if (buffer.length > MAX_FILE_SIZE) {
+    throw new Error(`File too large (max ${MAX_FILE_SIZE / 1024 / 1024}MB)`);
   }
 
   if (!filename.endsWith('.csv')) {
@@ -160,9 +141,7 @@ function validateCSVFile(buffer: Buffer, filename: string): boolean {
   }
 
   // Check for malicious content
-  const dangerousPatterns = [/<script/i, /javascript:/i, /on\w+=/i, /@import/i, /expression\(/i];
-
-  for (const pattern of dangerousPatterns) {
+  for (const pattern of DANGEROUS_PATTERNS) {
     if (pattern.test(content)) {
       throw new Error('File contains potentially malicious content');
     }

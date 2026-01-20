@@ -24,15 +24,17 @@ export interface Account {
   closed: boolean;
 }
 
+export interface PreviewTransaction {
+  date: string;
+  payee: string | null;
+  amount: number;
+  memo: string | null;
+}
+
 export interface PreviewData {
   success: boolean;
   count: number;
-  preview: Array<{
-    date: string;
-    payee: string | null;
-    amount: number;
-    memo: string | null;
-  }>;
+  preview: PreviewTransaction[];
 }
 
 export interface UploadResult {
@@ -54,6 +56,16 @@ export function isErrorResponse(response: unknown): response is ErrorResponse {
     response !== null &&
     'error' in response &&
     typeof (response as ErrorResponse).error === 'string'
+  );
+}
+
+export function hasErrorDetail(error: unknown): error is { error: { detail?: string } } {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'error' in error &&
+    typeof (error as { error?: unknown }).error === 'object' &&
+    (error as { error?: unknown }).error !== null
   );
 }
 
