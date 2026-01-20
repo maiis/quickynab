@@ -16,5 +16,5 @@
     "rootDir": "."
   },
   "include": ["server.ts", "cli.ts", "lib/**/*"],
-  "exclude": ["node_modules", "src", "dist"]
+  "exclude": ["node_modules", "src", "dist", "**/*.test.ts"]
 }

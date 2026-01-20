@@ -1,7 +1,7 @@
-import fs from 'node:fs';
+import { afterEach, beforeEach, describe, expect, it } from 'bun:test';
+import { existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { parseBank2YnabCSV } from './bank2ynab-generic.js';
 
 describe('bank2ynab-generic', () => {
@@ -9,12 +9,12 @@ describe('bank2ynab-generic', () => {
   let testFile: string;
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ynab-test-'));
+    tmpDir = mkdtempSync(path.join(os.tmpdir(), 'ynab-test-'));
   });
 
   afterEach(() => {
-    if (fs.existsSync(tmpDir)) {
-      fs.rmSync(tmpDir, { recursive: true, force: true });
+    if (existsSync(tmpDir)) {
+      rmSync(tmpDir, { recursive: true, force: true });
     }
   });
 
@@ -25,7 +25,7 @@ describe('bank2ynab-generic', () => {
 "2025-01-16";"100.00";"Salary"`;
 
       testFile = path.join(tmpDir, 'test.csv');
-      fs.writeFileSync(testFile, csvContent);
+      writeFileSync(testFile, csvContent);
 
       const config = {
         pattern: 'test',
@@ -60,7 +60,7 @@ describe('bank2ynab-generic', () => {
 2025-01-16,Employer,1500.00,0`;
 
       testFile = path.join(tmpDir, 'test.csv');
-      fs.writeFileSync(testFile, csvContent);
+      writeFileSync(testFile, csvContent);
 
       const config = {
         pattern: 'test',
@@ -82,7 +82,7 @@ describe('bank2ynab-generic', () => {
 2025-01-15,ignore,50.00,ignore,Store`;
 
       testFile = path.join(tmpDir, 'test.csv');
-      fs.writeFileSync(testFile, csvContent);
+      writeFileSync(testFile, csvContent);
 
       const config = {
         pattern: 'test',
@@ -105,7 +105,7 @@ describe('bank2ynab-generic', () => {
 Total: 50.00`;
 
       testFile = path.join(tmpDir, 'test.csv');
-      fs.writeFileSync(testFile, csvContent);
+      writeFileSync(testFile, csvContent);
 
       const config = {
         pattern: 'test',
@@ -128,7 +128,7 @@ Total: 50.00`;
 2025-01-15,${longPayee},50.00`;
 
       testFile = path.join(tmpDir, 'test.csv');
-      fs.writeFileSync(testFile, csvContent);
+      writeFileSync(testFile, csvContent);
 
       const config = {
         pattern: 'test',
@@ -150,7 +150,7 @@ Total: 50.00`;
 "2025-09-26";"4536.80";"";"";"";"Hopital du Valais";"Paiement Salaire";"income_salary";"";"no";"no"`;
 
       testFile = path.join(tmpDir, 'neon.csv');
-      fs.writeFileSync(testFile, csvContent);
+      writeFileSync(testFile, csvContent);
 
       const config = {
         pattern: 'neon',
