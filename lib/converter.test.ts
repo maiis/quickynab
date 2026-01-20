@@ -25,7 +25,7 @@ describe('converter', () => {
 2025-01-16,Salary,,Monthly salary,0,3000.00
 2025-01-17,Restaurant,Dining Out,,25.50,0`;
 
-      const filePath = path.join(tempDir, 'ynab-test-file.csv');
+      const filePath = path.join(tempDir, 'test-ynab-format.csv');
       writeFileSync(filePath, csvContent);
 
       const transactions = parseCSV(filePath);
@@ -54,7 +54,7 @@ describe('converter', () => {
       const csvContent = `Date,Payee,Category,Memo,Outflow,Inflow
 2025-01-15,,,,10.00,0`;
 
-      const filePath = path.join(tempDir, 'ynab-empty-fields.csv');
+      const filePath = path.join(tempDir, 'test-empty-fields.csv');
       writeFileSync(filePath, csvContent);
 
       const transactions = parseCSV(filePath);
@@ -74,7 +74,7 @@ describe('converter', () => {
 2025-01-15,Store,,,"$1,234.56",0
 2025-01-16,Bank,,,0,"€2,500.00"`;
 
-      const filePath = path.join(tempDir, 'ynab-currency-test.csv');
+      const filePath = path.join(tempDir, 'test-currency.csv');
       writeFileSync(filePath, csvContent);
 
       const transactions = parseCSV(filePath);
@@ -88,7 +88,7 @@ describe('converter', () => {
 2025-01-15,Transfer,,,0,0
 2025-01-16,Store,,,0.00,0.00`;
 
-      const filePath = path.join(tempDir, 'ynab-zero-amounts.csv');
+      const filePath = path.join(tempDir, 'test-zero-amounts.csv');
       writeFileSync(filePath, csvContent);
 
       const transactions = parseCSV(filePath);
@@ -101,7 +101,7 @@ describe('converter', () => {
       const csvContent = `Date,Payee,Category,Memo,Outflow,Inflow
 ,Store A,Groceries,,50.00,0`;
 
-      const filePath = path.join(tempDir, 'ynab-no-date.csv');
+      const filePath = path.join(tempDir, 'test-no-date.csv');
       writeFileSync(filePath, csvContent);
 
       expect(() => parseCSV(filePath)).toThrow(CsvParseError);
@@ -111,7 +111,7 @@ describe('converter', () => {
     it('should throw error for empty CSV', () => {
       const csvContent = `Date,Payee,Category,Memo,Outflow,Inflow`;
 
-      const filePath = path.join(tempDir, 'ynab-empty.csv');
+      const filePath = path.join(tempDir, 'test-empty.csv');
       writeFileSync(filePath, csvContent);
 
       expect(() => parseCSV(filePath)).toThrow(CsvParseError);
@@ -146,7 +146,7 @@ describe('converter', () => {
       const csvContent = `Date,Payee,Category,Memo,Outflow,Inflow
 2025-01-15,Mixed,,,10.00,5.00`;
 
-      const filePath = path.join(tempDir, 'ynab-mixed-flow.csv');
+      const filePath = path.join(tempDir, 'test-mixed-flow.csv');
       writeFileSync(filePath, csvContent);
 
       const transactions = parseCSV(filePath);
@@ -159,7 +159,7 @@ describe('converter', () => {
       const csvContent = `Date,Payee,Category,Memo,Outflow,Inflow
 2025-01-15,Store,,,-50.00,0`;
 
-      const filePath = path.join(tempDir, 'ynab-negative.csv');
+      const filePath = path.join(tempDir, 'test-negative.csv');
       writeFileSync(filePath, csvContent);
 
       const transactions = parseCSV(filePath);
