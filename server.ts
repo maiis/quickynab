@@ -318,12 +318,23 @@ fastify.post<{
         // Parse CSV (pass original filename for bank detection)
         const transactions = parseCSV(tmpFile, originalFilename);
 
+        // Force dry-run in development mode to prevent accidental uploads
+        const isDryRun = query.dryRun || env.NODE_ENV === 'development';
+
         // Check if dry run
-        if (query.dryRun) {
+        if (isDryRun) {
+          // Log warning if forced by development mode
+          if (env.NODE_ENV === 'development' && !query.dryRun) {
+            fastify.log.warn(
+              '⚠️  Upload blocked: Running in development mode. Set NODE_ENV=production to enable real uploads.'
+            );
+          }
+
           // Return preview
           return {
             success: true,
             dryRun: true,
+            devMode: env.NODE_ENV === 'development',
             count: transactions.length,
             preview: transactions.slice(0, 10).map((tx) => ({
               date: tx.date,
@@ -375,7 +386,16 @@ const start = async () => {
   try {
     await fastify.listen({ port: env.PORT, host: '0.0.0.0' });
     console.log(`\n🚀 YNAB Web App running at http://localhost:${env.PORT}`);
-    console.log(`\nMake sure you have configured your .env file with YNAB_ACCESS_TOKEN\n`);
+    console.log(`\nMake sure you have configured your .env file with YNAB_ACCESS_TOKEN`);
+
+    if (env.NODE_ENV === 'development') {
+      console.log(
+        '\n⚠️  DEVELOPMENT MODE: All uploads are DRY-RUN only (no real data sent to YNAB)'
+      );
+      console.log('   Set NODE_ENV=production to enable real uploads\n');
+    } else {
+      console.log('\n✅ PRODUCTION MODE: Uploads will be sent to YNAB\n');
+    }
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

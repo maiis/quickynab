@@ -144,9 +144,25 @@ git clone https://github.com/maiis/quickynab
 cd quickynab
 bun install
 bun run build
-bun run web  # Start web server
+bun run web  # Start web server (production mode)
 bun run dev  # Development mode with hot reload
 ```
+
+### Development Mode Protection
+
+**Important:** `bun run dev` automatically runs in **development mode** which prevents any real uploads to YNAB:
+
+- All uploads are forced to **dry-run mode** (preview only)
+- Yellow warning banner appears in the web interface
+- Server logs show `⚠️ DEVELOPMENT MODE` message
+- Your YNAB data is **completely safe** during development
+
+To enable real uploads (production mode):
+```bash
+NODE_ENV=production bun run web
+```
+
+This safety feature prevents accidental data modifications while developing or testing.
 
 ## License
 

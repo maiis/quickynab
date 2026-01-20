@@ -16,8 +16,9 @@ The project auto-detects 116+ bank CSV formats using configs fetched from [bank2
 ```bash
 # Development
 bun run dev              # Run both frontend (Vite) and backend (bun --watch) concurrently
+                         # IMPORTANT: Runs in development mode - all uploads are DRY-RUN only
 bun run dev:vite         # Frontend only (http://localhost:5173)
-bun run dev:server       # Backend only (http://localhost:3000)
+bun run dev:server       # Backend only (http://localhost:3000) - also in dev mode
 
 # Building
 bun run build            # Full build: fetch configs → build frontend → build backend → copy configs
@@ -175,6 +176,23 @@ No React/Vue framework - vanilla TypeScript with modular architecture:
 - **Alpine-based Docker image** - Minimal base image with only required dependencies
 - Built-in health checks for container orchestration
 - **Zod validation** for runtime type safety on API inputs
+
+### Development Mode Protection
+
+**Critical:** The server automatically detects `NODE_ENV` and enforces dry-run mode in development:
+
+- When `NODE_ENV=development` (default for `bun run dev`), all uploads are **forced to dry-run**
+- Server logs show `⚠️ DEVELOPMENT MODE: All uploads are DRY-RUN only`
+- Frontend displays yellow warning banner
+- Upload responses include `devMode: true` flag
+- **No data is sent to YNAB** - completely safe for testing
+
+To enable real uploads:
+```bash
+NODE_ENV=production bun run web
+```
+
+This prevents accidental data modifications during development. The protection is enforced server-side, so even direct API calls cannot bypass it.
 
 ## Testing Strategy
 

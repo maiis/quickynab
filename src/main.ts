@@ -43,6 +43,7 @@ const accountSelectorContainer = document.getElementById(
 ) as HTMLElement;
 const accountSelect = document.getElementById('account-select') as HTMLSelectElement;
 const versionElement = document.getElementById('app-version') as HTMLElement;
+const devModeBanner = document.getElementById('dev-mode-banner') as HTMLElement;
 
 // Initialize
 if (versionElement) {
@@ -224,6 +225,11 @@ async function handleFile(file: File) {
     if (data.success) {
       setPreviewData(data);
       showPreview(data, preview, previewContent, dropZone, result);
+
+      // Show dev mode banner if in development mode
+      if ('devMode' in data && data.devMode) {
+        devModeBanner.classList.remove('hidden');
+      }
     } else {
       showResult(
         'error',
@@ -289,23 +295,41 @@ async function handleUpload() {
       // Hide preview area
       preview.classList.add('hidden');
 
-      showResult(
-        'success',
-        {
-          title: '✅ Upload Successful!',
-          message: `${data.imported} transactions imported successfully`,
-          duplicates: data.duplicates,
-          tip: '✨ Your transactions are now in YNAB!',
-          showResetButton: true,
-          budgetId: state.selectedBudgetId,
-          accountId: state.selectedAccountId,
-        },
-        result,
-        () => {
-          handleReset();
-          dropZone.focus();
-        }
-      );
+      // Check if this was a dev mode dry-run
+      if ('dryRun' in data && data.dryRun && 'devMode' in data && data.devMode) {
+        showResult(
+          'info',
+          {
+            title: '⚠️ Development Mode - Upload Blocked',
+            message: `Preview successful: ${data.count} transactions parsed, but NOT uploaded to YNAB`,
+            tip: '🛡️ Set NODE_ENV=production to enable real uploads',
+            showResetButton: true,
+          },
+          result,
+          () => {
+            handleReset();
+            dropZone.focus();
+          }
+        );
+      } else {
+        showResult(
+          'success',
+          {
+            title: '✅ Upload Successful!',
+            message: `${data.imported} transactions imported successfully`,
+            duplicates: data.duplicates,
+            tip: '✨ Your transactions are now in YNAB!',
+            showResetButton: true,
+            budgetId: state.selectedBudgetId,
+            accountId: state.selectedAccountId,
+          },
+          result,
+          () => {
+            handleReset();
+            dropZone.focus();
+          }
+        );
+      }
     } else {
       showResult(
         'error',
