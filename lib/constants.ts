@@ -3,7 +3,14 @@ export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 export const MAX_LINES = 50000;
 export const MAX_LINE_LENGTH = 10000;
 
-// Security patterns for malicious content detection
+/**
+ * Security patterns for detecting potentially malicious content in uploaded CSV files
+ * - <script: XSS attacks via script injection
+ * - javascript:: XSS via javascript protocol in links
+ * - on\w+=: Event handler attributes (onclick, onload, etc.)
+ * - @import: CSS imports that could load external resources
+ * - expression(): IE-specific CSS expressions (legacy XSS vector)
+ */
 export const DANGEROUS_PATTERNS = [
   /<script/i,
   /javascript:/i,

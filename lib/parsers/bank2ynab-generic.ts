@@ -31,9 +31,14 @@ interface RawTransaction {
   [key: string]: string | undefined;
 }
 
+/**
+ * Sanitizes CSV input by removing control characters (null bytes, invalid UTF-8, etc.)
+ * that could break JSON encoding or cause security issues
+ */
 function sanitizeString(str: string | null | undefined, maxLength = 200): string | null {
   if (!str) return null;
 
+  // Remove control characters except tab, newline, carriage return
   let cleaned = str.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
   cleaned = cleaned.trim();
 

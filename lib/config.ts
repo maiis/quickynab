@@ -30,6 +30,7 @@ function loadConfigFile(): Record<string, string> {
   content.split('\n').forEach((line) => {
     const trimmed = line.trim();
     if (trimmed && !trimmed.startsWith('#')) {
+      // Split on first '=' only, allowing '=' in values (e.g., base64 tokens)
       const [key, ...valueParts] = trimmed.split('=');
       if (key && valueParts.length > 0) {
         config[key.trim()] = valueParts.join('=').trim();

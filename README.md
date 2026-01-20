@@ -102,6 +102,32 @@ Auto-detects CSV format for 116+ banks including:
 
 **Use CLI if:** You want automation, batch processing, cron jobs, scripting
 
+## Troubleshooting
+
+**Import fails with "Unknown error"**
+- Verify your YNAB_ACCESS_TOKEN is valid (regenerate at [YNAB Developer Settings](https://app.ynab.com/settings/developer))
+- Check token has not expired or been revoked
+
+**Bank format not detected**
+- Ensure original filename matches bank's pattern (e.g., `statement_2024_01.csv`)
+- Check [supported banks list](https://github.com/bank2ynab/bank2ynab/blob/main/bank2ynab.conf)
+- File may be in standard YNAB format (Date, Payee, Outflow, Inflow)
+
+**Config validation fails (CLI)**
+- Run `ynab init` to create ~/.quickynab/config
+- Verify .env file exists in project root (web app)
+- Check environment variables are correctly set
+
+**Duplicate transactions imported**
+- QuickYNAB uses import_id (hash of account:date:amount:payee) to prevent duplicates
+- Duplicates may occur if payee name changes between imports
+- Check YNAB web interface for duplicate import IDs
+
+**Docker container not starting**
+- Ensure YNAB_ACCESS_TOKEN environment variable is set
+- Check port 3000 is not already in use: `lsof -i :3000`
+- View container logs: `docker logs quickynab`
+
 ## Docker Details
 
 **Image:** Uses official Bun 1.x Alpine base image
