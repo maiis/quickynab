@@ -122,6 +122,21 @@ bun run web  # Start web server
 bun run dev  # Development mode with hot reload
 ```
 
+## Releasing
+
+1. Bump `version` in `package.json`
+2. Commit, tag and push (triggers Docker build automatically):
+   ```bash
+   git add package.json
+   git commit -m "chore: bump version to x.y.z"
+   git tag vx.y.z
+   git push && git push --tags
+   ```
+3. Publish to npm:
+   ```bash
+   npm publish
+   ```
+
 ## License
 
 MIT

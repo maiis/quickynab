@@ -173,17 +173,32 @@ Tests use Bun's built-in test runner (Vitest-compatible API) with 68+ tests acro
 
 ## Publishing
 
-Automated via GitHub Actions:
+### Release process
 
-- **npm:** `.github/workflows/publish-npm.yml` (on release)
-  - Uses Bun for testing and building
-  - Still uses npm for publishing (better provenance support)
-- **Docker:** `.github/workflows/docker-publish.yml` (on git tag)
+1. Bump `version` in `package.json`
+2. Commit, tag and push:
+   ```bash
+   git add package.json
+   git commit -m "chore: bump version to x.y.z"
+   git tag vx.y.z
+   git push && git push --tags
+   ```
+3. Publish to npm manually:
+   ```bash
+   npm publish
+   ```
+   (runs `prepublishOnly` → `bun run check && bun run build` automatically)
+
+### What's automated
+
+- **Docker:** `.github/workflows/docker-publish.yml` triggers on `v*` tag push
   - Builds multi-platform (linux/amd64, linux/arm64)
   - Pushes to both Docker Hub and GHCR
-  - Uses official Bun Alpine image for smaller size and faster startup
+  - Uses official Bun Alpine image
 
-Manual: `npm publish` (runs `prepublishOnly` → `bun run check && bun run build`)
+### What's manual
+
+- **npm:** No CI workflow — run `npm publish` locally after tagging
 
 ## Common Gotchas
 
