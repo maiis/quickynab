@@ -469,12 +469,39 @@
     "footerRows": 0,
     "columns": [
       "Date",
+      "Memo",
       "Payee",
       "skip",
       "skip",
       "Outflow",
       "skip",
       "skip",
+      "skip",
+      "skip",
+      "skip",
+      "skip"
+    ],
+    "dateFormat": "%d.%m.%Y"
+  },
+  "CH ZKB Konto CSV-Export (Mit Details)": {
+    "name": "CH ZKB Konto CSV-Export (Mit Details)",
+    "pattern": "^Kontoauszug\\s\\d{14}",
+    "useRegex": true,
+    "delimiter": ";",
+    "headerRows": 1,
+    "footerRows": 0,
+    "columns": [
+      "skip",
+      "Payee",
+      "skip",
+      "skip",
+      "skip",
+      "skip",
+      "Outflow",
+      "Inflow",
+      "Date",
+      "skip",
+      "Memo",
       "skip"
     ],
     "dateFormat": "%d.%m.%Y"
@@ -513,6 +540,21 @@
       "skip"
     ],
     "dateFormat": "%Y-%m-%d"
+  },
+  "CH ZugerKB Kontoauszug": {
+    "name": "CH ZugerKB Kontoauszug",
+    "pattern": "^Auszug_\\d{8}",
+    "useRegex": true,
+    "delimiter": ";",
+    "headerRows": 12,
+    "footerRows": 0,
+    "columns": [
+      "skip",
+      "Payee",
+      "Inflow",
+      "Date"
+    ],
+    "dateFormat": "%d.%m.%y"
   },
   "CO Bancolombia": {
     "name": "CO Bancolombia",
