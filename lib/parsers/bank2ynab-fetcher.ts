@@ -39,7 +39,7 @@ export function findMatchingConfig(
           return config;
         }
       } else {
-        if (filename.includes(config.pattern)) {
+        if (config.pattern && filename.includes(config.pattern)) {
           return config;
         }
       }
