@@ -7,7 +7,7 @@ import fetch from 'node-fetch';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const CONFIG_URL = 'https://raw.githubusercontent.com/bank2ynab/bank2ynab/master/bank2ynab.conf';
+const CONFIG_URL = 'https://raw.githubusercontent.com/bank2ynab/bank2ynab/develop/bank2ynab.conf';
 const OUTPUT_FILE = path.join(__dirname, '../lib/parsers/bank2ynab-configs.json');
 
 interface Bank2YnabConfig {
