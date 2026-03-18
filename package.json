@@ -77,8 +77,8 @@
     "zod": "4.3.6"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.7",
-    "@tailwindcss/postcss": "4.2.1",
+    "@biomejs/biome": "2.4.8",
+    "@tailwindcss/postcss": "4.2.2",
     "@types/node": "25.5.0",
     "@vitest/coverage-v8": "4.1.0",
     "@vitest/ui": "4.1.0",
@@ -88,7 +88,7 @@
     "lint-staged": "16.4.0",
     "node-fetch": "3.3.2",
     "postcss": "8.5.8",
-    "tailwindcss": "4.2.1",
+    "tailwindcss": "4.2.2",
     "tsx": "4.21.0",
     "typescript": "5.9.3",
     "vite": "7.3.1",
