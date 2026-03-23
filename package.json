@@ -64,7 +64,7 @@
   ],
   "dependencies": {
     "commander": "14.0.3",
-    "csv-parse": "6.2.0",
+    "csv-parse": "6.2.1",
     "dotenv": "17.3.1",
     "ynab": "2.10.0"
   },

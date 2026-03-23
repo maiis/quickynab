@@ -6,7 +6,7 @@
       "name": "quickynab",
       "dependencies": {
         "commander": "14.0.3",
-        "csv-parse": "6.2.0",
+        "csv-parse": "6.2.1",
         "dotenv": "17.3.1",
         "ynab": "2.10.0",
       },
@@ -325,7 +325,7 @@
 
     "cookie": ["cookie@1.1.1", "", {}, "sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ=="],
 
-    "csv-parse": ["csv-parse@6.2.0", "", {}, "sha512-Zv8KRHccD1q3BJlK4VcQiEn/+suOOp++89g/fpqOxB2U2tU66uC3yM+ZwU6nQQEJp8AqBIiNqB+pUTKNz4QzKg=="],
+    "csv-parse": ["csv-parse@6.2.1", "", {}, "sha512-LRLMV+UCyfMokp8Wb411duBf1gaBKJfOfBWU9eHMJ+b+cJYZsNu3AFmjJf3+yPGd59Exz1TsMjaSFyxnYB9+IQ=="],
 
     "data-uri-to-buffer": ["data-uri-to-buffer@4.0.1", "", {}, "sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A=="],
 
