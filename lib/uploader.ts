@@ -22,11 +22,11 @@ export async function uploadTransactions(
 ): Promise<UploadResult> {
   const ynabAPI = new ynab.API(config.accessToken);
 
-  // Get budget ID (use override if provided, otherwise from config)
-  const budgetId = budgetIdOverride || (await getBudgetId(ynabAPI, config));
+  // Get plan ID (use override if provided, otherwise from config)
+  const planId = budgetIdOverride || (await getPlanId(ynabAPI, config));
 
   // Get account ID (use override if provided, otherwise from config)
-  const accountId = accountIdOverride || (await getAccountId(ynabAPI, budgetId, config));
+  const accountId = accountIdOverride || (await getAccountId(ynabAPI, planId, config));
 
   // Convert transactions to YNAB format
   const ynabTransactions = transactions.map((tx) => {
@@ -47,7 +47,7 @@ export async function uploadTransactions(
 
   // Upload transactions
   try {
-    const response = await ynabAPI.transactions.createTransactions(budgetId, {
+    const response = await ynabAPI.transactions.createTransactions(planId, {
       transactions: ynabTransactions,
     });
 
@@ -106,46 +106,46 @@ function generateImportId(transaction: Transaction): string {
 }
 
 /**
- * Gets budget ID (from config or prompts user)
+ * Gets plan ID (from config or auto-selects)
  */
-async function getBudgetId(ynabAPI: ynab.API, config: Config): Promise<string> {
+async function getPlanId(ynabAPI: ynab.API, config: Config): Promise<string> {
   if (config.budgetId) {
     return config.budgetId;
   }
 
-  const budgetsResponse = await ynabAPI.budgets.getBudgets();
-  const budgets = budgetsResponse.data.budgets;
+  const plansResponse = await ynabAPI.plans.getPlans();
+  const plans = plansResponse.data.plans;
 
-  if (budgets.length === 0) {
+  if (plans.length === 0) {
     throw new Error('No budgets found in your YNAB account');
   }
 
-  // Use first budget if only one exists
-  if (budgets.length === 1) {
-    const firstBudget = budgets[0];
-    if (!firstBudget) {
+  // Use first plan if only one exists
+  if (plans.length === 1) {
+    const firstPlan = plans[0];
+    if (!firstPlan) {
       throw new Error('No budgets found in your YNAB account');
     }
-    console.log(`Using budget: ${firstBudget.name}`);
-    return firstBudget.id;
+    console.log(`Using budget: ${firstPlan.name}`);
+    return firstPlan.id;
   }
 
   throw new Error(
     'Multiple budgets found. Please set YNAB_BUDGET_ID in your .env file.\n' +
       'Available budgets:\n' +
-      budgets.map((b) => `  - ${b.name} (${b.id})`).join('\n')
+      plans.map((p) => `  - ${p.name} (${p.id})`).join('\n')
   );
 }
 
 /**
- * Gets account ID (from config or prompts user)
+ * Gets account ID (from config or auto-selects)
  */
-async function getAccountId(ynabAPI: ynab.API, budgetId: string, config: Config): Promise<string> {
+async function getAccountId(ynabAPI: ynab.API, planId: string, config: Config): Promise<string> {
   if (config.accountId) {
     return config.accountId;
   }
 
-  const accountsResponse = await ynabAPI.accounts.getAccounts(budgetId);
+  const accountsResponse = await ynabAPI.accounts.getAccounts(planId);
   const accounts = accountsResponse.data.accounts.filter((a) => !a.closed);
 
   if (accounts.length === 0) {
@@ -172,10 +172,10 @@ async function getAccountId(ynabAPI: ynab.API, budgetId: string, config: Config)
 /**
  * Lists all budgets
  */
-export async function listBudgets(accessToken: string): Promise<ynab.BudgetSummary[]> {
+export async function listBudgets(accessToken: string): Promise<ynab.PlanSummary[]> {
   const ynabAPI = new ynab.API(accessToken);
-  const response = await ynabAPI.budgets.getBudgets();
-  return response.data.budgets;
+  const response = await ynabAPI.plans.getPlans();
+  return response.data.plans;
 }
 
 /**

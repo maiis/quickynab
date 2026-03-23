@@ -7,8 +7,8 @@ import { listAccounts, listBudgets, uploadTransactions } from './uploader.js';
 // Mock the ynab module
 vi.mock('ynab', () => {
   const mockAPI = {
-    budgets: {
-      getBudgets: vi.fn(),
+    plans: {
+      getPlans: vi.fn(),
     },
     accounts: {
       getAccounts: vi.fn(),
@@ -24,7 +24,7 @@ vi.mock('ynab', () => {
 });
 
 interface MockYnabAPI {
-  budgets: { getBudgets: ReturnType<typeof vi.fn> };
+  plans: { getPlans: ReturnType<typeof vi.fn> };
   accounts: { getAccounts: ReturnType<typeof vi.fn> };
   transactions: { createTransactions: ReturnType<typeof vi.fn> };
 }
@@ -173,9 +173,9 @@ describe('uploader', () => {
         accountId: 'account-456',
       };
 
-      mockYnabAPI.budgets.getBudgets.mockResolvedValue({
+      mockYnabAPI.plans.getPlans.mockResolvedValue({
         data: {
-          budgets: [{ id: 'auto-budget', name: 'My Budget' }],
+          plans: [{ id: 'auto-budget', name: 'My Budget' }],
         },
       });
 
@@ -418,9 +418,9 @@ describe('uploader', () => {
 
   describe('listBudgets', () => {
     it('should return list of budgets', async () => {
-      mockYnabAPI.budgets.getBudgets.mockResolvedValue({
+      mockYnabAPI.plans.getPlans.mockResolvedValue({
         data: {
-          budgets: [
+          plans: [
             { id: 'budget1', name: 'Personal' },
             { id: 'budget2', name: 'Business' },
           ],

@@ -38,7 +38,7 @@
              role="button"
              aria-label="Click or drag file to upload">
           <div class="drop-zone-content pointer-events-none">
-            <svg class="mx-auto mb-4 w-16 h-16 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="mx-auto mb-4 w-16 h-16 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
             </svg>
             <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">Drop your CSV file here</h2>
@@ -53,10 +53,10 @@
           <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Preview</h3>
           <div id="preview-content" class="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 mb-4 max-h-96 overflow-y-auto"></div>
           <div class="flex gap-4 justify-center flex-wrap">
-            <button id="upload-btn" class="btn btn-primary px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all">
+            <button type="button" id="upload-btn" class="btn btn-primary px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all">
               Upload to YNAB
             </button>
-            <button id="cancel-btn" class="btn btn-secondary px-8 py-3 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition-all">
+            <button type="button" id="cancel-btn" class="btn btn-secondary px-8 py-3 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition-all">
               Cancel
             </button>
           </div>
