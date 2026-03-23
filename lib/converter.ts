@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { parse } from 'csv-parse/sync';
 import { CsvParseError } from './errors.js';
+import { getLogger } from './logger.js';
 import { findMatchingConfig, getBank2YnabConfigs } from './parsers/bank2ynab-fetcher.js';
 import { parseBank2YnabCSV } from './parsers/bank2ynab-generic.js';
 import type { CsvRecord, Transaction } from './types.js';
@@ -30,11 +31,11 @@ export function parseCSV(filePath: string, originalFilename?: string): Transacti
   const matchedConfig = findMatchingConfig(filename, bank2ynabConfigs);
 
   if (matchedConfig) {
-    console.log(`Detected ${matchedConfig.name} format`);
+    getLogger().info(`Detected ${matchedConfig.name} format`);
     return parseBank2YnabCSV(filePath, matchedConfig);
   }
 
-  console.log('Using YNAB format');
+  getLogger().info('Using YNAB format');
   return parseYnabCSV(filePath);
 }
 

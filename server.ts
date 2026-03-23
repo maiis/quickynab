@@ -10,6 +10,7 @@ import fastifyStatic from '@fastify/static';
 import Fastify from 'fastify';
 import { getConfig } from './lib/config.js';
 import { parseCSV } from './lib/converter.js';
+import { setLogger } from './lib/logger.js';
 import { envSchema, uploadQuerySchema } from './lib/schemas.js';
 import { listAccounts, listBudgets, uploadTransactions } from './lib/uploader.js';
 
@@ -29,6 +30,12 @@ const fastify = Fastify({
   requestIdHeader: 'x-request-id',
   requestIdLogLabel: 'requestId',
   genReqId: () => crypto.randomUUID(),
+});
+
+// Wire Fastify's Pino logger into the shared lib logger
+setLogger({
+  info: (msg) => fastify.log.info(msg),
+  error: (msg) => fastify.log.error(msg),
 });
 
 // Rate limit configuration
@@ -395,8 +402,7 @@ fastify.post<{
 const start = async () => {
   try {
     await fastify.listen({ port: env.PORT, host: '0.0.0.0' });
-    console.log(`\n🚀 YNAB Web App running at http://localhost:${env.PORT}`);
-    console.log(`\nMake sure you have configured your .env file with YNAB_ACCESS_TOKEN\n`);
+    fastify.log.info(`YNAB Web App running at http://localhost:${env.PORT}`);
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

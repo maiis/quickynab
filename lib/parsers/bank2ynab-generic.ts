@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import { parse } from 'csv-parse/sync';
+import { getLogger } from '../logger.js';
 
 interface Transaction {
   date: string;
@@ -94,7 +95,7 @@ export function parseBank2YnabCSV(filePath: string, bankConfig: BankConfig): Tra
           amount,
         } as Transaction;
       } catch (error) {
-        console.error(`Error parsing row ${index + 1}:`, (error as Error).message);
+        getLogger().error(`Error parsing row ${index + 1}: ${(error as Error).message}`);
         return null;
       }
     })

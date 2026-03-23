@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import * as ynab from 'ynab';
 import type { Config } from './config.js';
 import { YnabApiError } from './errors.js';
+import { getLogger } from './logger.js';
 import type { Transaction } from './types.js';
 
 interface UploadResult {
@@ -126,7 +127,7 @@ async function getPlanId(ynabAPI: ynab.API, config: Config): Promise<string> {
     if (!firstPlan) {
       throw new Error('No budgets found in your YNAB account');
     }
-    console.log(`Using budget: ${firstPlan.name}`);
+    getLogger().info(`Using budget: ${firstPlan.name}`);
     return firstPlan.id;
   }
 
@@ -158,7 +159,7 @@ async function getAccountId(ynabAPI: ynab.API, planId: string, config: Config): 
     if (!firstAccount) {
       throw new Error('No open accounts found in your budget');
     }
-    console.log(`Using account: ${firstAccount.name}`);
+    getLogger().info(`Using account: ${firstAccount.name}`);
     return firstAccount.id;
   }
 
