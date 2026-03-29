@@ -61,6 +61,7 @@ export function parseBank2YnabCSV(filePath: string, bankConfig: BankConfig): Tra
     quote: '"',
     escape: '"',
     relax_column_count: true,
+    relax_quotes: true,
   }) as string[][];
 
   const columnMapping = bankConfig.columns || [];
