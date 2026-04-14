@@ -7,7 +7,8 @@ import fetch from 'node-fetch';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const CONFIG_URL = 'https://raw.githubusercontent.com/bank2ynab/bank2ynab/develop/bank2ynab.conf';
+const CONFIG_URL =
+  'https://raw.githubusercontent.com/bank2ynab/bank2ynab/develop/bank2ynab/data/bank2ynab.conf';
 const OUTPUT_FILE = path.join(__dirname, '../lib/parsers/bank2ynab-configs.json');
 
 interface Bank2YnabConfig {
@@ -104,8 +105,21 @@ async function main() {
   try {
     console.log('Fetching bank2ynab configs from GitHub...');
     const response = await fetch(CONFIG_URL);
+    if (!response.ok) {
+      throw new Error(`Fetch failed: ${response.status} ${response.statusText} for ${CONFIG_URL}`);
+    }
     const configText = await response.text();
     const configs = parseIniConfig(configText);
+
+    // Sanity check: upstream should yield many banks. An empty/near-empty result
+    // indicates a broken fetch (404, URL change, HTML error page, etc.) and must
+    // fail the build rather than silently overwriting the bundled configs.
+    const MIN_EXPECTED_CONFIGS = 50;
+    if (Object.keys(configs).length < MIN_EXPECTED_CONFIGS) {
+      throw new Error(
+        `Parsed only ${Object.keys(configs).length} bank formats, expected at least ${MIN_EXPECTED_CONFIGS}. Upstream format may have changed.`
+      );
+    }
 
     // Check if content has changed (compare actual data, not formatting)
     let shouldWrite = true;

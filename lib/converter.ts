@@ -40,16 +40,31 @@ export function parseCSV(filePath: string, originalFilename?: string): Transacti
 }
 
 /**
+ * Detects the delimiter used in a CSV file by comparing
+ * semicolons vs commas in the first line.
+ */
+function detectDelimiter(content: string): string {
+  const firstLine = content.split('\n')[0] || '';
+  const semicolons = (firstLine.match(/;/g) || []).length;
+  const commas = (firstLine.match(/,/g) || []).length;
+  return semicolons > commas ? ';' : ',';
+}
+
+/**
  * Parses a YNAB-formatted CSV file
  * Expected format: Date,Payee,Category,Memo,Outflow,Inflow
  */
 function parseYnabCSV(filePath: string): Transaction[] {
   const fileContent = fs.readFileSync(filePath, 'utf-8');
+  const delimiter = detectDelimiter(fileContent);
 
   const records = parse(fileContent, {
     columns: true,
     skip_empty_lines: true,
     trim: true,
+    delimiter,
+    relax_quotes: true,
+    relax_column_count: true,
   }) as CsvRecord[];
 
   if (!Array.isArray(records) || records.length === 0) {
