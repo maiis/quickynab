@@ -76,7 +76,7 @@
     "zod": "4.3.6"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.12",
+    "@biomejs/biome": "2.4.13",
     "@tailwindcss/postcss": "4.2.4",
     "@types/node": "25.6.0",
     "@vitest/coverage-v8": "4.1.5",
@@ -86,11 +86,11 @@
     "husky": "9.1.7",
     "lint-staged": "16.4.0",
     "node-fetch": "3.3.2",
-    "postcss": "8.5.10",
+    "postcss": "8.5.12",
     "tailwindcss": "4.2.4",
     "tsx": "4.21.0",
     "typescript": "6.0.3",
-    "vite": "8.0.9",
+    "vite": "8.0.10",
     "vitest": "4.1.5"
   },
   "lint-staged": {
