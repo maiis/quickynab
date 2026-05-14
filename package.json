@@ -88,9 +88,9 @@
     "node-fetch": "3.3.2",
     "postcss": "8.5.14",
     "tailwindcss": "4.3.0",
-    "tsx": "4.21.0",
+    "tsx": "4.22.0",
     "typescript": "6.0.3",
-    "vite": "8.0.12",
+    "vite": "8.0.13",
     "vitest": "4.1.6"
   },
   "lint-staged": {
