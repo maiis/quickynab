@@ -65,7 +65,7 @@
     "commander": "15.0.0",
     "csv-parse": "6.2.1",
     "dotenv": "17.4.2",
-    "ynab": "4.1.0"
+    "ynab": "4.4.0"
   },
   "optionalDependencies": {
     "@fastify/helmet": "13.0.2",
