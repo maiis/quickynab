@@ -8,7 +8,7 @@
         "commander": "15.0.0",
         "csv-parse": "6.2.1",
         "dotenv": "17.4.2",
-        "ynab": "4.1.0",
+        "ynab": "4.4.0",
       },
       "devDependencies": {
         "@biomejs/biome": "2.5.0",
@@ -625,7 +625,7 @@
 
     "yargs-parser": ["yargs-parser@22.0.0", "", {}, "sha512-rwu/ClNdSMpkSrUb+d6BRsSkLUq1fmfsY6TOpYzTwvwkg1/NRG85KBy3kq++A8LKQwX6lsu+aWad+2khvuXrqw=="],
 
-    "ynab": ["ynab@4.1.0", "", { "dependencies": { "fetch-ponyfill": "^7.1.0" } }, "sha512-35jQWpt36u+Hhb4tVDXxa/YmBU319P3hd45EOeI6dp+Fm0clDS+ErUJNLgz1bwNE2QBcQOScO+lEP+IWW1mvaQ=="],
+    "ynab": ["ynab@4.4.0", "", { "dependencies": { "fetch-ponyfill": "^7.1.0" } }, "sha512-LCl8+8MafsyVumSFBMoUYyNsyHecBosUFJVQSo/MwNmAf/odrdkOFoP7VeE0vHVCkKMAtmxZyg7Bj+vF6a+hvA=="],
 
     "zod": ["zod@4.4.3", "", {}, "sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ=="],
 
