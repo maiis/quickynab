@@ -81,7 +81,7 @@
     "@types/node": "25.9.4",
     "@vitest/coverage-v8": "4.1.9",
     "@vitest/ui": "4.1.9",
-    "autoprefixer": "10.5.0",
+    "autoprefixer": "10.5.2",
     "concurrently": "10.0.3",
     "husky": "9.1.7",
     "lint-staged": "17.0.8",
