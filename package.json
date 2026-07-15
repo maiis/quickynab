@@ -76,7 +76,7 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.3",
+    "@biomejs/biome": "2.5.4",
     "@tailwindcss/postcss": "4.3.2",
     "@types/node": "25.9.5",
     "@vitest/coverage-v8": "4.1.10",
