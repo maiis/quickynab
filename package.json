@@ -84,7 +84,7 @@
     "autoprefixer": "10.5.4",
     "concurrently": "10.0.3",
     "husky": "9.1.7",
-    "lint-staged": "17.1.1",
+    "lint-staged": "17.2.0",
     "node-fetch": "3.3.2",
     "postcss": "8.5.22",
     "tailwindcss": "4.3.3",
