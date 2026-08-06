@@ -86,9 +86,9 @@
     "husky": "9.1.7",
     "lint-staged": "17.3.0",
     "node-fetch": "3.3.2",
-    "postcss": "8.5.25",
+    "postcss": "8.5.26",
     "tailwindcss": "4.3.3",
-    "tsx": "4.23.8",
+    "tsx": "4.23.9",
     "typescript": "7.0.2",
     "vite": "8.2.0",
     "vitest": "4.1.10"
