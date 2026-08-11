@@ -9,7 +9,7 @@ QuickYNAB is a TypeScript-based tool for importing bank transactions to YNAB wit
 - **Web App**: Fastify server with Vite frontend (drag-and-drop CSV upload)
 - **CLI**: Commander.js-based command-line tool for automation
 
-The project auto-detects 116+ bank CSV formats using configs fetched from [bank2ynab](https://github.com/bank2ynab/bank2ynab).
+The project auto-detects 124+ bank CSV formats using configs fetched from [bank2ynab](https://github.com/bank2ynab/bank2ynab).
 
 ## Essential Commands
 

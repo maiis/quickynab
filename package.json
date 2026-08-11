@@ -1,7 +1,7 @@
 {
   "name": "quickynab",
-  "version": "1.1.5",
-  "description": "Quick and easy bank transaction imports to YNAB - supports 116+ banks worldwide",
+  "version": "1.1.6",
+  "description": "Quick and easy bank transaction imports to YNAB - supports 124+ banks worldwide",
   "main": "dist/cli.js",
   "type": "module",
   "bin": {

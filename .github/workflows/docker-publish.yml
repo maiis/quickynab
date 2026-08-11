@@ -74,5 +74,5 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ secrets.DOCKERHUB_USERNAME }}/quickynab
-          short-description: "Self-hosted YNAB transaction importer with 116+ bank formats - Web UI + CLI"
+          short-description: "Self-hosted YNAB transaction importer with 124+ bank formats - Web UI + CLI"
           readme-filepath: ./README.md

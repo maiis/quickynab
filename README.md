@@ -9,7 +9,7 @@
 [![Last Commit](https://img.shields.io/github/last-commit/maiis/quickynab)](https://github.com/maiis/quickynab)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Self-hosted app to import bank transactions to YNAB. Supports 116+ banks worldwide with drag-and-drop web interface and CLI.
+Self-hosted app to import bank transactions to YNAB. Supports 124+ banks worldwide with drag-and-drop web interface and CLI.
 
 ![QuickYNAB Web Interface](screenshot.png)
 
@@ -26,7 +26,7 @@ QuickYNAB solves this by providing a self-hosted solution that you can access fr
 - 🔒 **Privacy-Friendly** - No data collection, no tracking, no external servers
 - 🌐 **Web App** - Drag-and-drop interface with transaction preview
 - 💻 **CLI** - Command-line tool for automation
-- 🏦 **116+ Banks** - Auto-detects format from 25+ countries ([bank2ynab](https://github.com/bank2ynab/bank2ynab))
+- 🏦 **124+ Banks** - Auto-detects format from 25+ countries ([bank2ynab](https://github.com/bank2ynab/bank2ynab))
 - ✨ **Smart Imports** - Prevents duplicates automatically
 
 ## Quick Start
@@ -87,7 +87,7 @@ Get your YNAB token from https://app.ynab.com/settings/developer
 
 ## Supported Banks
 
-Auto-detects CSV format for 116+ banks including:
+Auto-detects CSV format for 124+ banks including:
 
 - 🇨🇭 Switzerland: Neon, UBS, ZKB, SwissCard
 - 🇩🇪 Germany: N26, ING-DiBa, Deutsche Bank, Sparkasse
