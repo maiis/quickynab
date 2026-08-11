@@ -2435,6 +2435,30 @@
     ],
     "dateFormat": "%m/%d/%Y"
   },
+  "US Fidelity CMA": {
+    "name": "US Fidelity CMA",
+    "pattern": "History_for_Account.*",
+    "useRegex": true,
+    "delimiter": ",",
+    "headerRows": 3,
+    "footerRows": 14,
+    "columns": [
+      "Date",
+      "Payee",
+      "skip",
+      "Memo",
+      "skip",
+      "skip",
+      "skip",
+      "skip",
+      "skip",
+      "skip",
+      "Inflow",
+      "skip",
+      "skip"
+    ],
+    "dateFormat": "%m/%d/%Y"
+  },
   "US Schwab Checking": {
     "name": "US Schwab Checking",
     "pattern": "Source Filename Pattern = XXXXXX[0-9]{6}_(Checking)_Transactions_[0-9]{8}-[0-9]{6}",
