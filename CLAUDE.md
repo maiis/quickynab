@@ -208,3 +208,4 @@ Tests use Bun's built-in test runner (imported from `bun:test`) with 71 tests ac
 4. **Duplicate transactions?** import_id must be consistent - check hash generation in `uploader.ts`
 5. **Frontend changes not showing?** Run `bun run build:frontend` (dev server runs on :5173, production on :3000)
 6. **Bun compatibility issues?** Bun has excellent Node.js compatibility, but check https://bun.sh/docs/runtime/nodejs-apis for any edge cases
+7. **Fastify/zod in `optionalDependencies`?** Deliberate, don't "fix" it. Only `server.ts` needs them, so `npm i -g quickynab --omit=optional` gives a working CLI at 5.7 MB instead of 34 MB. The trade-off: a partial install fails at `bun run web` with a plain `Cannot find package 'fastify'`, because static ESM imports cannot be guarded without splitting the server entry point.

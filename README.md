@@ -62,7 +62,12 @@ Then open http://localhost:3000
 ### NPM
 
 ```bash
+# CLI + web app
 npm install -g quickynab
+
+# CLI only - skips the web server dependencies (34 MB -> 5.7 MB)
+npm install -g quickynab --omit=optional
+
 ynab init
 ynab import statement.csv
 
