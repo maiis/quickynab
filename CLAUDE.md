@@ -27,7 +27,6 @@ bun run build:backend    # TypeScript compile with bun x tsc (outputs to dist/)
 # Testing
 bun test                 # Run all tests with Bun's test runner
 bun test --watch         # Watch mode
-bun run test:ui          # Vitest UI (legacy, kept for compatibility)
 bun test --coverage      # Coverage report
 
 # Other
@@ -157,7 +156,7 @@ No React/Vue framework - vanilla TypeScript with DOM manipulation:
 
 ## Testing Strategy
 
-Tests use Bun's built-in test runner (Vitest-compatible API) with 68+ tests across 7 files:
+Tests use Bun's built-in test runner (imported from `bun:test`) with 71 tests across 7 files:
 
 - `bank2ynab-fetcher.test.ts` - Pattern matching (regex vs string, edge cases)
 - `bank2ynab-generic.test.ts` - CSV parsing (delimiters, skip rows, sanitization)
