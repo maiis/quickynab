@@ -10,7 +10,10 @@ const CONFIG_DIR = path.join(os.homedir(), '.quickynab');
 const CONFIG_FILE = path.join(CONFIG_DIR, 'config');
 const LOCAL_ENV = path.join(__dirname, '..', '.env');
 
-dotenv.config({ path: LOCAL_ENV });
+// `quiet` stops dotenv 17 printing its banner — and its sponsored tips — into
+// production logs. The CLI still runs under plain node, which has no .env loading
+// of its own, so the package itself stays.
+dotenv.config({ path: LOCAL_ENV, quiet: true });
 
 export interface Config {
   accessToken: string;
