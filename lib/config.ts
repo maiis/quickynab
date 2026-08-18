@@ -2,7 +2,6 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import dotenv from 'dotenv';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -10,10 +9,12 @@ const CONFIG_DIR = path.join(os.homedir(), '.quickynab');
 const CONFIG_FILE = path.join(CONFIG_DIR, 'config');
 const LOCAL_ENV = path.join(__dirname, '..', '.env');
 
-// `quiet` stops dotenv 17 printing its banner — and its sponsored tips — into
-// production logs. The CLI still runs under plain node, which has no .env loading
-// of its own, so the package itself stays.
-dotenv.config({ path: LOCAL_ENV, quiet: true });
+// Native .env loading, no dependency: every supported Node has
+// process.loadEnvFile, and Bun reads .env by itself (it has no such method, hence
+// the optional call). Both leave variables already in the environment untouched.
+if (fs.existsSync(LOCAL_ENV)) {
+  process.loadEnvFile?.(LOCAL_ENV);
+}
 
 export interface Config {
   accessToken: string;
