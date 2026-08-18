@@ -12,6 +12,8 @@ const LOCAL_ENV = path.join(__dirname, '..', '.env');
 // Native .env loading, no dependency: every supported Node has
 // process.loadEnvFile, and Bun reads .env by itself (it has no such method, hence
 // the optional call). Both leave variables already in the environment untouched.
+// Bun resolves .env from the cwd rather than from LOCAL_ENV, which only diverges
+// if the server is launched from outside the package root.
 if (fs.existsSync(LOCAL_ENV)) {
   process.loadEnvFile?.(LOCAL_ENV);
 }
