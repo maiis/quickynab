@@ -27,7 +27,7 @@ jobs:
       run: bun x biome ci .
 
     - name: Type check
-      run: bun x tsc --project tsconfig.node.json --noEmit
+      run: bun run typecheck
 
     - name: Run tests
       run: bun test

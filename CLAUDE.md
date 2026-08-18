@@ -28,6 +28,7 @@ bun run build:backend    # TypeScript compile with bun x tsc (outputs to dist/)
 bun test                 # Run all tests with Bun's test runner
 bun test --watch         # Watch mode
 bun test --coverage      # Coverage report
+bun run typecheck        # Type check sources + tests (used in CI)
 
 # Other
 bun run format           # Format with Biome

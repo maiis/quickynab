@@ -17,6 +17,7 @@
     "fetch:configs": "bun scripts/fetch-bank-configs.ts",
     "copy:configs": "cp lib/parsers/bank2ynab-configs.json dist/lib/parsers/",
     "test": "bun test",
+    "typecheck": "bun x tsc --project tsconfig.test.json",
     "test:watch": "bun test --watch",
     "test:coverage": "bun test --coverage",
     "format": "biome format --write .",
