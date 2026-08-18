@@ -187,7 +187,7 @@ Tests use Bun's built-in test runner (imported from `bun:test`) with 71 tests ac
    ```bash
    npm publish
    ```
-   (runs `prepublishOnly` → `bun run check && bun run build` automatically)
+   (runs `prepublishOnly` → `check && typecheck && test && build` automatically)
 
 ### What's automated
 

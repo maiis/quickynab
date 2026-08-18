@@ -25,7 +25,7 @@
     "lint": "biome lint .",
     "lint:fix": "biome lint --write .",
     "check": "biome check --write .",
-    "prepublishOnly": "bun run check && bun run build",
+    "prepublishOnly": "bun run check && bun run typecheck && bun test && bun run build",
     "start": "bun dist/cli.js",
     "web": "bun dist/server.js",
     "preview": "vite preview",
