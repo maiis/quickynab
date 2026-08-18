@@ -7,7 +7,7 @@ import helmet from '@fastify/helmet';
 import fastifyMultipart from '@fastify/multipart';
 import rateLimit from '@fastify/rate-limit';
 import fastifyStatic from '@fastify/static';
-import Fastify from 'fastify';
+import Fastify, { LogController } from 'fastify';
 import { getConfig } from './lib/config.js';
 import { parseCSV } from './lib/converter.js';
 import { setLogger } from './lib/logger.js';
@@ -28,7 +28,7 @@ const fastify = Fastify({
           redact: ['req.headers.authorization', 'req.headers.cookie'],
         },
   requestIdHeader: 'x-request-id',
-  requestIdLogLabel: 'requestId',
+  logController: new LogController({ requestIdLogLabel: 'requestId' }),
   genReqId: () => crypto.randomUUID(),
 });
 
