@@ -84,7 +84,6 @@
     "concurrently": "10.0.5",
     "husky": "9.1.7",
     "lint-staged": "17.3.0",
-    "node-fetch": "3.3.2",
     "postcss": "8.5.26",
     "tailwindcss": "4.3.3",
     "tsx": "4.23.12",
