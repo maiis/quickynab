@@ -62,7 +62,12 @@ Then open http://localhost:3000
 ### NPM
 
 ```bash
+# CLI + web app
 npm install -g quickynab
+
+# CLI only - skips the web server dependencies (34 MB -> 5.7 MB)
+npm install -g quickynab --omit=optional
+
 ynab init
 ynab import statement.csv
 
@@ -107,7 +112,7 @@ Auto-detects CSV format for 124+ banks including:
 **Image:** Uses official Bun 1.x Alpine base image
 - **Runtime:** Bun for faster startup and lower memory usage
 - **Security:** Minimal Alpine base with only required dependencies
-- **Health Check:** Built-in HTTP health check on `/health` endpoint
+- **Health Check:** Built-in HTTP health check on `/api/health` endpoint
 
 ## Development
 

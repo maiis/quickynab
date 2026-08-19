@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.node.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["server.ts", "cli.ts", "lib/**/*", "**/*.test.ts"],
+  "exclude": ["node_modules", "src", "dist"]
+}

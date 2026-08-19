@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'bun:test';
 
 // Date parsing functions extracted for testing
 function parseDate(dateStr: string, formatStr?: string): string {

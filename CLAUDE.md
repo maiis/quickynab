@@ -27,8 +27,8 @@ bun run build:backend    # TypeScript compile with bun x tsc (outputs to dist/)
 # Testing
 bun test                 # Run all tests with Bun's test runner
 bun test --watch         # Watch mode
-bun run test:ui          # Vitest UI (legacy, kept for compatibility)
 bun test --coverage      # Coverage report
+bun run typecheck        # Type check sources + tests (used in CI)
 
 # Other
 bun run format           # Format with Biome
@@ -157,7 +157,7 @@ No React/Vue framework - vanilla TypeScript with DOM manipulation:
 
 ## Testing Strategy
 
-Tests use Bun's built-in test runner (Vitest-compatible API) with 68+ tests across 7 files:
+Tests use Bun's built-in test runner (imported from `bun:test`) with 71 tests across 7 files:
 
 - `bank2ynab-fetcher.test.ts` - Pattern matching (regex vs string, edge cases)
 - `bank2ynab-generic.test.ts` - CSV parsing (delimiters, skip rows, sanitization)
@@ -187,7 +187,7 @@ Tests use Bun's built-in test runner (Vitest-compatible API) with 68+ tests acro
    ```bash
    npm publish
    ```
-   (runs `prepublishOnly` → `bun run check && bun run build` automatically)
+   (runs `prepublishOnly` → `check && typecheck && test && build` automatically)
 
 ### What's automated
 
@@ -208,3 +208,4 @@ Tests use Bun's built-in test runner (Vitest-compatible API) with 68+ tests acro
 4. **Duplicate transactions?** import_id must be consistent - check hash generation in `uploader.ts`
 5. **Frontend changes not showing?** Run `bun run build:frontend` (dev server runs on :5173, production on :3000)
 6. **Bun compatibility issues?** Bun has excellent Node.js compatibility, but check https://bun.sh/docs/runtime/nodejs-apis for any edge cases
+7. **Fastify/zod in `optionalDependencies`?** Deliberate, don't "fix" it. Only `server.ts` needs them, so `npm i -g quickynab --omit=optional` gives a working CLI at 5.7 MB instead of 34 MB. The trade-off: a partial install fails at `bun run web` with a plain `Cannot find package 'fastify'`, because static ESM imports cannot be guarded without splitting the server entry point.

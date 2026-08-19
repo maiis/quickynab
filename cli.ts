@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 import fs from 'node:fs';
+import path from 'node:path';
 import readline from 'node:readline';
+import { fileURLToPath } from 'node:url';
 import { Command } from 'commander';
 import type { Config } from './lib/config.js';
 import { getConfig, hasConfig, saveConfig } from './lib/config.js';
@@ -10,6 +12,19 @@ import { handleCliError } from './lib/errors.js';
 import { listAccounts, listBudgets, uploadTransactions } from './lib/uploader.js';
 
 const program = new Command();
+
+// package.json sits next to cli.ts in the repo and one level up from dist/cli.js
+// once built, so try both rather than hardcoding a version that drifts on release.
+function readVersion(): string {
+  const dir = path.dirname(fileURLToPath(import.meta.url));
+  for (const candidate of [path.join(dir, 'package.json'), path.join(dir, '..', 'package.json')]) {
+    if (fs.existsSync(candidate)) {
+      const pkg = JSON.parse(fs.readFileSync(candidate, 'utf-8')) as { version?: string };
+      if (pkg.version) return pkg.version;
+    }
+  }
+  return 'unknown';
+}
 
 // Helper function to prompt for budget and account selection
 async function promptForBudgetAndAccount(
@@ -109,7 +124,7 @@ async function promptForBudgetAndAccount(
 program
   .name('ynab')
   .description('Quick and easy bank transaction imports to YNAB')
-  .version('1.0.0');
+  .version(readVersion());
 
 // Init command
 program
