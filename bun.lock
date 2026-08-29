@@ -27,7 +27,7 @@
         "@fastify/rate-limit": "11.2.0",
         "@fastify/static": "10.1.3",
         "fastify": "5.12.1",
-        "zod": "4.4.3",
+        "zod": "4.5.4",
       },
     },
   },
@@ -446,7 +446,7 @@
 
     "ynab": ["ynab@4.5.0", "", { "dependencies": { "fetch-ponyfill": "^7.1.0" } }, "sha512-Rmz081alMkDjhfkh5UTfgXeU4XVWfau5EOHdZXTy0wby1i+TeGtrC25FM5bVjRxaMNz5nXwa5LMwlB+pizd8Kg=="],
 
-    "zod": ["zod@4.4.3", "", {}, "sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ=="],
+    "zod": ["zod@4.5.4", "", {}, "sha512-sC95tT5iHHH9gtpj6A81kh+NEaRAUFN+qlUPDUbRfOMvNf5QCBqsb3WgvnpVtK5Y+4UfA6KqufotuTvMGiTlsA=="],
 
     "@fastify/fast-json-stringify-compiler/fast-json-stringify": ["fast-json-stringify@6.3.0", "", { "dependencies": { "@fastify/merge-json-schemas": "^0.2.0", "ajv": "^8.12.0", "ajv-formats": "^3.0.1", "fast-uri": "^3.0.0", "json-schema-ref-resolver": "^3.0.0", "rfdc": "^1.2.0" } }, "sha512-oRCntNDY/329HJPlmdNLIdogNtt6Vyjb1WuT01Soss3slIdyUp8kAcDU3saQTOquEK8KFVfwIIF7FebxUAu+yA=="],
 
