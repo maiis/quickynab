@@ -5,7 +5,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 QuickYNAB is a TypeScript-based tool for importing bank transactions to YNAB with two interfaces:
-
 - **Web App**: Fastify server with Vite frontend (drag-and-drop CSV upload)
 - **CLI**: Commander.js-based command-line tool for automation
 
@@ -113,7 +112,6 @@ scripts/
 ### Bank Format Detection
 
 Pattern matching happens in `findMatchingConfig()`:
-
 1. Iterates through all configs in order (order matters - more specific patterns should come first)
 2. For each config, checks `useRegex` flag:
    - `true`: Tests filename against regex pattern
@@ -125,20 +123,17 @@ Pattern matching happens in `findMatchingConfig()`:
 ### Configuration Loading
 
 Two separate config systems:
-
 - **CLI**: Reads `~/.quickynab/config` (created by `ynab init` command)
 - **Web**: Reads `.env` file or environment variables
 - Both use `lib/config.ts` which exports `getConfig()`
 
 **Budget/Account preselection:**
-
 - **CLI**: Automatically uses `YNAB_BUDGET_ID` and `YNAB_ACCOUNT_ID` from `~/.quickynab/config` (created by `ynab init`). Can be overridden with `--budget-id` and `--account-id` flags.
 - **Web App**: If `YNAB_BUDGET_ID` and/or `YNAB_ACCOUNT_ID` are set in `.env`, the web app will automatically preselect them in the dropdowns on page load. Users can still change the selections if desired.
 
 ### Frontend State Management
 
 No React/Vue framework - vanilla TypeScript with DOM manipulation:
-
 - Global state vars (`currentFile`, `previewData`, `selectedBudgetId`, `selectedAccountId`)
 - Event listeners on drop-zone, file input, budget select, account select
 - Dynamic HTML generation for preview and results
@@ -158,7 +153,6 @@ No React/Vue framework - vanilla TypeScript with DOM manipulation:
 ## Testing Strategy
 
 Tests use Bun's built-in test runner (imported from `bun:test`) with 71 tests across 7 files:
-
 - `bank2ynab-fetcher.test.ts` - Pattern matching (regex vs string, edge cases)
 - `bank2ynab-generic.test.ts` - CSV parsing (delimiters, skip rows, sanitization)
 - `date-parser.test.ts` - Date format detection (DD.MM.YYYY, YYYY-MM-DD, etc.)
@@ -177,6 +171,7 @@ Tests use Bun's built-in test runner (imported from `bun:test`) with 71 tests ac
 
 1. Bump `version` in `package.json`
 2. Commit, tag and push:
+
    ```bash
    git add package.json
    git commit -m "chore: bump version to x.y.z"
@@ -184,9 +179,11 @@ Tests use Bun's built-in test runner (imported from `bun:test`) with 71 tests ac
    git push && git push --tags
    ```
 3. Publish to npm manually:
+
    ```bash
    npm publish
    ```
+
    (runs `prepublishOnly` → `check && typecheck && test && build` automatically)
 
 ### What's automated
