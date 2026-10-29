@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { parse } from 'csv-parse/sync';
+import { parseAmount } from './amount.js';
 import { CsvParseError } from './errors.js';
 import { getLogger } from './logger.js';
 import { findMatchingConfig, getBank2YnabConfigs } from './parsers/bank2ynab-fetcher.js';
@@ -37,36 +38,6 @@ function detectDelimiter(content: string): string {
 }
 
 /**
- * Parses an amount string and returns a number.
- * Shared by both parsers: strips currency symbols, thousand separators
- * ('  , and spaces) and whitespace before parsing.
- */
-export function parseAmount(amountStr: string | undefined): number {
-  if (!amountStr || amountStr === '') {
-    return 0;
-  }
-
-  // Keep digits, minus and the last dot or comma as the decimal separator
-  const cleaned = amountStr.replace(/[^\d.,\-']/g, '').replace(/'/g, '');
-  const lastDot = cleaned.lastIndexOf('.');
-  const lastComma = cleaned.lastIndexOf(',');
-  const decimalSep = lastDot >= lastComma ? '.' : ',';
-  const normalized =
-    lastDot >= 0 || lastComma >= 0
-      ? cleaned.slice(0, Math.max(lastDot, lastComma)).replace(/[.,]/g, '') +
-        decimalSep +
-        cleaned.slice(Math.max(lastDot, lastComma) + 1)
-      : cleaned;
-
-  const amount = parseFloat(normalized.replace(',', '.'));
-  if (Number.isNaN(amount)) {
-    return 0;
-  }
-
-  return amount;
-}
-
-/**
  * Parses a YNAB-formatted CSV file
  * Expected format: Date,Payee,Category,Memo,Outflow,Inflow
  */
@@ -88,8 +59,8 @@ function parseYnabCSV(filePath: string): Transaction[] {
   }
 
   return records.map((row, index) => {
-    const outflow = parseYnabAmount(row.Outflow);
-    const inflow = parseYnabAmount(row.Inflow);
+    const outflow = parseAmount(row.Outflow);
+    const inflow = parseAmount(row.Inflow);
 
     // Calculate amount (inflow is positive, outflow is negative)
     const amount = inflow - outflow;
@@ -106,13 +77,6 @@ function parseYnabCSV(filePath: string): Transaction[] {
       amount: amount,
     };
   });
-}
-
-/**
- * Parses an amount string and returns a number
- */
-function parseYnabAmount(amountStr: string | undefined): number {
-  return parseAmount(amountStr);
 }
 
 /**

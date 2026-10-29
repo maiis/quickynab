@@ -412,6 +412,39 @@ describe('uploader', () => {
       expect(importId2).toBe('YNAB:-4500:2025-01-15:2');
     });
 
+    it('should upload in chunks of 500 and sum results across chunks', async () => {
+      const transactions: Transaction[] = Array.from({ length: 501 }, () => ({
+        date: '2025-01-15',
+        payee_name: 'Cafe',
+        amount: -4.5,
+        memo: null,
+        category_name: null,
+      }));
+
+      mockYnabAPI.transactions.createTransactions
+        .mockResolvedValueOnce({
+          data: {
+            transaction_ids: Array.from({ length: 499 }, (_, i) => `tx${i}`),
+            duplicate_import_ids: ['dup'],
+            transactions: [],
+          },
+        })
+        .mockResolvedValueOnce({
+          data: { transaction_ids: ['tx500'], duplicate_import_ids: [], transactions: [] },
+        });
+
+      const result = await uploadTransactions(transactions, mockConfig);
+
+      const calls = mockYnabAPI.transactions.createTransactions.mock.calls;
+      expect(calls).toHaveLength(2);
+      expect(calls[0]![1].transactions).toHaveLength(500);
+      expect(calls[1]![1].transactions).toHaveLength(1);
+      // Occurrence keeps counting across the chunk boundary
+      expect(calls[1]![1].transactions[0]!.import_id).toBe('YNAB:-4500:2025-01-15:501');
+      expect(result.imported).toBe(500);
+      expect(result.duplicates).toBe(1);
+    });
+
     it('should generate same import_id for identical transactions across batches', async () => {
       const transaction: Transaction = {
         date: '2025-01-15',

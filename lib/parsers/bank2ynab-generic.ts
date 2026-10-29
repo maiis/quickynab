@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import { parse } from 'csv-parse/sync';
-import { parseAmount } from '../converter.js';
+import { parseAmount } from '../amount.js';
 import { getLogger } from '../logger.js';
 
 interface Transaction {
