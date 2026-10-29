@@ -110,10 +110,12 @@ await fastify.register(fastifyMultipart, {
 });
 
 // CORS - Allow same-origin requests (no CORS headers needed)
-// Parsed once at startup, not per request
+// Parsed once at startup (entries trimmed), not per request
 const allowedOrigins = (
   env.ALLOWED_ORIGINS.length > 0 ? env.ALLOWED_ORIGINS : ['http://localhost:3000']
-).filter((o) => o !== 'null' && o.length > 0);
+)
+  .map((o) => o.trim())
+  .filter((o) => o !== 'null' && o.length > 0);
 
 fastify.addHook('onRequest', async (request, reply) => {
   const origin = request.headers.origin;
