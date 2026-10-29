@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import { parse } from 'csv-parse/sync';
+import { parseAmount } from '../converter.js';
 import { getLogger } from '../logger.js';
 
 interface Transaction {
@@ -79,11 +80,11 @@ export function parseBank2YnabCSV(filePath: string, bankConfig: BankConfig): Tra
 
         let amount = 0;
         if (transaction.Inflow || transaction.Outflow) {
-          const inflow = parseFloat(transaction.Inflow || '0') || 0;
-          const outflow = parseFloat(transaction.Outflow || '0') || 0;
+          const inflow = parseAmount(transaction.Inflow);
+          const outflow = parseAmount(transaction.Outflow);
           amount = inflow - outflow;
         } else if (transaction.Amount) {
-          amount = parseFloat(transaction.Amount) || 0;
+          amount = parseAmount(transaction.Amount);
         }
 
         const date = parseDate(transaction.Date || '', bankConfig.dateFormat);

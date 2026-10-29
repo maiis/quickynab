@@ -8,23 +8,9 @@ import { parseBank2YnabCSV } from './parsers/bank2ynab-generic.js';
 import type { CsvRecord, Transaction } from './types.js';
 
 export function parseCSV(filePath: string, originalFilename?: string): Transaction[] {
-  // Use original filename if provided (from web upload), otherwise use basename
-  let filename = path.basename(filePath);
-
-  // If filename starts with 'ynab-' (temp file), try to extract original name
-  if (filename.startsWith('ynab-') && filename.includes('-')) {
-    // Format: ynab-{random}-{originalFilename}
-    const parts = filename.split('-');
-    if (parts.length >= 3) {
-      // Join everything after the second dash (the random hash)
-      filename = parts.slice(2).join('-');
-    }
-  }
-
-  // Override with explicit originalFilename if provided
-  if (originalFilename) {
-    filename = originalFilename;
-  }
+  // The web app passes the original filename explicitly (its temp-file names
+  // would break bank detection patterns); otherwise use the file's basename.
+  const filename = originalFilename || path.basename(filePath);
 
   // Use bank2ynab configs (110+ bank formats, bundled at build time)
   const bank2ynabConfigs = getBank2YnabConfigs();
@@ -51,6 +37,36 @@ function detectDelimiter(content: string): string {
 }
 
 /**
+ * Parses an amount string and returns a number.
+ * Shared by both parsers: strips currency symbols, thousand separators
+ * ('  , and spaces) and whitespace before parsing.
+ */
+export function parseAmount(amountStr: string | undefined): number {
+  if (!amountStr || amountStr === '') {
+    return 0;
+  }
+
+  // Keep digits, minus and the last dot or comma as the decimal separator
+  const cleaned = amountStr.replace(/[^\d.,\-']/g, '').replace(/'/g, '');
+  const lastDot = cleaned.lastIndexOf('.');
+  const lastComma = cleaned.lastIndexOf(',');
+  const decimalSep = lastDot >= lastComma ? '.' : ',';
+  const normalized =
+    lastDot >= 0 || lastComma >= 0
+      ? cleaned.slice(0, Math.max(lastDot, lastComma)).replace(/[.,]/g, '') +
+        decimalSep +
+        cleaned.slice(Math.max(lastDot, lastComma) + 1)
+      : cleaned;
+
+  const amount = parseFloat(normalized.replace(',', '.'));
+  if (Number.isNaN(amount)) {
+    return 0;
+  }
+
+  return amount;
+}
+
+/**
  * Parses a YNAB-formatted CSV file
  * Expected format: Date,Payee,Category,Memo,Outflow,Inflow
  */
@@ -72,8 +88,8 @@ function parseYnabCSV(filePath: string): Transaction[] {
   }
 
   return records.map((row, index) => {
-    const outflow = parseAmount(row.Outflow);
-    const inflow = parseAmount(row.Inflow);
+    const outflow = parseYnabAmount(row.Outflow);
+    const inflow = parseYnabAmount(row.Inflow);
 
     // Calculate amount (inflow is positive, outflow is negative)
     const amount = inflow - outflow;
@@ -95,24 +111,16 @@ function parseYnabCSV(filePath: string): Transaction[] {
 /**
  * Parses an amount string and returns a number
  */
-function parseAmount(amountStr: string | undefined): number {
-  if (!amountStr || amountStr === '' || amountStr === '0') {
-    return 0;
-  }
-
-  // Remove currency symbols, commas, and whitespace
-  const cleaned = amountStr.replace(/[^0-9.-]/g, '');
-  const amount = parseFloat(cleaned);
-
-  if (Number.isNaN(amount)) {
-    return 0;
-  }
-
-  return amount;
+function parseYnabAmount(amountStr: string | undefined): number {
+  return parseAmount(amountStr);
 }
 
 /**
  * Validates that the CSV has a supported format
+ *
+ * shortcut: only checks the generic YNAB format header; bank formats are
+ * detected by parseCSV and have their own headers, so this is not used
+ * on the bank path.
  */
 export function validateCSV(filePath: string): void {
   const fileContent = fs.readFileSync(filePath, 'utf-8');
