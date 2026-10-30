@@ -335,7 +335,7 @@ describe('uploader', () => {
       const importId = calls[0]![1].transactions[0]!.import_id;
 
       // Should follow YNAB format: YNAB:[milliunit_amount]:[iso_date]:[occurrence]
-      expect(importId).toMatch(/^YNAB:-50000:2025-01-15:\d+$/);
+      expect(importId).toBe('YNAB:-50000:2025-01-15:1');
     });
 
     it('should generate different import_ids for different transactions', async () => {
@@ -372,6 +372,77 @@ describe('uploader', () => {
 
       // Different payees should generate different import_ids
       expect(importId1).not.toBe(importId2);
+    });
+
+    it('should assign distinct import_ids to identical same-day transactions', async () => {
+      const transactions: Transaction[] = [
+        {
+          date: '2025-01-15',
+          payee_name: 'Cafe',
+          amount: -4.5,
+          memo: 'coffee',
+          category_name: null,
+        },
+        {
+          date: '2025-01-15',
+          payee_name: 'Cafe',
+          amount: -4.5,
+          memo: 'coffee',
+          category_name: null,
+        },
+      ];
+
+      mockYnabAPI.transactions.createTransactions.mockResolvedValue({
+        data: {
+          transaction_ids: ['tx1', 'tx2'],
+          duplicate_import_ids: [],
+          transactions: [],
+        },
+      });
+
+      await uploadTransactions(transactions, mockConfig);
+
+      const calls = mockYnabAPI.transactions.createTransactions.mock.calls;
+      const importId1 = calls[0]![1].transactions[0]!.import_id;
+      const importId2 = calls[0]![1].transactions[1]!.import_id;
+
+      // Identical rows must not collapse into one import_id (one would be
+      // reported as a duplicate and silently dropped)
+      expect(importId1).toBe('YNAB:-4500:2025-01-15:1');
+      expect(importId2).toBe('YNAB:-4500:2025-01-15:2');
+    });
+
+    it('should upload in chunks of 500 and sum results across chunks', async () => {
+      const transactions: Transaction[] = Array.from({ length: 501 }, () => ({
+        date: '2025-01-15',
+        payee_name: 'Cafe',
+        amount: -4.5,
+        memo: null,
+        category_name: null,
+      }));
+
+      mockYnabAPI.transactions.createTransactions
+        .mockResolvedValueOnce({
+          data: {
+            transaction_ids: Array.from({ length: 499 }, (_, i) => `tx${i}`),
+            duplicate_import_ids: ['dup'],
+            transactions: [],
+          },
+        })
+        .mockResolvedValueOnce({
+          data: { transaction_ids: ['tx500'], duplicate_import_ids: [], transactions: [] },
+        });
+
+      const result = await uploadTransactions(transactions, mockConfig);
+
+      const calls = mockYnabAPI.transactions.createTransactions.mock.calls;
+      expect(calls).toHaveLength(2);
+      expect(calls[0]![1].transactions).toHaveLength(500);
+      expect(calls[1]![1].transactions).toHaveLength(1);
+      // Occurrence keeps counting across the chunk boundary
+      expect(calls[1]![1].transactions[0]!.import_id).toBe('YNAB:-4500:2025-01-15:501');
+      expect(result.imported).toBe(500);
+      expect(result.duplicates).toBe(1);
     });
 
     it('should generate same import_id for identical transactions across batches', async () => {

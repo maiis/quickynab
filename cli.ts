@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { Command } from 'commander';
 import type { Config } from './lib/config.js';
 import { getConfig, hasConfig, saveConfig } from './lib/config.js';
-import { parseCSV, validateCSV } from './lib/converter.js';
+import { parseCSV } from './lib/converter.js';
 import { handleCliError } from './lib/errors.js';
 import { listAccounts, listBudgets, uploadTransactions } from './lib/uploader.js';
 
@@ -200,10 +200,7 @@ program
 
       console.log(`Reading CSV file: ${file}`);
 
-      // Validate CSV format
-      validateCSV(file);
-
-      // Parse CSV (auto-detects format)
+      // Parse CSV (auto-detects format; throws a clear error on garbage)
       const transactions = parseCSV(file);
       console.log(`Parsed ${transactions.length} transactions`);
 
@@ -216,7 +213,7 @@ program
       console.log('\nPreview of transactions:');
       transactions.slice(0, 5).forEach((tx, index) => {
         console.log(
-          `  ${index + 1}. ${tx.date} | ${tx.payee_name || 'No payee'} | $${tx.amount.toFixed(2)}`
+          `  ${index + 1}. ${tx.date} | ${tx.payee_name || 'No payee'} | ${tx.amount.toFixed(2)}`
         );
       });
 

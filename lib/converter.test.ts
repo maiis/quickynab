@@ -118,16 +118,33 @@ describe('converter', () => {
       expect(() => parseCSV(filePath)).toThrow('CSV file contains no data rows');
     });
 
-    it('should extract original filename from temp file name', () => {
+    it('should not mangle a real filename that starts with ynab-', () => {
       const csvContent = `Date,Payee,Category,Memo,Outflow,Inflow
 2025-01-15,Store,,,10.00,0`;
 
-      // Simulate temp file from web upload
+      // No temp-prefix guessing: the whole basename is used for detection
       const filePath = path.join(tempDir, 'ynab-abc123def456-mybank.csv');
       fs.writeFileSync(filePath, csvContent);
 
       const transactions = parseCSV(filePath);
       expect(transactions).toHaveLength(1);
+      expect(transactions[0]?.payee_name).toBe('Store');
+    });
+
+    it('should parse Swiss thousand separators and decimal commas', () => {
+      // Semicolon-delimited: a decimal comma (12,50) cannot exist in a
+      // comma-delimited file
+      const csvContent = `Date;Payee;Category;Memo;Outflow;Inflow
+2025-01-15;Salary;;;0;1'234.50
+2025-01-16;Cafe;;;12,50;0`;
+
+      const filePath = path.join(tempDir, 'ynab-abc123def456-swiss.csv');
+      fs.writeFileSync(filePath, csvContent);
+
+      const transactions = parseCSV(filePath);
+
+      expect(transactions[0]?.amount).toBe(1234.5);
+      expect(transactions[1]?.amount).toBe(-12.5);
     });
 
     it('should use originalFilename parameter when provided', () => {
