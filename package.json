@@ -69,20 +69,20 @@
   "optionalDependencies": {
     "@fastify/helmet": "13.2.0",
     "@fastify/multipart": "10.1.7",
-    "@fastify/rate-limit": "11.2.1",
+    "@fastify/rate-limit": "11.2.2",
     "@fastify/static": "10.1.8",
     "fastify": "5.12.8",
     "zod": "4.6.7"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.4",
-    "@tailwindcss/vite": "4.3.3",
+    "@tailwindcss/vite": "4.3.4",
     "@types/bun": "1.4.4",
     "@types/node": "26.6.6",
     "concurrently": "10.0.6",
     "husky": "9.1.7",
     "lint-staged": "17.6.0",
-    "tailwindcss": "4.3.3",
+    "tailwindcss": "4.3.4",
     "typescript": "7.0.2",
     "vite": "8.3.5"
   },
