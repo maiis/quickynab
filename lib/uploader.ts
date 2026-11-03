@@ -1,4 +1,3 @@
-import crypto from 'node:crypto';
 import * as ynab from 'ynab';
 import type { Config } from './config.js';
 import { YnabApiError } from './errors.js';
@@ -30,9 +29,15 @@ export async function uploadTransactions(
   const accountId = accountIdOverride || (await getAccountId(ynabAPI, planId, config));
 
   // Convert transactions to YNAB format
+  // import_id is YNAB:<milliunits>:<iso_date>:<occurrence>, where occurrence
+  // counts duplicates of the same amount+date in the batch (YNAB's own
+  // semantics) so identical same-day rows get 1, 2, 3... instead of
+  // collapsing into one id and being silently dropped as duplicates.
+  const seen = new Map<string, number>();
   const ynabTransactions = transactions.map((tx) => {
-    // Generate unique import_id to prevent duplicates
-    const importId = generateImportId(tx);
+    const comboKey = `${convertToMilliunits(tx.amount)}:${tx.date}`;
+    const occurrence = (seen.get(comboKey) || 0) + 1;
+    seen.set(comboKey, occurrence);
 
     return {
       account_id: accountId,
@@ -42,22 +47,33 @@ export async function uploadTransactions(
       memo: tx.memo || undefined,
       cleared: 'uncleared' as const,
       approved: false,
-      import_id: importId,
+      import_id: `YNAB:${convertToMilliunits(tx.amount)}:${tx.date}:${occurrence}`,
     };
   });
 
-  // Upload transactions
-  try {
-    const response = await ynabAPI.transactions.createTransactions(planId, {
-      transactions: ynabTransactions,
-    });
+  // Upload transactions in chunks: YNAB rejects oversized single requests,
+  // and the server accepts up to 50k-line files
+  const CHUNK_SIZE = 500;
+  const response = {
+    success: true as const,
+    imported: 0,
+    duplicates: 0,
+    transactions: [] as ynab.TransactionDetail[],
+  };
 
-    return {
-      success: true,
-      imported: response.data.transaction_ids.length,
-      duplicates: response.data.duplicate_import_ids?.length || 0,
-      transactions: response.data.transactions || [],
-    };
+  try {
+    for (let i = 0; i < ynabTransactions.length; i += CHUNK_SIZE) {
+      const chunk = ynabTransactions.slice(i, i + CHUNK_SIZE);
+      const chunkResponse = await ynabAPI.transactions.createTransactions(planId, {
+        transactions: chunk,
+      });
+
+      response.imported += chunkResponse.data.transaction_ids.length;
+      response.duplicates += chunkResponse.data.duplicate_import_ids?.length || 0;
+      response.transactions.push(...(chunkResponse.data.transactions || []));
+    }
+
+    return response;
   } catch (error) {
     if (
       typeof error === 'object' &&
@@ -78,32 +94,6 @@ export async function uploadTransactions(
  */
 function convertToMilliunits(amount: number): number {
   return Math.round(amount * 1000);
-}
-
-/**
- * Generates a unique import_id for duplicate detection
- * Format: YNAB:[milliunit_amount]:[iso_date]:[occurrence]
- * Max length: 36 characters
- *
- * The occurrence is derived from a hash of payee+memo to ensure the same
- * transaction always generates the same import_id, regardless of upload order
- * or what other transactions are in the batch. This enables proper duplicate
- * detection across multiple file uploads.
- */
-function generateImportId(transaction: Transaction): string {
-  const milliunits = convertToMilliunits(transaction.amount);
-
-  // Create deterministic occurrence from hash of payee+memo
-  // This ensures same transaction = same import_id across different uploads
-  const uniqueData = `${transaction.payee_name || ''}:${transaction.memo || ''}`;
-  const hash = crypto.createHash('sha256').update(uniqueData).digest('hex');
-
-  // Take last 4 chars of hash as occurrence (stays within 36 char limit)
-  // Convert to number for cleaner format
-  const occurrence = parseInt(hash.substring(hash.length - 4), 16);
-
-  // YNAB format: YNAB:[milliunit_amount]:[iso_date]:[occurrence]
-  return `YNAB:${milliunits}:${transaction.date}:${occurrence}`;
 }
 
 /**

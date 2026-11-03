@@ -110,22 +110,22 @@ await fastify.register(fastifyMultipart, {
 });
 
 // CORS - Allow same-origin requests (no CORS headers needed)
+// Parsed once at startup (entries trimmed), not per request
+const allowedOrigins = (
+  env.ALLOWED_ORIGINS.length > 0 ? env.ALLOWED_ORIGINS : ['http://localhost:3000']
+)
+  .map((o) => o.trim())
+  .filter((o) => o !== 'null' && o.length > 0);
+
 fastify.addHook('onRequest', async (request, reply) => {
   const origin = request.headers.origin;
 
-  if (origin && origin !== 'null') {
-    // Parse and sanitize allowed origins, excluding "null" and trimming whitespace
-    const allowedOrigins = (process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'])
-      .map((o) => o.trim())
-      .filter((o) => o !== 'null' && o.length > 0);
-
-    // Only allow CORS headers if the provided origin exactly matches a safe, whitelisted origin
-    if (allowedOrigins.includes(origin)) {
-      reply.header('Access-Control-Allow-Origin', origin);
-      reply.header('Access-Control-Allow-Credentials', 'true');
-      reply.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-      reply.header('Access-Control-Allow-Headers', 'Content-Type');
-    }
+  // Only add CORS headers if the origin exactly matches a whitelisted one
+  if (origin && origin !== 'null' && allowedOrigins.includes(origin)) {
+    reply.header('Access-Control-Allow-Origin', origin);
+    reply.header('Access-Control-Allow-Credentials', 'true');
+    reply.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    reply.header('Access-Control-Allow-Headers', 'Content-Type');
   }
 });
 
@@ -163,15 +163,6 @@ function validateCSVFile(buffer: Buffer, filename: string): boolean {
     const firstLine = lines[0];
     if (firstLine && !firstLine.includes(',') && !firstLine.includes(';')) {
       throw new Error('File does not appear to be a valid CSV');
-    }
-  }
-
-  // Check for malicious content
-  const dangerousPatterns = [/<script/i, /javascript:/i, /on\w+=/i, /@import/i, /expression\(/i];
-
-  for (const pattern of dangerousPatterns) {
-    if (pattern.test(content)) {
-      throw new Error('File contains potentially malicious content');
     }
   }
 
@@ -277,14 +268,9 @@ fastify.get<{
 
       const accounts = await listAccounts(config.accessToken, budgetId);
 
-      // Get budget info to include currency
-      const budgets = await listBudgets(config.accessToken);
-      const budget = budgets.find((b) => b.id === budgetId);
-
       return {
         accounts,
         budgetId,
-        currency_format: budget?.currency_format,
       };
     } catch (error) {
       reply.code(500);
@@ -336,10 +322,13 @@ fastify.post<{
         };
       }
 
-      // Save file temporarily with secure random name but preserve original extension
+      // Save file temporarily with a secure random name; only the extension
+      // is taken from the user filename (the original name is passed to
+      // parseCSV separately for bank detection)
       const randomName = crypto.randomBytes(16).toString('hex');
       const originalFilename = data.filename;
-      tmpFile = path.join(os.tmpdir(), `ynab-${randomName}-${originalFilename}`);
+      const extension = path.extname(originalFilename).toLowerCase();
+      tmpFile = path.join(os.tmpdir(), `ynab-${randomName}${extension}`);
       fs.writeFileSync(tmpFile, buffer);
 
       try {

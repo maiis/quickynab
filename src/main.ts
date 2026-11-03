@@ -40,9 +40,7 @@ interface UploadResult {
 
 // State
 let currentFile: File | null = null;
-let _previewData: PreviewData | null = null;
 let budgets: Budget[] = [];
-let _accounts: Account[] = [];
 let selectedBudgetId: string | null = null;
 let selectedAccountId: string | null = null;
 let currencyFormat = { symbol: '$', decimal_digits: 2 };
@@ -199,6 +197,16 @@ uploadBtn.addEventListener('click', async () => {
 });
 
 // Functions
+// Escape user/bank-supplied strings before inserting into innerHTML
+function escapeHtml(str: string): string {
+  return str
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
 async function checkConfig() {
   try {
     const response = await fetch('/api/config');
@@ -288,13 +296,12 @@ async function loadAccounts(budgetId: string) {
     const data = await response.json();
 
     if (response.ok && data.accounts && data.accounts.length > 0) {
-      _accounts = data.accounts;
-
-      // Store currency format
-      if (data.currency_format) {
+      // Store currency format from the budget list already loaded at startup
+      const budget = budgets.find((b) => b.id === budgetId);
+      if (budget?.currency_format) {
         currencyFormat = {
-          symbol: data.currency_format.currency_symbol,
-          decimal_digits: data.currency_format.decimal_digits,
+          symbol: budget.currency_format.currency_symbol,
+          decimal_digits: budget.currency_format.decimal_digits,
         };
       }
 
@@ -344,7 +351,6 @@ async function handleFile(file: File) {
     const data: PreviewData = await response.json();
 
     if (response.ok && data.success) {
-      _previewData = data;
       showPreview(data);
     } else {
       showResult('error', {
@@ -383,8 +389,8 @@ function showPreview(data: PreviewData) {
 
     html += `
       <div class="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700 last:border-0">
-        <span class="font-semibold min-w-[100px] dark:text-gray-100">${tx.date}</span>
-        <span class="flex-1 px-4 text-gray-600 dark:text-gray-300">${tx.payee || 'No payee'}</span>
+        <span class="font-semibold min-w-[100px] dark:text-gray-100">${escapeHtml(tx.date)}</span>
+        <span class="flex-1 px-4 text-gray-600 dark:text-gray-300">${escapeHtml(tx.payee || 'No payee')}</span>
         <span class="font-semibold min-w-[100px] text-right ${amountClass}">${amountStr}</span>
       </div>
     `;
@@ -512,7 +518,6 @@ function showResult(
 
 function resetUI() {
   currentFile = null;
-  _previewData = null;
   preview.classList.add('hidden');
   dropZone.style.display = 'block';
   fileInput.value = '';
