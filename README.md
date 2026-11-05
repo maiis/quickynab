@@ -80,17 +80,20 @@ ynab import statement.csv --dry-run
 Get your YNAB token from https://app.ynab.com/settings/developer
 
 **Docker/Web App:** Set environment variables:
+
 - `YNAB_ACCESS_TOKEN` (required)
 - `YNAB_BUDGET_ID` (optional - preselects budget)
 - `YNAB_ACCOUNT_ID` (optional - preselects account)
 
 **CLI:** Run `ynab init` (saves to `~/.quickynab/config`)
+
 - Automatically uses configured budget/account
 - Override with `--budget-id` and `--account-id` flags
 
 ## Supported Banks
 
 Auto-detects CSV format for 124+ banks including:
+
 - 🇨🇭 Switzerland: Neon, UBS, ZKB, SwissCard
 - 🇩🇪 Germany: N26, ING-DiBa, Deutsche Bank, Sparkasse
 - 🇬🇧 UK: Revolut, Barclays, HSBC, Monzo
@@ -107,6 +110,7 @@ Auto-detects CSV format for 124+ banks including:
 ## Docker Details
 
 **Image:** Uses official Bun 1.x Alpine base image
+
 - **Runtime:** Bun for faster startup and lower memory usage
 - **Security:** Minimal Alpine base with only required dependencies
 - **Health Check:** Built-in HTTP health check on `/api/health` endpoint
