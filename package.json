@@ -62,7 +62,7 @@
     "LICENSE"
   ],
   "dependencies": {
-    "commander": "15.0.0",
+    "commander": "15.1.0",
     "csv-parse": "7.0.3",
     "ynab": "4.5.0"
   },
@@ -75,16 +75,16 @@
     "zod": "4.6.7"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.6.5",
-    "@tailwindcss/vite": "4.3.4",
+    "@biomejs/biome": "2.6.6",
+    "@tailwindcss/vite": "4.3.5",
     "@types/bun": "1.4.4",
     "@types/node": "26.6.6",
-    "concurrently": "10.0.6",
+    "concurrently": "10.0.7",
     "husky": "9.1.7",
     "lint-staged": "17.6.0",
-    "tailwindcss": "4.3.4",
+    "tailwindcss": "4.3.5",
     "typescript": "7.0.2",
-    "vite": "8.3.6"
+    "vite": "8.3.7"
   },
   "lint-staged": {
     "*.{ts,tsx,js,json}": "biome check --write --no-errors-on-unmatched"
