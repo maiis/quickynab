@@ -1,5 +1,8 @@
 # QuickYNAB
 
+> [!WARNING]
+> **This project is retired and no longer maintained.** The repository is archived, the npm package is deprecated, and no further releases, fixes or security updates will be published. It remains available as-is for reference and self-hosting, but use it at your own risk. For active alternatives, see [bank2ynab](https://github.com/bank2ynab/bank2ynab) or YNAB's own CSV import.
+
 [![Tests](https://github.com/maiis/quickynab/actions/workflows/test.yml/badge.svg)](https://github.com/maiis/quickynab/actions/workflows/test.yml)
 [![Dependencies](https://img.shields.io/librariesio/github/maiis/quickynab)](https://libraries.io/github/maiis/quickynab)
 [![npm version](https://badge.fury.io/js/quickynab.svg)](https://www.npmjs.com/package/quickynab)
